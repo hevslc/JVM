@@ -1,4 +1,4 @@
-#include "reader.h"
+#include "reader_display.h"
 
 int main(int argc, char const *argv[]){
 	std::ifstream f;
@@ -8,10 +8,10 @@ int main(int argc, char const *argv[]){
 		return 0;
 	}
 
+	ClassFile *classFile = new ClassFile;
+	reading(classFile, f);
 
-	u1 *c = new u1;
-	c = r1(f);
-
-	std::cout << std::hex << (int)*c << std::endl;
+	f.close();
 	return 0;
 }
+
