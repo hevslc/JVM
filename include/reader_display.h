@@ -11,7 +11,7 @@ public:
 	u2				minorVersion;
 	u2				majorVersion;
 	u2				constantPoolCount;
-	Cpinfo			constantPool;
+	Cpinfo			*constantPool;
 	//u2				acess_flags;
 	//u2				this_class;
 	//u2				super_class;
@@ -31,7 +31,7 @@ public:
 	void reading(std::ifstream& f);
 
 private:
-	void rConstantPoolt(std::ifstream& f);
+	void rconstantPoolt(std::ifstream& f);
 
 
 

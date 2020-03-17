@@ -21,80 +21,70 @@ typedef unsigned int 	u4;
 #define CONSTANT_NameAndType 		12
 #define CONSTANT_Utf8 				1
 
+
 class Cpinfo{
+public:
 	u1 tag;
+	union{					
+		struct{
+			u2 nameIndex;
+		}Class;
+
+		struct{
+			u2 classIndex;
+			u2 nameTypeIndex;
+		}Fieldref;
+
+		struct{
+			u2 classIndex;
+			u2 nameTypeIndex;
+		}Methodref;
+
+		struct{
+			u2 classIndex;
+			u2 nameTypeIndex;
+		}InterfaceMethodref;
+
+		struct{
+			u2 stringIndex;
+		}String;
+
+		struct{
+			u4 bytes;
+		}Integer;
+
+		struct{
+			u4 bytes;
+		}Float;
+
+		struct{
+			u4 highBytes;
+			u4 lowBytes;
+		}Long;
+
+		struct{
+			u4 highBytes;
+			u4 lowBytes;
+		}Double;
+
+		struct{
+			u2 nameIndex;
+			u2 descriptorIndex;
+		}NameAndType;
+
+		struct{
+			u2 lenght;
+			u1 *bytes;
+		}Utf8;
+
+		struct{
+			u1 referenceKind;
+			u2 referenceIndex;
+		}MethodHandle;
+	};
 };
 
-class ConstantClass : Cpinfo{
-	u2 nameIndex;
-};
 
-class ConstantFieldref : Cpinfo{
-	u2 classIndex;
-	u2 nameTypeIndex;
-};
-
-class ConstantMethodref : Cpinfo{
-	u2 classIndex;
-	u2 nameTypeIndex;
-};
-
-class ConstantInterfaceMethodref : Cpinfo{
-	u2 classIndex;
-	u2 nameTypeIndex;
-};
-
-class ConstantString : Cpinfo{
-	u2 stringIndex;
-};
-
-class ConstantInteger : Cpinfo{
-	u4 bytes;
-};
-
-class ConstantFloat : Cpinfo{
-	u4 bytes;
-};
-
-class ConstantLong : Cpinfo{
-	u4 highBytes;
-	u4 lowBytes;
-};
-
-class ConstantDouble : Cpinfo{
-	u4 highBytes;
-	u4 lowBytes;
-};
-
-class ConstantNameAndType : Cpinfo{
-	u2 nameIndex;
-	u2 descriptorIndex;
-};
-
-class ConstantUtf8 : Cpinfo{
-	u2 lenght;
-	u1 bytes;
-};
-
-class ConstantMethodHandle : Cpinfo{
-	u1 referenceKind;
-	u2 referenceIndex;
-};
-
-/*class ConstantInterfaceMethodref : Cpinfo{
-	u1 referenceKind;
-	u2 referenceIndex;
-};
-*/
-
-class ConstantMethodType : Cpinfo{
-	u2 descriptorIndex;
-};
-
-class ConstantInvokeDynamic : Cpinfo{
-	u2 bootstrapMethodAttrIndex;
-	u2 nameTypeIndex;
-};
 
 
 
