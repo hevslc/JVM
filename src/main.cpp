@@ -7,9 +7,8 @@ int main(int argc, char const *argv[]){
 		std::cout << "Argumento não passado ou Arquivo não abriu.\n";
 		return 0;
 	}
-
-	ClassFile *classFile = new ClassFile;
-	reading(classFile, f);
+	ClassFile *classFile = new ClassFile();
+	classFile->reading(f);
 
 	f.close();
 	return 0;
