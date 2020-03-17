@@ -33,17 +33,7 @@ public:
 		struct{
 			u2 classIndex;
 			u2 nameTypeIndex;
-		}Fieldref;
-
-		struct{
-			u2 classIndex;
-			u2 nameTypeIndex;
-		}Methodref;
-
-		struct{
-			u2 classIndex;
-			u2 nameTypeIndex;
-		}InterfaceMethodref;
+		}FieldMethInter;
 
 		struct{
 			u2 stringIndex;
@@ -51,16 +41,12 @@ public:
 
 		struct{
 			u4 bytes;
-		}Integer;
-
-		struct{
-			u4 bytes;
-		}Float;
+		}IntegerFloat;
 
 		struct{
 			u4 highBytes;
 			u4 lowBytes;
-		}Long;
+		}LongDouble;
 
 		struct{
 			u4 highBytes;

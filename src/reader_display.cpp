@@ -37,33 +37,22 @@ void ClassFile::rconstantPoolt(std::ifstream& f){
 				cpinfo[i].Class.nameIndex = r2(f);
 				break;
 			case CONSTANT_Fieldref:
-				cpinfo[i].Fieldref.classIndex = r2(f);
-				cpinfo[i].Fieldref.nameTypeIndex = r2(f);
-				break;
 			case CONSTANT_Methodref:
-				cpinfo[i].Methodref.classIndex = r2(f);
-				cpinfo[i].Methodref.nameTypeIndex = r2(f);
-				break;
 			case CONSTANT_InterfaceMethodref:
-				cpinfo[i].InterfaceMethodref.classIndex = r2(f);
-				cpinfo[i].InterfaceMethodref.nameTypeIndex = r2(f);
+				cpinfo[i].FieldMethInter.classIndex = r2(f);
+				cpinfo[i].FieldMethInter.nameTypeIndex = r2(f);
 				break;
 			case CONSTANT_String:
 				cpinfo[i].String.stringIndex = r2(f);
 				break;
 			case CONSTANT_Integer:
-				cpinfo[i].Integer.bytes = r4(f);
-				break;
 			case CONSTANT_Float:
-				cpinfo[i].Float.bytes = r4(f);
+				cpinfo[i].IntegerFloat.bytes = r4(f);
 				break;
 			case CONSTANT_Long:
-				cpinfo[i].Long.highBytes = r4(f);
-				cpinfo[i].Long.lowBytes = r4(f);
-				break;
 			case CONSTANT_Double:
-				cpinfo[i].Double.highBytes = r4(f);
-				cpinfo[i].Double.lowBytes = r4(f);
+				cpinfo[i].LongDouble.highBytes = r4(f);
+				cpinfo[i].LongDouble.lowBytes = r4(f);
 				break;
 			case CONSTANT_NameAndType:
 				cpinfo[i].NameAndType.nameIndex = r2(f);
