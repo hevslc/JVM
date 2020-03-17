@@ -25,6 +25,77 @@ class Cpinfo{
 	u1 tag;
 };
 
+class ConstantClass : Cpinfo{
+	u2 nameIndex;
+};
+
+class ConstantFieldref : Cpinfo{
+	u2 classIndex;
+	u2 nameTypeIndex;
+};
+
+class ConstantMethodref : Cpinfo{
+	u2 classIndex;
+	u2 nameTypeIndex;
+};
+
+class ConstantInterfaceMethodref : Cpinfo{
+	u2 classIndex;
+	u2 nameTypeIndex;
+};
+
+class ConstantString : Cpinfo{
+	u2 stringIndex;
+};
+
+class ConstantInteger : Cpinfo{
+	u4 bytes;
+};
+
+class ConstantFloat : Cpinfo{
+	u4 bytes;
+};
+
+class ConstantLong : Cpinfo{
+	u4 highBytes;
+	u4 lowBytes;
+};
+
+class ConstantDouble : Cpinfo{
+	u4 highBytes;
+	u4 lowBytes;
+};
+
+class ConstantNameAndType : Cpinfo{
+	u2 nameIndex;
+	u2 descriptorIndex;
+};
+
+class ConstantUtf8 : Cpinfo{
+	u2 lenght;
+	u1 bytes;
+};
+
+class ConstantMethodHandle : Cpinfo{
+	u1 referenceKind;
+	u2 referenceIndex;
+};
+
+/*class ConstantInterfaceMethodref : Cpinfo{
+	u1 referenceKind;
+	u2 referenceIndex;
+};
+*/
+
+class ConstantMethodType : Cpinfo{
+	u2 descriptorIndex;
+};
+
+class ConstantInvokeDynamic : Cpinfo{
+	u2 bootstrapMethodAttrIndex;
+	u2 nameTypeIndex;
+};
+
 
 
 #endif
