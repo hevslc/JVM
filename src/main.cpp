@@ -1,4 +1,5 @@
-#include "reader_display.h"
+#include "reader.h"
+#include "display.h"
 
 int main(int argc, char const *argv[]){
 	std::ifstream f;
@@ -7,8 +8,10 @@ int main(int argc, char const *argv[]){
 		std::cout << "Argumento não passado ou Arquivo não abriu.\n";
 		return 0;
 	}
-	ClassFile *classFile = new ClassFile();
+	ClassFile *classFile = new ClassFile;		//Aloca a estrutura ClassFile
 	classFile->reading(f);
+
+	//dconstantPoolt(classFile);
 
 	f.close();
 	return 0;
