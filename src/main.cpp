@@ -1,4 +1,5 @@
 #include "reader.h"
+#include "display.h"
 
 int main(int argc, char const *argv[]){
 	std::ifstream f;
@@ -9,6 +10,8 @@ int main(int argc, char const *argv[]){
 	}
 	ClassFile *classFile = new ClassFile;		//Aloca a estrutura ClassFile
 	classFile->reading(f);
+
+	//dconstantPoolt(classFile);
 
 	f.close();
 	return 0;
