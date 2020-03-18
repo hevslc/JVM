@@ -1,4 +1,4 @@
-#include "reader_display.h"
+#include "reader.h"
 
 int main(int argc, char const *argv[]){
 	std::ifstream f;

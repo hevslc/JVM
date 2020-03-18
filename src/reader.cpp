@@ -1,4 +1,4 @@
-#include "reader_display.h"
+#include "reader.h"
 
 //! Método r1
 /*!

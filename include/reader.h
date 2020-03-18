@@ -3,7 +3,7 @@
 
 #include "definitions.h"
 
-//! \class Cpinfo reader_display.h "include/reader_display.h"
+//! \class Cpinfo reader.h "include/reader.h"
 /*!
 	Classe com a estrutura de entrada da tabela constant_pool no seguinte formato geral:
 	cp_info {
@@ -61,7 +61,7 @@ public:
 	};
 };
 
-/*! \class ClassFile reader_display.h "include/reader_display.h"
+/*! \class ClassFile reader.h "include/reader.h"
  *  \brief Classe que representa o arquivo .class. 
  *
  * As informações extraídas da leitura do arquivo são armazenadas nos atributos. 
