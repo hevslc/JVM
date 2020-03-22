@@ -24,12 +24,26 @@ typedef uint32_t 	u4;					/*!< Tipo de dado (32 bits) */
 #define CONSTANT_Long 				5	
 #define CONSTANT_Double 			6	
 #define CONSTANT_NameAndType 		12	
-#define CONSTANT_Utf8 				1	
+#define CONSTANT_Utf8 				1
 
-
-
-
-
-
+/*!
+   \brief Flags de acesso de métodos.
+   Indica a disponibilidade de acesso de um método.
+ */
+enum MethodAccessFlag
+{
+	ACC_PUBLIC       = 0x0001,  /*!< Declarado público; pode ser acessada fora de seu pacote. */
+	ACC_PRIVATE      = 0x0002,  /*!< Declarado privado; acessível apenas dentro da classe em que é definido. */
+	ACC_PROTECTED    = 0x0004,  /*!< Declarado protegido; pode ser acessado dentro de classes derivadas. */
+	ACC_STATIC       = 0x0008,  /*!< Declarado estático. */
+	ACC_FINAL        = 0x0010,  /*!< Declarado final; não pode ser sobrescrito. */
+	ACC_SYNCHRONIZED = 0x0020,  /*!< Declarado synchronized; chamada é envolvida pelo uso de um monitor. */
+	ACC_BRIDGE       = 0x0040,  /*!< Um método bridge, gerado pelo compilador. */
+	ACC_VARARGS      = 0x0080,  /*!< Declarado com número variável de argumentos. */
+	ACC_NATIVE       = 0x0100,  /*!< Declarado nativo; implementado em outra linguagem não sendo Java. */
+	ACC_ABSTRACT     = 0x0400,  /*!< Declarado abstrato; nenhuma implementação é fornecida. */
+	ACC_STRICT       = 0x0800,  /*!< Declarado strictfp; modo floating-point é FP-strict. */
+	ACC_SYNTHETIC    = 0x1000,  /*!< Declarado sitético; não está presente no código fonte. */
+}
 
 #endif
