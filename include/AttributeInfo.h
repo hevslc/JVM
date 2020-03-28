@@ -6,16 +6,16 @@
 class ConstantValueAttribute {
 public:
     u2			attributeNameIndex;		/*!<Deve ser um indice válido na tabela constant_pool. 
-    										            A entrada da constant_pool nesse indice deve ser uma 
-    										            estrutura CONSTANT_Utf8_info representando a string
-    										            "ConstantValue". */
+    										A entrada da constant_pool nesse indice deve ser uma 
+    										estrutura CONSTANT_Utf8_info representando a string
+    										"ConstantValue". */
     u4 			attributeLength;		/*!<O valor do item attributeLength de uma estrutura
-    				 						            ConstantValueAttribute deve ser dois. */
+    				 						ConstantValueAttribute deve ser dois. */
     u2 			constantvalueIndex;		/*!<O valor do item constantvalueIndex deve ser um índice
-    	 									              válido na tabela constant_pool. A entrada constant_pool
-    	 									              nesse índice fornece o valor constante representado por
-    	 									              este atributo. A entrada constant_pool deve ser do tipo
-    	 									              apropriado ao campo*/
+    	 									válido na tabela constant_pool. A entrada constant_pool
+    	 									nesse índice fornece o valor constante representado por
+    	 									este atributo. A entrada constant_pool deve ser do tipo
+    	 									apropriado ao campo*/
 }
 
 class Code_attribute {
@@ -47,10 +47,10 @@ public:
 class AttributeInfo {
 public:
     u2 			attributeNameIndex;	/*!<Deve ser uma estrutura CONSTANT_Utf8_info representando
-    									              o nome do atributo. */
+    									o nome do atributo. */
     u4 			attributeLength;	/*!<Representa o comprimento da informação subsequente em bytes.
-    									            O comprimento não inclui os 6 bytes iniciais que contém os
-    									            itens AttributeNameIndex e attributeLength */
+    									O comprimento não inclui os 6 bytes iniciais que contém os
+    									itens AttributeNameIndex e attributeLength */
     u1 			*info;				/*!< */
 }
 
