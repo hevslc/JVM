@@ -1,5 +1,5 @@
-#include "reader.h"
-#include "display.h"
+#include "ClassFile.h"
+#include "Display.h"
 
 int main(int argc, char const *argv[]){
 	std::ifstream f;
@@ -11,9 +11,8 @@ int main(int argc, char const *argv[]){
 	ClassFile *classFile = new ClassFile;		//Aloca a estrutura ClassFile
 	classFile->reading(f);
 
-	//dconstantPoolt(classFile);
+	dconstantPoolt(classFile);
 
 	f.close();
 	return 0;
 }
-
