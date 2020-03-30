@@ -9,9 +9,10 @@ public:
 	u2 						nameIndex;			/*!<Representa um nome simples de field. */
 	u2 						descriptorIndex;	/*!<Representa um descritor de campo válido. */
 	u2 						attributesCount;	/*!<Número de atributos do campo */
-	attributeInfo 			*attributes;		/*!<Formato dos atributos */
-}
+	AttributeInfo 			*attributes;		/*!<Formato dos atributos */
+};
 
+namespace field{
 enum Flags : u4{
 	ACC_PUBLIC    = 0x0001,    /*!<Declarada pública: pode ser acessada de fora do pacote.*/
 	ACC_PRIVATE   = 0x0002,    /*!<Declarada privada: contexto restrito à definição da classe.*/
@@ -25,6 +26,6 @@ enum Flags : u4{
 	ACC_SYNTHETIC = 0x1000,    /*!<Declarada sintética: não presente no código fonte.*/ 
 	ACC_ENUM      = 0x4000     /*!<Declarada como um elemento de um enum.*/ 
 };
-
+}
 
 #endif

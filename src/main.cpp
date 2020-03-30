@@ -11,7 +11,7 @@ int main(int argc, char const *argv[]){
 	ClassFile *classFile = new ClassFile;		//Aloca a estrutura ClassFile
 	classFile->reading(f);
 
-	dconstantPoolt(classFile);
+	printClassFile(classFile);
 
 	f.close();
 	return 0;
