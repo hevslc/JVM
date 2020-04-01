@@ -21,7 +21,7 @@ SourceFile::SourceFile(u2 idx, std::ifstream& f){
 InnerClasses::InnerClasses(u2 idx, std::ifstream& f){
 	generalInfo(idx, f);
 	numberOfClasses = r2(f);
-	//Classes *cl = (Classes*) malloc(numberOfClasses*sizeof(Classes));
+	
 	/*for(int i=0; i<numberOfClasses; i++){
 		classes[i].innerClassInfoIndex = r2(f);
 		classes[i].outerClassInfoIndex = r2(f);
@@ -43,7 +43,13 @@ Code::Code(u2 idx, std::ifstream& f, ConstantPoolT constantPool){
 	code = new u1[codeLength];
 	for(u2 i=0; i<codeLength; i++)  code[i] = r1(f);
 	exceptionTableLength = r2(f);
-	// ler table
+	exceptionTable = new ExceptionTable[exceptionTableLength];
+	for(int i=0; i<exceptionTableLength; i++){
+		exceptionTable[i].startPc = r2(f);
+		exceptionTable[i].endPc = r2(f);
+		exceptionTable[i].handlerPc = r2(f);
+		exceptionTable[i].catchType = r2(f);
+	}
 	attributesCount = r2(f);
 	Attributes *attributes = new Attributes(f, attributesCount, constantPool);
 	this->attributes = *attributes;
@@ -59,13 +65,24 @@ Exceptions::Exceptions(u2 idx, std::ifstream& f){
 LineNumberTable::LineNumberTable(u2 idx, std::ifstream& f){
 	generalInfo(idx, f);
 	lineNumberTableLength = r2(f);
-	// ler table
+	lnTable = new LineNumberTableStr[lineNumberTableLength];
+	for(int i=0; i<lineNumberTableLength; i++){
+		lnTable[i].startPc = r2(f);
+		lnTable[i].lineNumber = r2(f);
+	}
 }
 
 LocalVariableTable::LocalVariableTable(u2 idx, std::ifstream& f){
 	generalInfo(idx, f);
 	localVariableTableLength = r2(f);
-	// ler table
+	lvTable = new LocalVariableTableStr[localVariableTableLength];
+	for(int i=0; i<localVariableTableLength; i++){
+		lvTable[i].startPc = r2(f);
+		lvTable[i].length = r2(f);
+		lvTable[i].nameIndex = r2(f);
+		lvTable[i].descriptorIndex = r2(f);
+		lvTable[i].index = r2(f);
+	}
 }
 
 Attributes::Attributes(std::ifstream& f, u2 attributesCount, ConstantPoolT constantPool){

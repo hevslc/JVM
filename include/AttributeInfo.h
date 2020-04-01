@@ -29,6 +29,15 @@ public:
 	u2 	constantvalueIndex;	/*!< Indice para a tabela constant_pool contendo o valor constante deste atributo. */
 };
 
+struct ExceptionTable{  /*< Cada entrada na matriz exception_table descreve um manipulador de exceções na matriz de códigos. */
+    u2 startPc;         /*< Início do intervalo na matriz de códigos na qual o manipulador de exceções está ativo. */
+    u2 endPc;           /*< Final do intervalo na matriz de códigos na qual o manipulador de exceções está ativo. */
+    u2 handlerPc;       /*< Indica o início do manipulador de exceções. Deve ser o índice do opcode de uma instrução. */
+    u2 catchType;       /*< Se diferente de zero, indica índice válido para uma estrutura CONSTANT_Class_info na tabela constant_pool, representando uma classe de
+                           exceções que esse manipulador de exceção está designado para capturar. */
+};        
+
+
 class Code : AttributeInfo{
 public:
 	Code(u2 idx, std::ifstream& f, ConstantPoolT constantPool);
@@ -39,14 +48,8 @@ public:
     u2 	exceptionTableLength;		/*< Número de entradas na tabela exception_table. */
     u2 	attributesCount;	/*< Indica o número de atributos do atributo Code. */
     Attributes attributes;	/*< Cada entrada é uma estrutura attribute_info. */					
-   struct{   
-	   	u2 startPc;			/*< Início do intervalo na matriz de códigos na qual o manipulador de exceções está ativo. */
-	    u2 endPc;			/*< Final do intervalo na matriz de códigos na qual o manipulador de exceções está ativo. */
-        u2 handlerPc;		/*< Indica o início do manipulador de exceções. Deve ser o índice do opcode de uma instrução. */
-        u2 catchType;		/*< Se diferente de zero, indica índice válido para uma estrutura CONSTANT_Class_info na tabela constant_pool, representando uma classe de
-        	 			       exceções que esse manipulador de exceção está designado para capturar. */
-    }*exceptionTable;		/*< Cada entrada na matriz exception_table descreve um manipulador de exceções na matriz de códigos. */
-};
+    ExceptionTable *exceptionTable;
+   };
 
 
 class Exceptions : AttributeInfo{
@@ -65,7 +68,7 @@ public:
         u2 	outerClassInfoIndex;
         u2 	innerNameIndex;
         u2 	innerClassAccessFlags;
-    }*Classes;
+    }Classes;
 
     void rclasses(u2 nclasses);
 };
@@ -76,27 +79,31 @@ public:
     u2 	sourcefileIndex;
 };
 
+struct LineNumberTableStr{
+    u2  startPc;
+    u2  lineNumber; 
+};
+
 class LineNumberTable : AttributeInfo{
 public:
 	LineNumberTable(u2 idx, std::ifstream& f);
 	u2 	lineNumberTableLength;
-	struct{
-        u2 		startPc;
-        u2 		lineNumber;	
-    }*lineNumberTable;
+    LineNumberTableStr *lnTable;
+};
+
+struct LocalVariableTableStr{   
+    u2  startPc;
+    u2  length;
+    u2  nameIndex;
+    u2  descriptorIndex;
+    u2  index;
 };
 
 class LocalVariableTable : AttributeInfo{
 public:
 	LocalVariableTable(u2 idx, std::ifstream& f);
 	u2 localVariableTableLength;
-    struct{   
-    	u2 	startPc;
-        u2 	length;
-        u2 	nameIndex;
-        u2 	descriptorIndex;
-        u2 	index;
-    }*localVariableTable;
+    LocalVariableTableStr *lvTable;
 };
 
 
