@@ -53,15 +53,15 @@ u4 r4(std::ifstream& f){
 	\sa ClassFile::rconstantPoolt(std::ifstream&)
 */ 
 void ClassFile::reading(std::ifstream& f){
-	this->magic = r4(f);					//leitura de magic
-	this->minorVersion = r2(f);				//leitura de minor version
-	this->majorVersion = r2(f);				//leitura de major version
-	this->constantPoolCount = r2(f);		//leitura de constant pool count
-	this->constantPool = ConstantPoolT(f, this->constantPoolCount);
-	this->acess_flags = r2(f);
-	this->this_class = r2(f);
-	this->super_class = r2(f);
-	this->interfaces_count = r2(f);
+	magic = r4(f);					//leitura de magic
+	minorVersion = r2(f);				//leitura de minor version
+	majorVersion = r2(f);				//leitura de major version
+	constantPoolCount = r2(f);		//leitura de constant pool count
+	constantPool = ConstantPoolT(f, constantPoolCount);
+	acess_flags = r2(f);
+	this_class = r2(f);
+	super_class = r2(f);
+	interfaces_count = r2(f);
 }
 
 
@@ -69,6 +69,6 @@ void ClassFile::reading(std::ifstream& f){
 
 //_______ DECODING
 void ClassFile::racessFlags(u2 mask){
-	for(auto p=this->acessFlags.begin(); p!=this->acessFlags.end(); ++p)
+	for(auto p=acessFlags.begin(); p!=acessFlags.end(); ++p)
 		p->second = ((p->first & mask)==p->first);	
 }

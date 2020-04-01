@@ -17,20 +17,21 @@ public:
     u2	attributeNameIndex;	/*!< Indice para uma estrutura CONSTANT_Utf8_info representando o nome do atributo. */
     u4 	attributeLength;	/*!< Representa o comprimento da informação subsequente em bytes (não inclui os 6 bytes iniciais). */	   
     AttributeInfo() {}
-    AttributeInfo(u2 n, u4 l) : attributeNameIndex(n),  attributeLength(l) {}
+    AttributeInfo(u2 idx, std::ifstream& f) : attributeNameIndex(idx), attributeLength(r4(f)) {}
+    void generalInfo(u2 idx, std::ifstream& f);
 };
 
 
 
 class ConstantValue : AttributeInfo{
 public:
-	ConstantValue(u2 n, u4 l) : AttributeInfo(n, l) {}
+	ConstantValue(u2 idx, std::ifstream& f);
 	u2 	constantvalueIndex;	/*!< Indice para a tabela constant_pool contendo o valor constante deste atributo. */
 };
 
 class Code : AttributeInfo{
 public:
-	Code(u2 n, u4 l) : AttributeInfo(n, l) {}
+	Code(u2 idx, std::ifstream& f, ConstantPoolT constantPool);
 	u2	maxStack;	/*< Profundidade máxima da pilha de operandos deste método em qualquer ponto durante a execução do método. */
     u2 	maxLocals;	/*< Número de variáveis ​​locais na matriz de variáveis ​​locais alocadas na invocação deste método. */
     u4 	codeLength;	/*< Número de bytes na matriz de códigos para este método. Deve ser entre zero e 65536. */
@@ -50,33 +51,35 @@ public:
 
 class Exceptions : AttributeInfo{
 public:
-	Exceptions(u2 n, u4 l) : AttributeInfo(n, l) {}
+	Exceptions(u2 idx, std::ifstream& f);
  	u2 	numberOfExceptions;
     u2 	*exceptionIndexTable;
 }; 
 
 class InnerClasses : AttributeInfo{
 public:
-	InnerClasses(u2 n, u4 l) : AttributeInfo(n, l) {}
+	InnerClasses(u2 idx, std::ifstream& f);
     u2 	numberOfClasses;
   struct{   
     	u2 	innerClassInfoIndex;
         u2 	outerClassInfoIndex;
         u2 	innerNameIndex;
         u2 	innerClassAccessFlags;
-    }*classes;
+    }*Classes;
+
+    void rclasses(u2 nclasses);
 };
 
 class SourceFile : AttributeInfo{
 public:
-	SourceFile(u2 n, u4 l) : AttributeInfo(n, l) {}
+	SourceFile(u2 idx, std::ifstream& f);
     u2 	sourcefileIndex;
 };
 
 class LineNumberTable : AttributeInfo{
 public:
-	LineNumberTable(u2 n, u4 l) : AttributeInfo(n, l) {}
-	u2 				lineNumberTableLength;
+	LineNumberTable(u2 idx, std::ifstream& f);
+	u2 	lineNumberTableLength;
 	struct{
         u2 		startPc;
         u2 		lineNumber;	
@@ -85,7 +88,7 @@ public:
 
 class LocalVariableTable : AttributeInfo{
 public:
-	LocalVariableTable(u2 n, u4 l) : AttributeInfo(n, l) {}
+	LocalVariableTable(u2 idx, std::ifstream& f);
 	u2 localVariableTableLength;
     struct{   
     	u2 	startPc;
