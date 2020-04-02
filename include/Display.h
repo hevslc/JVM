@@ -5,7 +5,7 @@
 #include "ClassFile.h"
 #include "CpInfo.h"
 
-void dconstantPoolt(ClassFile *classFile);
+void printClassFile(ClassFile *classFile);
 
 
 #endif

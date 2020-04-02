@@ -18,6 +18,7 @@
 	O formato das informações adicionais varia com o valor da tag.
 	A estrutura union torna Cpinfo adaptável de acordo com a tag. 
 */
+
 class Cpinfo{
 public:
 	u1 tag;
@@ -59,6 +60,14 @@ public:
 			u2 referenceIndex;
 		}MethodHandle;
 	};
+};
+
+
+class ConstantPoolT : public std::vector<Cpinfo> {
+public:
+	ConstantPoolT() {};
+	ConstantPoolT(std::ifstream& f, u2 constantPoolCount); /*!< Tabela de estruturas das constantes */
+	void printConstantPool();
 };
 
 #endif
