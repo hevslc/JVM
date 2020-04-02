@@ -19,27 +19,33 @@ public:
 	u2				minorVersion;			/*!< Versão menor */
 	u2				majorVersion;			/*!< Versão maior */
 	u2				constantPoolCount;		/*!< Número de entradas na tabela constant_pool + 1 */
-	Cpinfo			*constantPool;			/*!< Tabela de estruturas representando string, nomes...*/
-	//u2				acess_flags;
-	//u2				this_class;
-	//u2				super_class;
-	//u2				interfaces_count;
+	ConstantPoolT	constantPool;			/*!< Tabela de estruturas representando string, nomes...*/
+	u2				acess_flags;
+	u2				this_class;
+	u2				super_class;
+	u2				interfaces_count;
 	//u2				interfaces;
 	//u2				fielsCount;
 	//FieldInfo		field;
 	//u2				methods_count;
 	//method_info		methods;
 	u2				attributesCount;
-	AttributeInfo	attribute;
+	Attributes 		attribute;
+
+	//Additional
+	std::map<u2, bool> acessFlags{ {ACC_PUBLIC, false}, {ACC_FINAL, false},
+			{ACC_SUPER, false}, {ACC_INTERFACE, false}, {ACC_ABSTRACT, false},
+			{ACC_SYNTHETIC, false}, {ACC_ANNOTATION, false}, {ACC_ENUM, false}};	
 
 
-	u1 r1(std::ifstream& f);			/*!< Lê 1 byte do arquivo */
-	u2 r2(std::ifstream& f);			/*!< Lê 2 byte do arquivo */
-	u4 r4(std::ifstream& f);			/*!< Lê 4 byte do arquivo */
+
 	void reading(std::ifstream& f);		/*!< Lê arquivo */
 
+	//Decoding
+	void racessFlags(u2 mask);
+
 private:
-	void rconstantPoolt(std::ifstream& f); /*!< Tabela de estruturas das constantes */
+	
 
 };
 
