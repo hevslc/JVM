@@ -88,7 +88,7 @@ LocalVariableTable::LocalVariableTable(u2 idx, std::ifstream& f){
 Attributes::Attributes(std::ifstream& f, u2 attributesCount, ConstantPoolT constantPool){
 	for(int i=0; i<attributesCount; i++){
 		u2 idx = r2(f);
-		Cpinfo cpinfo = constantPool[idx];
+		Cpinfo cpinfo = constantPool[idx - 1];
 		std::string name = readName(cpinfo.Utf8.lenght, cpinfo.Utf8.bytes);
 		std::cout << "Attribute name: " << name << std::endl;
 		if(!name.compare("SourceFile")){

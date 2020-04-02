@@ -10,6 +10,7 @@ std::vector<MethodInfo*>(readMethodsCount(file))
         at(i)->nameIndex = r2(file);
         at(i)->descriptorIndex = r2(file);
         at(i)->attributesCount = r2(file);
+        std::cout << "Pos: " << file.tellg() << std::endl;
         at(i)->attributes = new Attributes(file, at(i)->attributesCount, cpTable);
     }
 }
