@@ -33,10 +33,11 @@ public:
      TODO Verificar se é melhor receber o methods_count ao invés de
      lê-lo por aqui.
 
-     \param file    Arquivo .class.
-     \param cpTable Pool de constantes.
+     \param file        Arquivo .class.
+     \param fieldsCount Número de Fields.
+     \param cpTable     Pool de constantes.
    */
-  Methods(std::ifstream& file, ConstantPoolT cpTable);
+  Methods(std::ifstream& file, u2 fieldsCount, ConstantPoolT cpTable);
 
   /*!
      \brief Destrói o vetor de métodos.
@@ -48,8 +49,6 @@ public:
    */
   void print();
 
-private:
-  u2 readMethodsCount(std::ifstream& file);
 };
 
 #endif // _METHOD_INFO_HPP_
