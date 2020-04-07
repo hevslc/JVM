@@ -33,4 +33,7 @@
 main
 
 # VS Code folder
-.vscode
+.vscode/*
+
+# Objects folder
+obj/*

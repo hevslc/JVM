@@ -62,6 +62,8 @@ void ClassFile::reading(std::ifstream& f){
 	this_class = r2(f);
 	super_class = r2(f);
 	interfaces_count = r2(f);
+	fieldsCount = r2(f);
+	fields = Fields(f,fieldsCount ,constantPool);
 }
 
 

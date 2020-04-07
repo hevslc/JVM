@@ -4,15 +4,16 @@
 #include "Definitions.h"
 #include "CpInfo.h"
 
+class AttributeInfo;
 
-class Attributes : public  std::vector<void *> {
+class Attributes : public  std::vector<AttributeInfo*> {
 public:
 	Attributes() {}
 	Attributes(std::ifstream& f, u2 attributesCount, ConstantPoolT constantPool); /*!< Tabela de estruturas dos atributos */
 	std::string readName(u2 lenght, u1 *bytes);
 };
 
-class AttributeInfo{
+class AttributeInfo {
 public:
     u2	attributeNameIndex;	/*!< Indice para uma estrutura CONSTANT_Utf8_info representando o nome do atributo. */
     u4 	attributeLength;	/*!< Representa o comprimento da informação subsequente em bytes (não inclui os 6 bytes iniciais). */	   
@@ -21,9 +22,7 @@ public:
     void generalInfo(u2 idx, std::ifstream& f);
 };
 
-
-
-class ConstantValue : AttributeInfo{
+class ConstantValue : public AttributeInfo {
 public:
 	ConstantValue(u2 idx, std::ifstream& f);
 	u2 	constantvalueIndex;	/*!< Indice para a tabela constant_pool contendo o valor constante deste atributo. */
@@ -38,7 +37,7 @@ struct ExceptionTable{  /*< Cada entrada na matriz exception_table descreve um m
 };        
 
 
-class Code : AttributeInfo{
+class Code : public AttributeInfo {
 public:
 	Code(u2 idx, std::ifstream& f, ConstantPoolT constantPool);
 	u2	maxStack;	/*< Profundidade máxima da pilha de operandos deste método em qualquer ponto durante a execução do método. */
@@ -52,14 +51,14 @@ public:
    };
 
 
-class Exceptions : AttributeInfo{
+class Exceptions : public AttributeInfo {
 public:
 	Exceptions(u2 idx, std::ifstream& f);
  	u2 	numberOfExceptions;
     u2 	*exceptionIndexTable;
 }; 
 
-class InnerClasses : AttributeInfo{
+class InnerClasses : public AttributeInfo {
 public:
 	InnerClasses(u2 idx, std::ifstream& f);
     u2 	numberOfClasses;
@@ -73,7 +72,7 @@ public:
     void rclasses(u2 nclasses);
 };
 
-class SourceFile : AttributeInfo{
+class SourceFile : public AttributeInfo {
 public:
 	SourceFile(u2 idx, std::ifstream& f);
     u2 	sourcefileIndex;
@@ -84,7 +83,7 @@ struct LineNumberTableStr{
     u2  lineNumber; 
 };
 
-class LineNumberTable : AttributeInfo{
+class LineNumberTable : public AttributeInfo {
 public:
 	LineNumberTable(u2 idx, std::ifstream& f);
 	u2 	lineNumberTableLength;
@@ -99,7 +98,7 @@ struct LocalVariableTableStr{
     u2  index;
 };
 
-class LocalVariableTable : AttributeInfo{
+class LocalVariableTable : public AttributeInfo {
 public:
 	LocalVariableTable(u2 idx, std::ifstream& f);
 	u2 localVariableTableLength;
