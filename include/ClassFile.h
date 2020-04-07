@@ -25,8 +25,8 @@ public:
 	u2				super_class;
 	u2				interfaces_count;
 	//u2				interfaces;
-	//u2				fielsCount;
-	//FieldInfo		field;
+	u2				fieldsCount;
+	Fields				fields;
 	//u2				methods_count;
 	//method_info		methods;
 	u2				attributesCount;
