@@ -16,22 +16,30 @@
  */
 class ClassFile{
 public:
-	~ClassFile();
-	
+	/*!
+	   \brief Constrói um novo objeto ClassFile.
+	   Lê todo o conteúdo do arquivo .class armazenando as informações 
+	   no objeto ClassFile em seus respectivos atributos.
+
+	   \param f Arquivo .class a ser lido.
+	   \sa ClassFile::rconstantPoolt(std::ifstream&)
+	 */
+	ClassFile(std::ifstream &f);
+
 	u4				magic;					/*!< Assinatura do arquivo: 0xCAFEBABE */
 	u2				minorVersion;			/*!< Versão menor */
 	u2				majorVersion;			/*!< Versão maior */
 	u2				constantPoolCount;		/*!< Número de entradas na tabela constant_pool + 1 */
 	ConstantPoolT	constantPool;			/*!< Tabela de estruturas representando string, nomes...*/
 	u2				acess_flags;
-	u2				this_class;
-	u2				super_class;
-	u2				interfaces_count;
-	//u2				interfaces;
+	u2				thisClass;
+	u2				superClass;
+	u2				interfacesCount;
+	//u2			interfaces;
 	u2				fieldsCount;
 	Fields			fields;
-	u2				methods_count;
-	Methods* 	    methods;
+	u2				methodsCount;
+	Methods 	    methods;
 	u2				attributesCount;
 	Attributes 		attribute;
 
@@ -40,16 +48,8 @@ public:
 			{ACC_SUPER, false}, {ACC_INTERFACE, false}, {ACC_ABSTRACT, false},
 			{ACC_SYNTHETIC, false}, {ACC_ANNOTATION, false}, {ACC_ENUM, false}};	
 
-
-
-	void reading(std::ifstream& f);		/*!< Lê arquivo */
-
 	//Decoding
 	void racessFlags(u2 mask);
-
-private:
-	
-
 };
 
 

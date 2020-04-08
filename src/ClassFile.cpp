@@ -45,31 +45,20 @@ u4 r4(std::ifstream& f){
 	return b;	
 }
 
-ClassFile::~ClassFile() {
-	delete methods;
-}
-
-//! Método reading
-/*!
-	Método lê todo o conteúdo do arquivo .class armazenando as informações 
-	no objeto da classe ClassFile em seus respectivos atributos.
-	\param f Arquivo .class a ser lido.
-	\sa ClassFile::rconstantPoolt(std::ifstream&)
-*/ 
-void ClassFile::reading(std::ifstream& f){
-	magic = r4(f);					//leitura de magic
-	minorVersion = r2(f);				//leitura de minor version
-	majorVersion = r2(f);				//leitura de major version
-	constantPoolCount = r2(f);		//leitura de constant pool count
-	constantPool = ConstantPoolT(f, constantPoolCount);
-	acess_flags = r2(f);
-	this_class = r2(f);
-	super_class = r2(f);
-	interfaces_count = r2(f);
-	fieldsCount = r2(f);
-	fields = Fields(f, fieldsCount, constantPool);
-	methods_count = r2(f);
-	methods = new Methods(f, methods_count, constantPool);
+ClassFile::ClassFile(std::ifstream &f) : magic(r4(f)),
+										 minorVersion(r2(f)),
+										 majorVersion(r2(f)),
+										 constantPoolCount(r2(f)),
+										 constantPool(f, constantPoolCount),
+										 acess_flags(r2(f)),
+										 thisClass(r2(f)),
+										 superClass(r2(f)),
+										 interfacesCount(r2(f)),
+										 fieldsCount(r2(f)),
+										 fields(f, fieldsCount, constantPool),
+										 methodsCount(r2(f)),
+										 methods(f, methodsCount, constantPool)
+{
 }
 
 //_______ DECODING
