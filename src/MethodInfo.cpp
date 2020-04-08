@@ -34,12 +34,18 @@ MethodInfo::~MethodInfo()
 }
 
 void Methods::print() {
+    if (size() > 0)
+    {
+        std::cout << std::endl
+                  << "__________________ Methods __________________" << std::endl;
+    }
     for (auto method : *this)
     {
-        std::cout << std::endl << "__________________ MethodInfo __________________" << std::endl;
-        std::cout << "AccessFlags:      " << method->accessFlags << std::endl;
-        std::cout << "Name index:       " << method->nameIndex << std::endl;
-        std::cout << "Descriptor index: " << method->descriptorIndex << std::endl;
-        std::cout << "Attributes count: " << method->attributesCount << std::endl;
+        // TODO Melhorar a impressão com dados mais legíveis
+        std::cout << "................................................." << std::endl;
+        std::cout << "AccessFlags......: " << method->accessFlags << std::endl;
+        std::cout << "Name index.......: " << method->nameIndex << std::endl;
+        std::cout << "Descriptor index.: " << method->descriptorIndex << std::endl;
+        std::cout << "Attributes count.: " << method->attributesCount << std::endl;
     }
 }

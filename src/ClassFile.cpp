@@ -45,6 +45,10 @@ u4 r4(std::ifstream& f){
 	return b;	
 }
 
+ClassFile::~ClassFile() {
+	delete methods;
+}
+
 //! Método reading
 /*!
 	Método lê todo o conteúdo do arquivo .class armazenando as informações 
@@ -63,11 +67,10 @@ void ClassFile::reading(std::ifstream& f){
 	super_class = r2(f);
 	interfaces_count = r2(f);
 	fieldsCount = r2(f);
-	fields = Fields(f,fieldsCount ,constantPool);
+	fields = Fields(f, fieldsCount, constantPool);
+	methods_count = r2(f);
+	methods = new Methods(f, methods_count, constantPool);
 }
-
-
-
 
 //_______ DECODING
 void ClassFile::racessFlags(u2 mask){

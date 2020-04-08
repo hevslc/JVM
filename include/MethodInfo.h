@@ -12,10 +12,10 @@
  */
 class MethodInfo {
     public:
-        u2 accessFlags;        /*!< Flags de acesso do método */
-        u2 nameIndex;          /*!< Indica onde está o nome do método na tabela constant_pool */
-        u2 descriptorIndex;    /*!< Indica a posição do descritor do método na tabela constant_pool */
-        u2 attributesCount;    /*!< Indica o tamanho o vetor que comporta os atributos do método */
+        u2 accessFlags;         /*!< Flags de acesso do método */
+        u2 nameIndex;           /*!< Indica onde está o nome do método na tabela constant_pool */
+        u2 descriptorIndex;     /*!< Indica a posição do descritor do método na tabela constant_pool */
+        u2 attributesCount;     /*!< Indica o tamanho o vetor que comporta os atributos do método */
         Attributes* attributes; /*!< Vetor de atributos */
 
         ~MethodInfo();
@@ -26,12 +26,10 @@ class MethodInfo {
  */
 class Methods : public std::vector<MethodInfo*> {
 public:
+  Methods() {}
+
   /*!
      \brief Constrói um novo vetor de métodos.
-     Assume-se que o arquivo .class está na posição do methods_count,
-     mas pode ser que essa não seja uma boa ideia.
-     TODO Verificar se é melhor receber o methods_count ao invés de
-     lê-lo por aqui.
 
      \param file        Arquivo .class.
      \param fieldsCount Número de Fields.

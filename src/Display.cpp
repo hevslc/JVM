@@ -16,5 +16,6 @@ void printClassFile(ClassFile *classFile){
 	std::cout << "__________________constantPool__________________" << std::endl;
 	classFile->constantPool.printConstantPool();
 	std::cout << "__________________Fields__________________" << std::endl;
-	classFile ->fields.printFields();
+	classFile->fields.printFields();
+	classFile->methods->print();
 }

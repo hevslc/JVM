@@ -5,6 +5,7 @@
 #include "CpInfo.h"
 #include "AttributeInfo.h"
 #include "FieldInfo.h"
+#include "MethodInfo.h"
 
 
 /*! \class ClassFile reader.h "include/reader.h"
@@ -15,6 +16,8 @@
  */
 class ClassFile{
 public:
+	~ClassFile();
+	
 	u4				magic;					/*!< Assinatura do arquivo: 0xCAFEBABE */
 	u2				minorVersion;			/*!< Versão menor */
 	u2				majorVersion;			/*!< Versão maior */
@@ -26,9 +29,9 @@ public:
 	u2				interfaces_count;
 	//u2				interfaces;
 	u2				fieldsCount;
-	Fields				fields;
-	//u2				methods_count;
-	//method_info		methods;
+	Fields			fields;
+	u2				methods_count;
+	Methods* 	    methods;
 	u2				attributesCount;
 	Attributes 		attribute;
 
