@@ -8,10 +8,9 @@ int main(int argc, char const *argv[]){
 		std::cout << "Argumento não passado ou Arquivo não abriu.\n";
 		return 0;
 	}
-	ClassFile *classFile = new ClassFile;		//Aloca a estrutura ClassFile
-	classFile->reading(f);
 
-	printClassFile(classFile);
+	ClassFile classFile(f);
+	printClassFile(&classFile);
 
 	f.close();
 	return 0;
