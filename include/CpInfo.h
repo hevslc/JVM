@@ -89,6 +89,7 @@ public:
 	std::string getNNameAndType(u2 idxNameType);
 	float getFloat(u4 bytes);
 	long getLong(u4 highBytes, u4 lowBytes);
+	double getDouble(u4 highBytes, u4 lowBytes);
 };
 
 #endif

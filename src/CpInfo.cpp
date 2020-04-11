@@ -1,38 +1,28 @@
 #include "CpInfo.h"
 
 float ConstantPool::getFloat(u4 bytes){
+	int s = ((bytes >> 31) == 0) ? 1 : -1;
+	int e = (bytes >> 23) & 0xff;
+	int m = (e == 0) ? (bytes & 0x7fffff) << 1 : (bytes & 0x7fffff) | 0x800000;
+	float v = s*m*pow(2, exp(1)-150);
 	if(bytes == 0x7f800000) return std::numeric_limits<float>::infinity();
 	else if(bytes ==  0xff800000) return -std::numeric_limits<float>::infinity();
-	else if((bytes > 0xff800001) & (bytes <  0xffffffff)) return (float)bytes;
-	else if((bytes > 0xff800001) & (bytes <  0xffffffff)) return (float)bytes;
-	else{
-		int s = ((bytes >> 31) == 0) ? 1 : -1;
-		int e = bytes >> 23
-		int e = e & 0xff;
-		int m = (e == 0) ? (bytes & 0x7fffff) << 1 : (bytes & 0x7fffff) | 0x800000;
-		return (float)(s*m*pow(2, exp(1)-150));
-	}
+	else return v;
 }
 
-float ConstantPool::getDouble(u4 highBytes, u4 lowBytes){
-	long l = (long)high_bytes << 32;
-	l = l | (long)low_bytes;
+double ConstantPool::getDouble(u4 highBytes, u4 lowBytes){
+	uint64_t l = ((long)highBytes << 32) | (long)lowBytes;
+	int s = ((l >> 63) == 0) ? 1 : -1;
+	int e = (l >> 52) & 0x7ffL;
+	long m = (e == 0) ? ((l & 0xfffffffffffffL) << 1) : ((l & 0xfffffffffffffL) | 0x10000000000000L);
+	double v = (s*m*pow(2, e-1075));
 	if(l == 0x7ff0000000000000L) return std::numeric_limits<double>::infinity();
 	else if(l ==  0xfff0000000000000L) return -std::numeric_limits<double>::infinity();
-	else if((l > 0x7ff0000000000001L) & (l <  0x7fffffffffffffffL)) return (float)l;
-	else if((l > 0xfff0000000000001L) & (l <  0xffffffffffffffffL)) return (float)l;
-	else{
-		int s = ((l >> 63) == 0) ? 1 : -1;
-		int e = (int)(l >> 52);
-		int e = (int)(e & 0x7ffL);
-		long m = (e == 0) ? (l & 0xfffffffffffffL) << 1 : (l & 0xfffffffffffffL) | 0x10000000000000L;
-		return (double)(s*m*pow(2, exp(1)-1075));
-	}
+	else return v;
 }
 
 long ConstantPool::getLong(u4 highBytes, u4 lowBytes){
-	long l = (long)high_bytes << 32;
-	return (l | (long)low_bytes);
+	return ((long)highBytes << 32) | (long)lowBytes;
 }
 
 //! Método rconstantPool
@@ -83,10 +73,13 @@ ConstantPool::ConstantPool(std::ifstream& f, u2 constantPoolCount){
 				cpinfo->Long.highBytes = r4(f);
 				cpinfo->Long.lowBytes = r4(f);
 				cpinfo->Long.nlong = getLong(cpinfo->Long.highBytes, cpinfo->Long.lowBytes);
+				i++;
+				largeN = true;
 				break;
 			case CONSTANT_Double:
-				cpinfo->LongDouble.highBytes = r4(f);
-				cpinfo->LongDouble.lowBytes = r4(f);
+				cpinfo->Double.highBytes = r4(f);
+				cpinfo->Double.lowBytes = r4(f);
+				cpinfo->Double.ndouble = getDouble(cpinfo->Double.highBytes, cpinfo->Double.lowBytes);
 				i++;
 				largeN = true;
 				break;
@@ -169,13 +162,16 @@ void ConstantPool::print(){
 			case CONSTANT_Long:
 				std::cout << "Tag..............: " << (int)CONSTANT_Long << " (Long)" << std::endl;
 				std::cout << "Number...........: " << (long)cp.Long.nlong << std::endl;
-			/*case CONSTANT_Double:
-				if(cp.tag == CONSTANT_Double)
-					std::cout << "Tag..............: " << (int)CONSTANT_Float << " (Double)" << std::endl;
-				uint64_t d = (uint64_t)cp.LongDouble.highBytes << 32;
-				d = d | (uint64_t)cp.LongDouble.lowBytes;
-				std::cout << "Number...........: " << (int)cp.IntegerFloat.bytes << std::endl;
-				break;*/
+				std::cout << "High Bytes.......: " << (long)cp.Long.highBytes << std::endl;
+				std::cout << "Low Bytes........: " << (long)cp.Long.lowBytes << std::endl;
+				std::cout << "Number...........: " << (long)cp.Long.nlong << std::endl;
+				break;
+			case CONSTANT_Double:
+				std::cout << "Tag..............: " << (int)CONSTANT_Double << " (Double)" << std::endl;
+				std::cout << "High Bytes.......: " << (int)cp.Double.highBytes << std::endl;
+				std::cout << "Low Bytes........: " << (int)cp.Double.lowBytes << std::endl;				
+				std::cout << "Number...........: " << (double)cp.Double.ndouble << std::endl;
+				break;
 			//case CONSTANT_NameAndType:
 				// std::cout << "nameIndex: "  << cp.NameAndType.nameIndex << std::endl;
 				// std::cout << "descriptorIndex: "  << cp.NameAndType.descriptorIndex << std::endl;
