@@ -21,6 +21,7 @@
 */ 
 ConstantPoolT::ConstantPoolT(std::ifstream& f, u2 constantPoolCount){
 	for(int i=0; i<constantPoolCount-1; i++){
+		bool largeN = false;
 		Cpinfo *cpinfo = new Cpinfo;
 		cpinfo->tag = r1(f);
 		switch(cpinfo->tag){
@@ -44,6 +45,8 @@ ConstantPoolT::ConstantPoolT(std::ifstream& f, u2 constantPoolCount){
 			case CONSTANT_Double:
 				cpinfo->LongDouble.highBytes = r4(f);
 				cpinfo->LongDouble.lowBytes = r4(f);
+				i++;
+				largeN = true;
 				break;
 			case CONSTANT_NameAndType:
 				cpinfo->NameAndType.nameIndex = r2(f);
@@ -58,6 +61,7 @@ ConstantPoolT::ConstantPoolT(std::ifstream& f, u2 constantPoolCount){
 				break;
 		}
 		push_back(*cpinfo);
+		if(largeN) push_back(Cpinfo());
 	}
 }
 

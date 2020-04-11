@@ -17,19 +17,11 @@ typedef uint32_t 	u4;
 	Cada item na tabela constant_pool deve começar com uma tag de 1 byte, 
 	indicando o tipo de entrada cp_info. Tags:
 */ 
-#define CONSTANT_Class 				7	
-#define CONSTANT_Fieldref 			9	
-#define CONSTANT_Methodref 			10	
-#define CONSTANT_InterfaceMethodref 11	
-#define CONSTANT_String 			8	
-#define CONSTANT_Integer 			3	
-#define CONSTANT_Float 				4	
-#define CONSTANT_Long 				5	
-#define CONSTANT_Double 			6	
-#define CONSTANT_NameAndType 		12	
-#define CONSTANT_Utf8 				1	
+	
 
-
+enum constantType{CONSTANT_Utf8=1, CONSTANT_Integer=3, CONSTANT_Float=4, CONSTANT_Long=5, 
+				  CONSTANT_Double=6, CONSTANT_Class=7, CONSTANT_String=8, CONSTANT_Fieldref=9, 
+				  CONSTANT_Methodref=10,CONSTANT_InterfaceMethodref=11,CONSTANT_NameAndType=12};
 
 u1 r1(std::ifstream& f);			/*!< Lê 1 byte do arquivo */
 u2 r2(std::ifstream& f);			/*!< Lê 2 byte do arquivo */

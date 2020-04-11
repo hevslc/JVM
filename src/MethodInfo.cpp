@@ -2,17 +2,15 @@
 
 Methods::Methods(std::ifstream& file, u2 fieldsCount, ConstantPoolT cpTable):
 std::vector<MethodInfo*>(fieldsCount)
-{
-    if(fieldsCount){    
-        for (u2 i = 0; i < size(); i++)
-        {
-            at(i) = new MethodInfo();
-            at(i)->accessFlags = r2(file);
-            at(i)->nameIndex = r2(file);
-            at(i)->descriptorIndex = r2(file);
-            at(i)->attributesCount = r2(file);
-            at(i)->attributes = new Attributes(file, at(i)->attributesCount, cpTable);
-        }
+{  
+    for (u2 i = 0; i < size(); i++)
+    {
+        at(i) = new MethodInfo();
+        at(i)->accessFlags = r2(file);
+        at(i)->nameIndex = r2(file);
+        at(i)->descriptorIndex = r2(file);
+        at(i)->attributesCount = r2(file);
+           at(i)->attributes = new Attributes(file, at(i)->attributesCount, cpTable);
     }
 }
 

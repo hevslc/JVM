@@ -13,5 +13,6 @@ int main(int argc, char const *argv[]){
 	printClassFile(&classFile);
 
 	f.close();
+
 	return 0;
 }

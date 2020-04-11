@@ -21,14 +21,12 @@ SourceFile::SourceFile(u2 idx, std::ifstream& f, std::string name){
 
 Classes::Classes(std::ifstream& f, u2 len):
 std::vector<ClassesInfo*>(len){
-    if(len){    
-        for (u2 i = 0; i < size(); i++){
-            at(i) = new ClassesInfo();
-            at(i)->innerClassInfoIndex = r2(f);
-            at(i)->outerClassInfoIndex = r2(f);
-            at(i)->innerNameIndex = r2(f);
-            at(i)->innerClassAccessFlags = r2(f);
-        }
+    for (u2 i = 0; i < size(); i++){
+        at(i) = new ClassesInfo();
+        at(i)->innerClassInfoIndex = r2(f);
+        at(i)->outerClassInfoIndex = r2(f);
+        at(i)->innerNameIndex = r2(f);
+        at(i)->innerClassAccessFlags = r2(f);
     }
 }
 
@@ -44,15 +42,13 @@ ConstantValue::ConstantValue(u2 idx, std::ifstream& f, std::string name){
 }
 
 ExceptionTable::ExceptionTable(std::ifstream& f, u2 len):
-std::vector<ExceptionTableInfo*>(len){
-    if(len){    
-        for (u2 i = 0; i < size(); i++){
-            at(i) = new ExceptionTableInfo();
-            at(i)->startPc = r2(f);
-            at(i)->endPc = r2(f);
-            at(i)->handlerPc = r2(f);
-            at(i)->catchType = r2(f);
-        }
+std::vector<ExceptionTableInfo*>(len){ 
+    for (u2 i = 0; i < size(); i++){
+        at(i) = new ExceptionTableInfo();
+        at(i)->startPc = r2(f);
+        at(i)->endPc = r2(f);
+        at(i)->handlerPc = r2(f);
+        at(i)->catchType = r2(f);
     }
 }
 
@@ -77,13 +73,11 @@ Exceptions::Exceptions(u2 idx, std::ifstream& f, std::string name){
 }
 
 LineNumberTableStr::LineNumberTableStr(std::ifstream& f, u2 len):
-std::vector<LineNumberTableStrInfo*>(len){
-    if(len){    
-        for (u2 i = 0; i < size(); i++){
-            at(i) = new LineNumberTableStrInfo();
-            at(i)->startPc = r2(f);
-            at(i)->lineNumber = r2(f);
-        }
+std::vector<LineNumberTableStrInfo*>(len){  
+    for (u2 i = 0; i < size(); i++){
+        at(i) = new LineNumberTableStrInfo();
+        at(i)->startPc = r2(f);
+        at(i)->lineNumber = r2(f);
     }
 }
 
@@ -95,15 +89,13 @@ LineNumberTable::LineNumberTable(u2 idx, std::ifstream& f, std::string name){
 
 LocalVariableTableStr::LocalVariableTableStr(std::ifstream& f, u2 len):
 std::vector<LocalVariableTableStrInfo*>(len){
-    if(len){    
-        for (u2 i = 0; i < size(); i++){
-            at(i) = new LocalVariableTableStrInfo();
-            at(i)->startPc = r2(f);
-            at(i)->length = r2(f);
-            at(i)->nameIndex = r2(f);
-            at(i)->descriptorIndex = r2(f);
-            at(i)->index = r2(f);
-        }
+    for (u2 i = 0; i < size(); i++){
+        at(i) = new LocalVariableTableStrInfo();
+        at(i)->startPc = r2(f);
+        at(i)->length = r2(f);
+        at(i)->nameIndex = r2(f);
+        at(i)->descriptorIndex = r2(f);
+        at(i)->index = r2(f);
     }
 }
 
@@ -114,45 +106,43 @@ LocalVariableTable::LocalVariableTable(u2 idx, std::ifstream& f, std::string nam
 }
 
 Attributes::Attributes(std::ifstream& f, u2 attributesCount, ConstantPoolT constantPool){
-	if(attributesCount){
-		for(int i=0; i<attributesCount; i++){
-			u2 idx = r2(f);
-			std::string name = readName(constantPool[idx - 1]);
-			if(!name.compare("SourceFile")){
-				SourceFile *sf = new SourceFile(idx, f, name);
-				push_back(sf);
-			}
-			else if(!name.compare("InnerClasses")){
-				InnerClasses *ic = new InnerClasses(idx, f, name);
-				push_back(ic);
-			}
-			else if(!name.compare("ConstantValue")){
-				ConstantValue *cv = new ConstantValue(idx, f, name);
-				push_back(cv);
-			}
-			else if(!name.compare("Code")){
-				Code *c = new Code(idx, f, constantPool, name);
-				push_back(c);
-			}
-			else if(!name.compare("Exceptions")){
-				Exceptions *ex = new Exceptions(idx, f, name);
-				push_back(ex);
-			}
-			else if(!name.compare("Synthetic") || !name.compare("Deprecated")){
-				AttributeInfo *att = new AttributeInfo(idx, f, name);
-				push_back(att);
-			}
-			else if(!name.compare("LineNumberTable")){
-				LineNumberTable *lnt = new LineNumberTable(idx, f, name);
-				push_back(lnt);
-			}
-			else if(!name.compare("LocalVariableTable")){
-				LocalVariableTable *lvt = new LocalVariableTable(idx, f, name);
-				push_back(lvt);
-			}	
-			else
-				std::cout << "Atributo não implementado!" << std::endl;
+	for(int i=0; i<attributesCount; i++){
+		u2 idx = r2(f);
+		std::string name = readName(constantPool[idx - 1]);
+		if(!name.compare("SourceFile")){
+			SourceFile *sf = new SourceFile(idx, f, name);
+			push_back(sf);
 		}
+		else if(!name.compare("InnerClasses")){
+			InnerClasses *ic = new InnerClasses(idx, f, name);
+			push_back(ic);
+		}
+		else if(!name.compare("ConstantValue")){
+			ConstantValue *cv = new ConstantValue(idx, f, name);
+			push_back(cv);
+		}
+		else if(!name.compare("Code")){
+			Code *c = new Code(idx, f, constantPool, name);
+			push_back(c);
+		}
+		else if(!name.compare("Exceptions")){
+			Exceptions *ex = new Exceptions(idx, f, name);
+			push_back(ex);
+		}
+		else if(!name.compare("Synthetic") || !name.compare("Deprecated")){
+			AttributeInfo *att = new AttributeInfo(idx, f, name);
+			push_back(att);
+		}
+		else if(!name.compare("LineNumberTable")){
+			LineNumberTable *lnt = new LineNumberTable(idx, f, name);
+			push_back(lnt);
+		}
+		else if(!name.compare("LocalVariableTable")){
+			LocalVariableTable *lvt = new LocalVariableTable(idx, f, name);
+			push_back(lvt);
+		}	
+		else
+			std::cout << "Atributo não implementado!" << std::endl;
 	}
 }
 
