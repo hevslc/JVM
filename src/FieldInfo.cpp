@@ -2,16 +2,14 @@
 //#include <math.h>
 
 Fields::Fields(std::ifstream& f, u2 fieldsCount ,ConstantPoolT constantPool):
-std::vector<FieldInfo*>(readFieldsCount(fieldsCount)){ 
-	if(fieldsCount){
-		for(u2 i = 0; i < size(); i++){
-			at(i)= new FieldInfo();
-			at(i)->accessFlags = r2(f);
-			at(i)->nameIndex = r2(f);
-			at(i)->descriptorIndex = r2(f);
-			at(i)->attributesCount = r2(f);		
-			at(i)->attributes = new Attributes(f, at(i)->attributesCount, constantPool);
-		}
+std::vector<FieldInfo*>(fieldsCount){ 
+	for(u2 i = 0; i < size(); i++){
+		at(i)= new FieldInfo();
+		at(i)->accessFlags = r2(f);
+		at(i)->nameIndex = r2(f);
+		at(i)->descriptorIndex = r2(f);
+		at(i)->attributesCount = r2(f);		
+		at(i)->attributes = new Attributes(f, at(i)->attributesCount, constantPool);
 	}
 }
 
@@ -45,8 +43,4 @@ void Fields::printFields(){
 		//std::cout << "attributes.....: "  << at(i)->attributes << std::endl;
 		std::cout << "................................................."<< std::endl;
 	}
-}
-
-u2 Fields::readFieldsCount(u2 fieldsCount) {
-    return fieldsCount;
 }

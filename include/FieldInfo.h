@@ -19,9 +19,6 @@ public:
 	Fields() {}
 	Fields(std::ifstream& f, u2 fieldsCount ,ConstantPoolT constantPool);
 	void printFields();
-
-private:
-	u2 readFieldsCount(u2 fieldsCount);
 };
 
 #endif
