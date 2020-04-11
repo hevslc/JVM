@@ -61,40 +61,43 @@ ConstantPoolT::ConstantPoolT(std::ifstream& f, u2 constantPoolCount){
 	}
 }
 
+
 // PARA TESTE
-void ConstantPoolT::printConstantPool(){
-	for(auto cp=begin(); cp!=end(); cp++){
-		std::cout << "tag: "   << (int)(*cp).tag << std::endl;
-		switch((*cp).tag){
+void ConstantPoolT::print(){
+	std::cout << "__________________constantPool__________________" << std::endl;
+	for (auto cp : *this){
+		std::cout << "tag: "   << (int)cp.tag << std::endl;
+		switch(cp.tag){
 			case CONSTANT_Class:
-				std::cout << "nameIndex: "  << (*cp).Class.nameIndex << std::endl;
+				std::cout << "classIndex: "  << cp.Class.nameIndex << std::endl;
+				at(cp.Class.nameIndex).Utf8.print();
 				break;
 			case CONSTANT_Fieldref:
 			case CONSTANT_Methodref:
 			case CONSTANT_InterfaceMethodref:
-				std::cout << "classIndex: "  << (*cp).FieldMethInter.classIndex << std::endl;
-				std::cout << "nameTypeIndex: "  << (*cp).FieldMethInter.nameTypeIndex << std::endl;
+				std::cout << "classIndex: "  << cp.FieldMethInter.classIndex << std::endl;
+				std::cout << "nameTypeIndex: "  << cp.FieldMethInter.nameTypeIndex << std::endl;
 				break;
 			case CONSTANT_String:
-				std::cout << "stringIndex: "  << (*cp).String.stringIndex << std::endl;
+				std::cout << "stringIndex: "  << cp.String.stringIndex << std::endl;
 				break;
 			case CONSTANT_Integer:
 			case CONSTANT_Float:
-				std::cout << "bytes: "  << (*cp).IntegerFloat.bytes << std::endl;
+				std::cout << "bytes: "  << cp.IntegerFloat.bytes << std::endl;
 				break;
 			case CONSTANT_Long:
 			case CONSTANT_Double:
-				std::cout << "highBytes: "  << (*cp).LongDouble.highBytes << std::endl;
-				std::cout << "lowBytes: "  << (*cp).LongDouble.lowBytes << std::endl;
+				std::cout << "highBytes: "  << cp.LongDouble.highBytes << std::endl;
+				std::cout << "lowBytes: "  << cp.LongDouble.lowBytes << std::endl;
 				break;
 			case CONSTANT_NameAndType:
-				std::cout << "nameIndex: "  << (*cp).NameAndType.nameIndex << std::endl;
-				std::cout << "descriptorIndex: "  << (*cp).NameAndType.descriptorIndex << std::endl;
+				std::cout << "nameIndex: "  << cp.NameAndType.nameIndex << std::endl;
+				std::cout << "descriptorIndex: "  << cp.NameAndType.descriptorIndex << std::endl;
 				break;
 			case CONSTANT_Utf8:
-				std::cout << "lenght: "  << (*cp).Utf8.lenght << std::endl;
-				for(int j=0; j<(*cp).Utf8.lenght; j++) 
-					std::cout << (*cp).Utf8.bytes[j];
+				std::cout << "lenght: "  << cp.Utf8.lenght << std::endl;
+				for(int j=0; j<cp.Utf8.lenght; j++) 
+					std::cout << cp.Utf8.bytes[j];
 				std::cout << std::endl;
 				break;
 			default:

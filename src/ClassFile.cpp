@@ -54,6 +54,7 @@ ClassFile::ClassFile(std::ifstream &f) : magic(r4(f)),
 										 thisClass(r2(f)),
 										 superClass(r2(f)),
 										 interfacesCount(r2(f)),
+										 //ler interfaces
 										 fieldsCount(r2(f)),
 										 fields(f, fieldsCount, constantPool),
 										 methodsCount(r2(f)),
