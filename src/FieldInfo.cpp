@@ -1,7 +1,7 @@
 #include "FieldInfo.h"
 //#include <math.h>
 
-Fields::Fields(std::ifstream& f, u2 fieldsCount ,ConstantPoolT constantPool):
+Fields::Fields(std::ifstream& f, u2 fieldsCount ,ConstantPool constantPool):
 std::vector<FieldInfo*>(fieldsCount){ 
 	for(u2 i = 0; i < size(); i++){
 		at(i)= new FieldInfo();

@@ -13,7 +13,7 @@ void printClassFile(ClassFile *classFile){
 	std::cout << std::hex << classFile->minorVersion << std::endl;
 	std::cout << std::hex << classFile->majorVersion << std::endl;
 	std::cout << std::hex << classFile->constantPoolCount << std::endl;
-	//classFile->constantPool.print();
+	classFile->constantPool.print();
 	classFile->fields.printFields();
 	classFile->methods.print(classFile->constantPool);
 }

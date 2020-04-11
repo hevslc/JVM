@@ -52,7 +52,7 @@ std::vector<ExceptionTableInfo*>(len){
     }
 }
 
-Code::Code(u2 idx, std::ifstream& f, ConstantPoolT constantPool, std::string name){
+Code::Code(u2 idx, std::ifstream& f, ConstantPool constantPool, std::string name){
 	generalInfo(idx, f, name);
 	maxStack = r2(f);
 	maxLocals = r2(f);
@@ -105,7 +105,7 @@ LocalVariableTable::LocalVariableTable(u2 idx, std::ifstream& f, std::string nam
 	lvTable = new LocalVariableTableStr(f, localVariableTableLength);
 }
 
-Attributes::Attributes(std::ifstream& f, u2 attributesCount, ConstantPoolT constantPool){
+Attributes::Attributes(std::ifstream& f, u2 attributesCount, ConstantPool constantPool){
 	for(int i=0; i<attributesCount; i++){
 		u2 idx = r2(f);
 		std::string name = readName(constantPool[idx - 1]);
@@ -146,6 +146,6 @@ Attributes::Attributes(std::ifstream& f, u2 attributesCount, ConstantPoolT const
 	}
 }
 
-void Attributes::print(ConstantPoolT cpt){
+void Attributes::print(ConstantPool cpt){
 	(void)cpt;
 }

@@ -35,7 +35,7 @@ public:
      \param fieldsCount Número de Fields.
      \param cpTable     Pool de constantes.
    */
-  Methods(std::ifstream& file, u2 fieldsCount, ConstantPoolT cpTable);
+  Methods(std::ifstream& file, u2 fieldsCount, ConstantPool cpTable);
 
   /*!
      \brief Destrói o vetor de métodos.
@@ -45,7 +45,7 @@ public:
   /*!
      \brief Imprime o vetor no terminal.
    */
-  void print(ConstantPoolT cpt);
+  void print(ConstantPool cpt);
 
 };
 

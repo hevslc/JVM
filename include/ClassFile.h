@@ -30,7 +30,7 @@ public:
 	u2				minorVersion;			/*!< Versão menor */
 	u2				majorVersion;			/*!< Versão maior */
 	u2				constantPoolCount;		/*!< Número de entradas na tabela constant_pool + 1 */
-	ConstantPoolT	constantPool;			/*!< Tabela de estruturas representando string, nomes...*/
+	ConstantPool	constantPool;			/*!< Tabela de estruturas representando string, nomes...*/
 	u2				acess_flags;
 	u2				thisClass;
 	u2				superClass;

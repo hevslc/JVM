@@ -1,6 +1,6 @@
 #include "MethodInfo.h"
 
-Methods::Methods(std::ifstream& file, u2 fieldsCount, ConstantPoolT cpTable):
+Methods::Methods(std::ifstream& file, u2 fieldsCount, ConstantPool cpTable):
 std::vector<MethodInfo*>(fieldsCount)
 {  
     for (u2 i = 0; i < size(); i++)
@@ -33,7 +33,7 @@ MethodInfo::~MethodInfo()
     }
 }
 
-void Methods::print(ConstantPoolT cpt) {
+void Methods::print(ConstantPool cpt) {
     if (size() > 0)
     {
         std::cout << std::endl
