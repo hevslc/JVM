@@ -100,10 +100,14 @@ ConstantPool::ConstantPool(std::ifstream& f, u2 constantPoolCount){
 	}
 }
 
-std::string ConstantPool::getUtf8Str(u2 idx){
+std::string ConstantPool::Bytes2Str(Cpinfo cpi){
 	std::string name;
-	for(int i=0; i<at(idx).Utf8.lenght; i++) name.push_back(char(at(idx).Utf8.bytes[i]));
+	for(int i=0; i<cpi.Utf8.lenght; i++) name.push_back(char(cpi.Utf8.bytes[i]));
 	return name;
+}
+
+std::string ConstantPool::getUtf8Str(u2 idxUtf8){
+	return Bytes2Str(at(idxUtf8));
 }
 
 std::string ConstantPool::getUtf8Class(u2 idxClass){
@@ -131,21 +135,21 @@ void ConstantPool::print(){
 				break;
 			case CONSTANT_Fieldref:
 				std::cout << "Tag..............: " << (int)CONSTANT_InterfaceMethodref << " (Field)" << std::endl;
-				std::cout << "Class belonging:.: " << getUtf8Class(cp.FieldMethInter.classIndex-1);
-				std::cout << "\nName.............: " << getNNameAndType(cp.FieldMethInter.nameTypeIndex-1);
-				std::cout << "\nType.............: " << getDescriptor(cp.FieldMethInter.nameTypeIndex-1) << std::endl;
+				std::cout << "Class Name.......: " << getUtf8Class(cp.FieldMethInter.classIndex-1) << std::endl;
+				std::cout << "Name and Type....: " << getNNameAndType(cp.FieldMethInter.nameTypeIndex-1);
+				std::cout << "  :  " << getDescriptor(cp.FieldMethInter.nameTypeIndex-1) << std::endl;
 				break;			
 			case CONSTANT_Methodref:
 				std::cout << "Tag..............: " << (int)CONSTANT_InterfaceMethodref << " (Method)" << std::endl;
-				std::cout << "Class belonging:.: " << getUtf8Class(cp.FieldMethInter.classIndex-1);
-				std::cout << "\nName.............: " << getNNameAndType(cp.FieldMethInter.nameTypeIndex-1);
-				std::cout << "\nType.............: " << getDescriptor(cp.FieldMethInter.nameTypeIndex-1) << std::endl;
+				std::cout << "Class Name.......: " << getUtf8Class(cp.FieldMethInter.classIndex-1) << std::endl;
+				std::cout << "Name and Type....: " << getNNameAndType(cp.FieldMethInter.nameTypeIndex-1);
+				std::cout << "  :  " << getDescriptor(cp.FieldMethInter.nameTypeIndex-1) << std::endl;
 				break;			
 			case CONSTANT_InterfaceMethodref:
 				std::cout << "Tag..............: " << (int)CONSTANT_InterfaceMethodref << " (Interface)" << std::endl;
-				std::cout << "Class belonging:.: " << getUtf8Class(cp.FieldMethInter.classIndex-1);
-				std::cout << "\nName.............: " << getNNameAndType(cp.FieldMethInter.nameTypeIndex-1);
-				std::cout << "\nType.............: " << getDescriptor(cp.FieldMethInter.nameTypeIndex-1) << std::endl;
+				std::cout << "Class Name.......: " << getUtf8Class(cp.FieldMethInter.classIndex-1) << std::endl;
+				std::cout << "Name and Type....: " << getNNameAndType(cp.FieldMethInter.nameTypeIndex-1);
+				std::cout << "  :  " << getDescriptor(cp.FieldMethInter.nameTypeIndex-1) << std::endl;
 				break;
 			case CONSTANT_String:
 				std::cout << "Tag..............: " << (int)CONSTANT_String << " (String)" << std::endl;
@@ -172,15 +176,15 @@ void ConstantPool::print(){
 				std::cout << "Low Bytes........: " << (int)cp.Double.lowBytes << std::endl;				
 				std::cout << "Number...........: " << (double)cp.Double.ndouble << std::endl;
 				break;
-			//case CONSTANT_NameAndType:
-				// std::cout << "nameIndex: "  << cp.NameAndType.nameIndex << std::endl;
-				// std::cout << "descriptorIndex: "  << cp.NameAndType.descriptorIndex << std::endl;
-			//	break;
-			//case CONSTANT_Utf8:
-				// std::cout << " (Utf8)" << std::endl;
-				// std::cout << "Bytes............: ";
-				// cp.Utf8.print();
-			//	break;
+			case CONSTANT_NameAndType:
+				std::cout << "Tag..............: " << (int)CONSTANT_NameAndType << " (NameAndType)" << std::endl;
+				std::cout << "Name and Type....: " << getUtf8Str(cp.NameAndType.nameIndex-1);
+				std::cout << "  :  " << getUtf8Str(cp.NameAndType.descriptorIndex-1) << std::endl;	
+				break;
+			case CONSTANT_Utf8:
+				std::cout << "Tag..............: " << (int)CONSTANT_Utf8 << " (Utf8)" << std::endl;
+				std::cout << "Bytes............: " << Bytes2Str(cp) << std::endl;	
+				break;
 			default:
 				break;
 		}

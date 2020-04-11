@@ -21,7 +21,7 @@
 
 class Cpinfo{
 public:
-	u1 tag;
+	u1 tag=0;
 	union{					
 		struct{
 			u2 nameIndex;
@@ -82,8 +82,8 @@ public:
 	ConstantPool(std::ifstream& f, u2 constantPoolCount); /*!< Tabela de estruturas das constantes */
 	void print();
 
-
-	std::string getUtf8Str(u2 idx);
+	std::string Bytes2Str(Cpinfo cpi);
+	std::string getUtf8Str(u2 idxUtf8);
 	std::string getUtf8Class(u2 idxClass);
 	std::string getDescriptor(u2 idxNameType);
 	std::string getNNameAndType(u2 idxNameType);
