@@ -159,4 +159,3 @@ Attributes::Attributes(std::ifstream& f, u2 attributesCount, ConstantPoolT const
 void Attributes::print(ConstantPoolT cpt){
 	(void)cpt;
 }
-
