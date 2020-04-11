@@ -41,7 +41,7 @@ public:
 	u2				methodsCount;
 	Methods 	    methods;
 	u2				attributesCount;
-	Attributes 		attribute;
+	Attributes 		attributes;
 
 	//Additional
 	std::map<u2, bool> acessFlags{ {ACC_PUBLIC, false}, {ACC_FINAL, false},

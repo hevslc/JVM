@@ -45,7 +45,7 @@ public:
   /*!
      \brief Imprime o vetor no terminal.
    */
-  void print();
+  void print(ConstantPoolT cpt);
 
 };
 

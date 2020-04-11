@@ -53,6 +53,11 @@ public:
 		struct{
 			u2 lenght;
 			u1 *bytes;
+			void print(){
+				std::cout << "Name: " << std::endl;
+				for(u1 i=0; i<lenght; i++) std::cout << bytes[i];
+				std::cout << std::endl;
+			}
 		}Utf8;
 
 		struct{
@@ -67,7 +72,7 @@ class ConstantPoolT : public std::vector<Cpinfo> {
 public:
 	ConstantPoolT() {};
 	ConstantPoolT(std::ifstream& f, u2 constantPoolCount); /*!< Tabela de estruturas das constantes */
-	void printConstantPool();
+	void print();
 };
 
 #endif
