@@ -1,6 +1,7 @@
 #ifndef DEFINITIONS_H
 #define DEFINITIONS_H
 
+#include <sys/stat.h>
 #include <fstream>
 #include <iostream>
 #include <cstdint>
@@ -30,7 +31,6 @@ u1 r1(std::ifstream& f);			/*!< Lê 1 byte do arquivo */
 u2 r2(std::ifstream& f);			/*!< Lê 2 byte do arquivo */
 u4 r4(std::ifstream& f);			/*!< Lê 4 byte do arquivo */
 
-extern std::map<int, std::string> versionsMap;
 
 enum enumAcessFlags : u2 { ACC_PUBLIC=0x0001,       ACC_PRIVATE=0x0002,    ACC_PROTECTED=0x0004, 
 						   ACC_STATIC=0x0008,       ACC_FINAL=0x0010,      ACC_SUPER=0x0020, 
@@ -38,6 +38,23 @@ enum enumAcessFlags : u2 { ACC_PUBLIC=0x0001,       ACC_PRIVATE=0x0002,    ACC_P
 						   ACC_TRANSIENT=0x0080,    ACC_VARARGS=0x0080,    ACC_NATIVE=0x0100, 
 						   ACC_INTERFACE=0x0200,    ACC_ABSTRACT=0x0400,   ACC_STRICT=0x0800,
 						   ACC_SYNTHETIC=0x1000,    ACC_ANNOTATION=0x2000, ACC_ENUM=0x4000};
+
+
+enum ModePrint : u1 {infile, interminal};
+
+
+class Version{
+public:
+	std::string v;
+	Version() {}
+	void put(u2 major){ v = versionsMap[major]; }
+	std::string get() {return v; }
+
+	std::map<u2, std::string> versionsMap{ 
+	{45, "1.1"}, {46, "1.2"}, {47, "1.3"}, {48, "1.4"}, {49, "1.5"},
+	{50, "1.6"}, {51, "1.7"}, {52, "1.8"}, {53, "1.9"}, {54, "1.10"}, 
+	{55, "1.11"}, {56, "1.12"}, {57, "1.13"}, {58, "1.14"} };
+};
 
 
 #endif

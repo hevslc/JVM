@@ -123,67 +123,67 @@ std::string ConstantPool::getNNameAndType(u2 idxNameType){
 }
 
 
-// PARA TESTE
-void ConstantPool::print(){
-	std::cout << "__________________ConstantPool__________________" << std::endl;
+void ConstantPool::print(std::ostream& out){
+	out << "\n__________________ConstantPool__________________" << std::endl;
+	out << std::showbase;
 	for (auto cp : *this){
-		std::cout << "..................." << std::endl;
+		out << "..................." << std::endl;
+		if(cp.tag) out << "Tag..............: " << std::dec << int(cp.tag);
 		switch(cp.tag){
 			case CONSTANT_Class:
-				std::cout << "Tag..............: " << (int)CONSTANT_Class << " (Class)" << std::endl;
-				std::cout << "Name.............: " << getUtf8Str(cp.Class.nameIndex-1) << std::endl;
+				out << " (Class)" << std::endl;
+				out << "Name.............: " << getUtf8Str(cp.Class.nameIndex-1) << std::endl;
 				break;
 			case CONSTANT_Fieldref:
-				std::cout << "Tag..............: " << (int)CONSTANT_InterfaceMethodref << " (Field)" << std::endl;
-				std::cout << "Class Name.......: " << getUtf8Class(cp.FieldMethInter.classIndex-1) << std::endl;
-				std::cout << "Name and Type....: " << getNNameAndType(cp.FieldMethInter.nameTypeIndex-1);
-				std::cout << "  :  " << getDescriptor(cp.FieldMethInter.nameTypeIndex-1) << std::endl;
+				out << " (Field)" << std::endl;
+				out << "Class Name.......: " << getUtf8Class(cp.FieldMethInter.classIndex-1) << std::endl;
+				out << "Name and Type....: " << getNNameAndType(cp.FieldMethInter.nameTypeIndex-1);
+				out << "  :  " << getDescriptor(cp.FieldMethInter.nameTypeIndex-1) << std::endl;
 				break;			
 			case CONSTANT_Methodref:
-				std::cout << "Tag..............: " << (int)CONSTANT_InterfaceMethodref << " (Method)" << std::endl;
-				std::cout << "Class Name.......: " << getUtf8Class(cp.FieldMethInter.classIndex-1) << std::endl;
-				std::cout << "Name and Type....: " << getNNameAndType(cp.FieldMethInter.nameTypeIndex-1);
-				std::cout << "  :  " << getDescriptor(cp.FieldMethInter.nameTypeIndex-1) << std::endl;
+				out << " (Method)" << std::endl;
+				out << "Class Name.......: " << getUtf8Class(cp.FieldMethInter.classIndex-1) << std::endl;
+				out << "Name and Type....: " << getNNameAndType(cp.FieldMethInter.nameTypeIndex-1);
+				out << "  :  " << getDescriptor(cp.FieldMethInter.nameTypeIndex-1) << std::endl;
 				break;			
 			case CONSTANT_InterfaceMethodref:
-				std::cout << "Tag..............: " << (int)CONSTANT_InterfaceMethodref << " (Interface)" << std::endl;
-				std::cout << "Class Name.......: " << getUtf8Class(cp.FieldMethInter.classIndex-1) << std::endl;
-				std::cout << "Name and Type....: " << getNNameAndType(cp.FieldMethInter.nameTypeIndex-1);
-				std::cout << "  :  " << getDescriptor(cp.FieldMethInter.nameTypeIndex-1) << std::endl;
+				out << " (Interface)" << std::endl;
+				out << "Class Name.......: " << getUtf8Class(cp.FieldMethInter.classIndex-1) << std::endl;
+				out << "Name and Type....: " << getNNameAndType(cp.FieldMethInter.nameTypeIndex-1);
+				out << "  :  " << getDescriptor(cp.FieldMethInter.nameTypeIndex-1) << std::endl;
 				break;
 			case CONSTANT_String:
-				std::cout << "Tag..............: " << (int)CONSTANT_String << " (String)" << std::endl;
-				std::cout << "Name.............: " << getUtf8Str(cp.String.stringIndex-1) << std::endl;
+				out << " (String)" << std::endl;
+				out << "Name.............: " << getUtf8Str(cp.String.stringIndex-1) << std::endl;
 				break;
 			case CONSTANT_Integer:
-				std::cout << "Tag..............: " << (int)CONSTANT_Integer << " (Integer)" << std::endl;
-				std::cout << "Number...........: " << (int)cp.Integer.nint  << std::endl;
+				out << " (Integer)" << std::endl;
+				out << "Number...........: " << std::dec << cp.Integer.nint  << std::endl;
 				break;
 			case CONSTANT_Float:
-				std::cout << "Tag..............: " << (float)CONSTANT_Float << " (Float)" << std::endl;
-				std::cout << "Number...........: " << (float)cp.Float.nfloat << std::endl;
+				out << " (Float)" << std::endl;
+				out << "Number...........: " << cp.Float.nfloat << std::endl;
 				break;
 			case CONSTANT_Long:
-				std::cout << "Tag..............: " << (int)CONSTANT_Long << " (Long)" << std::endl;
-				std::cout << "Number...........: " << (long)cp.Long.nlong << std::endl;
-				std::cout << "High Bytes.......: " << (long)cp.Long.highBytes << std::endl;
-				std::cout << "Low Bytes........: " << (long)cp.Long.lowBytes << std::endl;
-				std::cout << "Number...........: " << (long)cp.Long.nlong << std::endl;
+				out << " (Long)" << std::endl;
+				out << "High Bytes.......: " << std::hex << cp.Long.highBytes << std::endl;
+				out << "Low Bytes........: " << std::hex << cp.Long.lowBytes << std::endl;
+				out << "Number...........: " << std::dec << cp.Long.nlong << std::endl;
 				break;
 			case CONSTANT_Double:
-				std::cout << "Tag..............: " << (int)CONSTANT_Double << " (Double)" << std::endl;
-				std::cout << "High Bytes.......: " << (int)cp.Double.highBytes << std::endl;
-				std::cout << "Low Bytes........: " << (int)cp.Double.lowBytes << std::endl;				
-				std::cout << "Number...........: " << (double)cp.Double.ndouble << std::endl;
+				out << " (Double)" << std::endl;
+				out << "High Bytes.......: " << std::hex << cp.Double.highBytes << std::endl;
+				out << "Low Bytes........: " << std::hex << cp.Double.lowBytes << std::endl;				
+				out << "Number...........: " << cp.Double.ndouble << std::endl;
 				break;
 			case CONSTANT_NameAndType:
-				std::cout << "Tag..............: " << (int)CONSTANT_NameAndType << " (NameAndType)" << std::endl;
-				std::cout << "Name and Type....: " << getUtf8Str(cp.NameAndType.nameIndex-1);
-				std::cout << "  :  " << getUtf8Str(cp.NameAndType.descriptorIndex-1) << std::endl;	
+				out << " (NameAndType)" << std::endl;
+				out << "Name and Type....: " << getUtf8Str(cp.NameAndType.nameIndex-1);
+				out << "  :  " << getUtf8Str(cp.NameAndType.descriptorIndex-1) << std::endl;	
 				break;
 			case CONSTANT_Utf8:
-				std::cout << "Tag..............: " << (int)CONSTANT_Utf8 << " (Utf8)" << std::endl;
-				std::cout << "Bytes............: " << Bytes2Str(cp) << std::endl;	
+				out << " (Utf8)" << std::endl;
+				out << "Bytes............: " << Bytes2Str(cp) << std::endl;	
 				break;
 			default:
 				break;

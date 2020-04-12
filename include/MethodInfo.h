@@ -1,11 +1,9 @@
 #ifndef _METHOD_INFO_HPP_
 #define _METHOD_INFO_HPP_
 
-#include <vector>
 #include "Definitions.h"
 #include "AttributeInfo.h"
 #include "CpInfo.h"
-#include <fstream>
 
 /*!
    \brief Estrutura de um método na JVM.

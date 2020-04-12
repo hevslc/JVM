@@ -60,10 +60,37 @@ ClassFile::ClassFile(std::ifstream &f) : magic(r4(f)),
 										 methodsCount(r2(f)),
 										 methods(f, methodsCount, constantPool)
 {
+	version.put(majorVersion);
 }
 
 //_______ DECODING
 void ClassFile::racessFlags(u2 mask){
 	for(auto p=acessFlags.begin(); p!=acessFlags.end(); ++p)
 		p->second = ((p->first & mask)==p->first);	
+}
+
+
+void ClassFile::print(u1 mode, std::string argv){
+	if(mode == infile){
+		mkdir("./Output", 0777);
+		std::string name = "./Output/" + argv.substr(9, argv.size()-15) + ".txt";
+		
+		std::ofstream f;
+	  	f.open(name);
+	  	printBuf(f.rdbuf());
+	  	f.close();
+	}
+	else if(mode == interminal)
+		printBuf(std::cout.rdbuf());
+}
+
+void ClassFile::printBuf(std::streambuf  *buf){
+	std::ostream out(buf);
+	out << std::showbase;
+	out << "Magic............: " << std::hex << magic << std::endl;
+	out << "Minor Version....: " << std::hex << minorVersion << std::endl;
+	out << "Major Version....: " << std::hex << majorVersion;
+	out << "  [" << version.get() << "]" << std::endl;
+	out << "ConstantPoolCount: " << std::dec << constantPoolCount << std::endl;
+	constantPool.print(out);
 }

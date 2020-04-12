@@ -80,7 +80,7 @@ class ConstantPool : public std::vector<Cpinfo> {
 public:
 	ConstantPool() {};
 	ConstantPool(std::ifstream& f, u2 constantPoolCount); /*!< Tabela de estruturas das constantes */
-	void print();
+	void print(std::ostream& out);
 
 	std::string Bytes2Str(Cpinfo cpi);
 	std::string getUtf8Str(u2 idxUtf8);

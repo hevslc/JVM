@@ -44,13 +44,19 @@ public:
 	Attributes 		attributes;
 
 	//Additional
+	Version 		version;
+
+
 	std::map<u2, bool> acessFlags{ {ACC_PUBLIC, false}, {ACC_FINAL, false},
 			{ACC_SUPER, false}, {ACC_INTERFACE, false}, {ACC_ABSTRACT, false},
 			{ACC_SYNTHETIC, false}, {ACC_ANNOTATION, false}, {ACC_ENUM, false}};	
 
 	//Decoding
 	void racessFlags(u2 mask);
+	void print(u1 mode, std::string argv);
+	void printBuf(std::streambuf  *buf);
 };
+
 
 
 

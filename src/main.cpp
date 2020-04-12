@@ -1,5 +1,4 @@
 #include "ClassFile.h"
-#include "Display.h"
 
 int main(int argc, char const *argv[]){
 	std::ifstream f;
@@ -10,9 +9,12 @@ int main(int argc, char const *argv[]){
 	}
 
 	ClassFile classFile(f);
-	printClassFile(&classFile);
+
+  	classFile.print(interminal, std::string(argv[1]));
+  	classFile.print(infile, std::string(argv[1]));
 
 	f.close();
+	
 
 	return 0;
 }
