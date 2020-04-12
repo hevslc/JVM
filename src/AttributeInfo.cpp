@@ -146,6 +146,50 @@ Attributes::Attributes(std::ifstream& f, u2 attributesCount, ConstantPool consta
 	}
 }
 
-void Attributes::print(ConstantPool cpt){
-	(void)cpt;
+void LineNumberTable::print(std::ostream& out){
+	if(lnTable->size()){
+		for(auto lntinfo : *lnTable){
+			out << ".......................: " << std::endl;
+			out << "Start Pc...............: " << lntinfo->startPc << std::endl;
+			out << "End Pc.................: " << lntinfo->lineNumber << std::endl;
+		}
+	}
+}
+
+void ExceptionTable::print(std::ostream& out){
+	if(size()){
+		for(auto exc : *this){
+			out << "(Exception Table)......: " << std::endl;
+			out << "Start Pc...............: " << exc->startPc << std::endl;
+			out << "End Pc.................: " << exc->endPc << std::endl;	
+			out << "Handler Pc.............: " << exc->handlerPc << std::endl;
+			out << "Catch Type.............: " << exc->catchType << std::endl;
+		}
+	}
+}
+
+void Code::print(std::ostream& out, ConstantPool cpt){
+	out << "Maximum depth..........: " << maxStack << std::endl;
+	out << "Nos of local variables.: " << maxLocals << std::endl;
+	out << "Code...................: ";
+	for(u4 i=0; i<codeLength; i++) out << std::hex << (int)code[i];
+	exceptionTable->print(out);
+	out << std::endl;
+	if(attributesCount){
+		out << "Atributos opcionais associados:" << std::endl;
+		attributes->print(out, cpt);
+	}
+}
+
+void Attributes::print(std::ostream& out, ConstantPool cpt){
+	if(size()){
+		//std::cout << "__________________ Attributes __________________" << std::endl;
+	    for(auto attribute : *this){
+	    	out << "(Attribute).............:" << std::endl;
+	    	out << "Attribute Name.........: ConstantPool[" << (int)attribute->attributeNameIndex;
+			out << "] = " << attribute->name << std::endl;
+			out << "Attribute Length.......: " << (int)attribute->attributeLength << std::endl;	
+	    	attribute->print(out, cpt);
+	    }	
+	}
 }

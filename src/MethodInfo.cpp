@@ -47,6 +47,7 @@ void Methods::print(ConstantPool cpt) {
         std::cout << "Name index.......: " << method->nameIndex << std::endl;
         std::cout << "Descriptor index.: " << method->descriptorIndex << std::endl;
         std::cout << "Attributes count.: " << method->attributesCount << std::endl;
-        method->attributes->print(cpt);
+        //method->attributes->print(cpt);
+        (void)cpt; //coloquei só pra não dar warning pela falta de uso de cpt
     }
 }

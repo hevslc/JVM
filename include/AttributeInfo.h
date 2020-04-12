@@ -11,7 +11,7 @@ public:
 	Attributes() {}
 	Attributes(std::ifstream& f, u2 attributesCount, ConstantPool constantPool); /*!< Tabela de estruturas dos atributos */
 	std::string readName(Cpinfo cpi);
-    void print(ConstantPool cpt);
+    void print(std::ostream& out, ConstantPool cpt);
 };
 
 class AttributeInfo {
@@ -22,7 +22,7 @@ public:
     AttributeInfo() {}
     AttributeInfo(u2 idx, std::ifstream& f, std::string n) : attributeNameIndex(idx), attributeLength(r4(f)), name(n) {}
     void generalInfo(u2 idx, std::ifstream& f, std::string name);
-    //virtual void print(ConstantPool cpt) {(void)cpt; }
+    virtual void print(std::ostream& out, ConstantPool cpt) {(void)cpt; (void)out;}
 };
 
 //__________________________________________________________________
@@ -46,13 +46,13 @@ class ExceptionTable : public std::vector<ExceptionTableInfo*>{
 public:
     ExceptionTable() {}
     ExceptionTable(std::ifstream& f, u2 len);
-    //void print();
+    void print(std::ostream& out);
 };
  
 class Code : public AttributeInfo {
 public:
 	Code(u2 idx, std::ifstream& f, ConstantPool constantPool, std::string name);
-    //void print(ConstantPool cpt);
+    void print(std::ostream& out, ConstantPool cpt);
 	u2	maxStack;	/*< Profundidade máxima da pilha de operandos deste método em qualquer ponto durante a execução do método. */
     u2 	maxLocals;	/*< Número de variáveis ​​locais na matriz de variáveis ​​locais alocadas na invocação deste método. */
     u4 	codeLength;	/*< Número de bytes na matriz de códigos para este método. Deve ser entre zero e 65536. */
@@ -110,13 +110,12 @@ class LineNumberTableStr : public std::vector<LineNumberTableStrInfo*>{
 public:
     LineNumberTableStr() {}
     LineNumberTableStr(std::ifstream& f, u2 len);   
-    //void print(); 
 };
 
 class LineNumberTable : public AttributeInfo {
 public:
 	LineNumberTable(u2 idx, std::ifstream& f, std::string name);
-    //void print(ConstantPool cpt);
+    void print(std::ostream& out);
 	u2 	lineNumberTableLength;
     LineNumberTableStr *lnTable;
 };
