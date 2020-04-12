@@ -56,8 +56,6 @@ public:
 };
 
 
-
-
 class AcessFlags{
 public:
 	AcessFlags() {}
@@ -84,6 +82,27 @@ public:
 private:
 	std::string AcessFlagsStr[18] = {"ACC_PUBLIC", "ACC_FINAL", "ACC_SUPER",  
 	"ACC_INTERFACE", "ACC_ABSTRACT", "ACC_SYNTHETIC",  "ACC_ANNOTATION", "ACC_ENUM"};
+};
+
+
+class ThisClass{
+public:
+	u2 idxClass;
+	std::string name;
+	ThisClass() {}
+	void get(u2 idx, std::string n){ name=n; idxClass=idx; } 
+	void print(std::ostream& out) { 
+		out << "This Class.......: cp_info #" << std::dec << idxClass << " " << name << std::endl;}
+};
+
+class SuperClass{
+public:
+	u2 idxClass;
+	std::string name;
+	SuperClass() {}
+	void get(u2 idx, std::string n){ name=n; idxClass=idx; } 
+	void print(std::ostream& out) { 
+		out << "Super Class......: cp_info #" << std::dec << idxClass << " " << name << std::endl;}
 };
 
 #endif

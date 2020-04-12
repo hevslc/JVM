@@ -32,8 +32,8 @@ public:
 	u2				constantPoolCount;		/*!< Número de entradas na tabela constant_pool + 1 */
 	ConstantPool	constantPool;			/*!< Tabela de estruturas representando string, nomes...*/
 	u2				acessFlagsMask;
-	u2				thisClass;
-	u2				superClass;
+	u2				thisClassIdx;
+	u2				superClassIdx;
 	u2				interfacesCount;
 	//u2			interfaces;
 	u2				fieldsCount;
@@ -46,7 +46,8 @@ public:
 	//Additional
 	Version 		version;
 	AcessFlags 		acessFlags;
-
+	ThisClass 		thisClass;
+	SuperClass 		superClass;
 	
 
 	//Print

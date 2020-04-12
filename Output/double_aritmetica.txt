@@ -99,3 +99,6 @@ Tag..............: 1 (Utf8)
 Bytes............: (D)V
 
 Acess Flags......: ACC_PUBLIC, ACC_SUPER, 
+This Class.......: cp_info #8 double_aritmetica
+Super Class......: cp_info #9 java/lang/Object
+Interfaces Count.: 0

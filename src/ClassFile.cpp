@@ -51,17 +51,21 @@ ClassFile::ClassFile(std::ifstream &f) : magic(r4(f)),
 										 constantPoolCount(r2(f)),
 										 constantPool(f, constantPoolCount),
 										 acessFlagsMask(r2(f)),
-										 thisClass(r2(f)),
-										 superClass(r2(f)),
+										 thisClassIdx(r2(f)),
+										 superClassIdx(r2(f)),
 										 interfacesCount(r2(f)),
 										 //ler interfaces
 										 fieldsCount(r2(f)),
 										 fields(f, fieldsCount, constantPool),
 										 methodsCount(r2(f)),
-										 methods(f, methodsCount, constantPool)
+										 methods(f, methodsCount, constantPool),
+										 attributesCount(r2(f)),
+										 attributes(f, attributesCount, constantPool)
 {
 	version.put(majorVersion);
 	acessFlags.set(acessFlagsMask);
+	thisClass.get(thisClassIdx, constantPool.getUtf8Class(thisClassIdx-1));
+	superClass.get(superClassIdx, constantPool.getUtf8Class(superClassIdx-1));
 }
 
 
@@ -89,4 +93,7 @@ void ClassFile::printBuf(std::streambuf  *buf){
 	out << "ConstantPoolCount: " << std::dec << constantPoolCount << std::endl;
 	constantPool.print(out);
 	acessFlags.print(out);
+	thisClass.print(out);
+	superClass.print(out);
+	out << "Interfaces Count.: " << std::dec << interfacesCount << std::endl;
 }
