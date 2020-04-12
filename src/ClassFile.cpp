@@ -50,7 +50,7 @@ ClassFile::ClassFile(std::ifstream &f) : magic(r4(f)),
 										 majorVersion(r2(f)),
 										 constantPoolCount(r2(f)),
 										 constantPool(f, constantPoolCount),
-										 acess_flags(r2(f)),
+										 acessFlagsMask(r2(f)),
 										 thisClass(r2(f)),
 										 superClass(r2(f)),
 										 interfacesCount(r2(f)),
@@ -61,12 +61,7 @@ ClassFile::ClassFile(std::ifstream &f) : magic(r4(f)),
 										 methods(f, methodsCount, constantPool)
 {
 	version.put(majorVersion);
-}
-
-//_______ DECODING
-void ClassFile::racessFlags(u2 mask){
-	for(auto p=acessFlags.begin(); p!=acessFlags.end(); ++p)
-		p->second = ((p->first & mask)==p->first);	
+	acessFlags.set(acessFlagsMask);
 }
 
 
@@ -93,4 +88,5 @@ void ClassFile::printBuf(std::streambuf  *buf){
 	out << "  [" << version.get() << "]" << std::endl;
 	out << "ConstantPoolCount: " << std::dec << constantPoolCount << std::endl;
 	constantPool.print(out);
+	acessFlags.print(out);
 }

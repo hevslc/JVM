@@ -1,0 +1,101 @@
+Magic............: 0xcafebabe
+Minor Version....: 0
+Major Version....: 0x2e  [1.2]
+ConstantPoolCount: 31
+
+__________________ConstantPool__________________
+...................
+Tag..............: 10 (Method)
+Class Name.......: java/lang/Object
+Name and Type....: <init>  :  ()V
+...................
+Tag..............: 6 (Double)
+High Bytes.......: 0x40588f5c
+Low Bytes........: 0x28f5c28f
+Number...........: 98.24
+...................
+...................
+Tag..............: 6 (Double)
+High Bytes.......: 0x4060dbd7
+Low Bytes........: 0xa3d70a4
+Number...........: 134.87
+...................
+...................
+Tag..............: 9 (Field)
+Class Name.......: java/lang/System
+Name and Type....: out  :  Ljava/io/PrintStream;
+...................
+Tag..............: 10 (Method)
+Class Name.......: java/io/PrintStream
+Name and Type....: println  :  (D)V
+...................
+Tag..............: 7 (Class)
+Name.............: double_aritmetica
+...................
+Tag..............: 7 (Class)
+Name.............: java/lang/Object
+...................
+Tag..............: 1 (Utf8)
+Bytes............: <init>
+...................
+Tag..............: 1 (Utf8)
+Bytes............: ()V
+...................
+Tag..............: 1 (Utf8)
+Bytes............: Code
+...................
+Tag..............: 1 (Utf8)
+Bytes............: LineNumberTable
+...................
+Tag..............: 1 (Utf8)
+Bytes............: main
+...................
+Tag..............: 1 (Utf8)
+Bytes............: ([Ljava/lang/String;)V
+...................
+Tag..............: 1 (Utf8)
+Bytes............: SourceFile
+...................
+Tag..............: 1 (Utf8)
+Bytes............: double_aritmetica.java
+...................
+Tag..............: 12 (NameAndType)
+Name and Type....: <init>  :  ()V
+...................
+Tag..............: 7 (Class)
+Name.............: java/lang/System
+...................
+Tag..............: 12 (NameAndType)
+Name and Type....: out  :  Ljava/io/PrintStream;
+...................
+Tag..............: 7 (Class)
+Name.............: java/io/PrintStream
+...................
+Tag..............: 12 (NameAndType)
+Name and Type....: println  :  (D)V
+...................
+Tag..............: 1 (Utf8)
+Bytes............: double_aritmetica
+...................
+Tag..............: 1 (Utf8)
+Bytes............: java/lang/Object
+...................
+Tag..............: 1 (Utf8)
+Bytes............: java/lang/System
+...................
+Tag..............: 1 (Utf8)
+Bytes............: out
+...................
+Tag..............: 1 (Utf8)
+Bytes............: Ljava/io/PrintStream;
+...................
+Tag..............: 1 (Utf8)
+Bytes............: java/io/PrintStream
+...................
+Tag..............: 1 (Utf8)
+Bytes............: println
+...................
+Tag..............: 1 (Utf8)
+Bytes............: (D)V
+
+Acess Flags......: ACC_PUBLIC, ACC_SUPER, 

@@ -39,7 +39,6 @@ enum enumAcessFlags : u2 { ACC_PUBLIC=0x0001,       ACC_PRIVATE=0x0002,    ACC_P
 						   ACC_INTERFACE=0x0200,    ACC_ABSTRACT=0x0400,   ACC_STRICT=0x0800,
 						   ACC_SYNTHETIC=0x1000,    ACC_ANNOTATION=0x2000, ACC_ENUM=0x4000};
 
-
 enum ModePrint : u1 {infile, interminal};
 
 
@@ -56,5 +55,35 @@ public:
 	{55, "1.11"}, {56, "1.12"}, {57, "1.13"}, {58, "1.14"} };
 };
 
+
+
+
+class AcessFlags{
+public:
+	AcessFlags() {}
+
+	void set(u2 mask){
+		for(auto p=acessFlagsMap.begin(); p!=acessFlagsMap.end(); ++p)
+			p->second = ((p->first & mask)==p->first);
+	}
+	
+	void print(std::ostream& out){
+		out << "\nAcess Flags......: ";
+		int i=0;
+		for(auto const& p : acessFlagsMap){
+			if(p.second) out << AcessFlagsStr[i] << ", ";
+			i++;
+		}
+		out << '\n';
+	}
+
+	std::map<enumAcessFlags, bool> acessFlagsMap{{ACC_PUBLIC, false}, {ACC_FINAL, false},
+		{ACC_SUPER, false}, {ACC_INTERFACE, false}, {ACC_ABSTRACT, false},
+		{ACC_SYNTHETIC, false}, {ACC_ANNOTATION, false}, {ACC_ENUM, false}};
+
+private:
+	std::string AcessFlagsStr[18] = {"ACC_PUBLIC", "ACC_FINAL", "ACC_SUPER",  
+	"ACC_INTERFACE", "ACC_ABSTRACT", "ACC_SYNTHETIC",  "ACC_ANNOTATION", "ACC_ENUM"};
+};
 
 #endif
