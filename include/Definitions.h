@@ -32,13 +32,6 @@ u2 r2(std::ifstream& f);			/*!< Lê 2 byte do arquivo */
 u4 r4(std::ifstream& f);			/*!< Lê 4 byte do arquivo */
 
 
-enum enumAcessFlags : u2 { ACC_PUBLIC=0x0001,       ACC_PRIVATE=0x0002,    ACC_PROTECTED=0x0004, 
-						   ACC_STATIC=0x0008,       ACC_FINAL=0x0010,      ACC_SUPER=0x0020, 
-						   ACC_SYNCHRONIZED=0x0020, ACC_VOLATILE=0x0040,   ACC_BRIDGE=0x0040, 
-						   ACC_TRANSIENT=0x0080,    ACC_VARARGS=0x0080,    ACC_NATIVE=0x0100, 
-						   ACC_INTERFACE=0x0200,    ACC_ABSTRACT=0x0400,   ACC_STRICT=0x0800,
-						   ACC_SYNTHETIC=0x1000,    ACC_ANNOTATION=0x2000, ACC_ENUM=0x4000};
-
 enum ModePrint : u1 {infile, interminal};
 
 
@@ -55,6 +48,12 @@ public:
 	{55, "1.11"}, {56, "1.12"}, {57, "1.13"}, {58, "1.14"} };
 };
 
+enum enumAcessFlags : u2 { ACC_PUBLIC=0x0001,       ACC_PRIVATE=0x0002,    ACC_PROTECTED=0x0004, 
+						   ACC_STATIC=0x0008,       ACC_FINAL=0x0010,      ACC_SUPER=0x0020, 
+						   ACC_SYNCHRONIZED=0x0020, ACC_VOLATILE=0x0040,   ACC_BRIDGE=0x0040, 
+						   ACC_TRANSIENT=0x0080,    ACC_VARARGS=0x0080,    ACC_NATIVE=0x0100, 
+						   ACC_INTERFACE=0x0200,    ACC_ABSTRACT=0x0400,   ACC_STRICT=0x0800,
+						   ACC_SYNTHETIC=0x1000,    ACC_ANNOTATION=0x2000, ACC_ENUM=0x4000};
 
 class AcessFlags{
 public:
@@ -75,13 +74,21 @@ public:
 		out << '\n';
 	}
 
-	std::map<enumAcessFlags, bool> acessFlagsMap{{ACC_PUBLIC, false}, {ACC_FINAL, false},
-		{ACC_SUPER, false}, {ACC_INTERFACE, false}, {ACC_ABSTRACT, false},
-		{ACC_SYNTHETIC, false}, {ACC_ANNOTATION, false}, {ACC_ENUM, false}};
+	std::map<enumAcessFlags, bool> acessFlagsMap{
+						   {ACC_PUBLIC,false},       {ACC_PRIVATE,false},    {ACC_PROTECTED,false}, 
+						   {ACC_STATIC,false},       {ACC_FINAL,false},      {ACC_SUPER,false}, 
+						   {ACC_SYNCHRONIZED,false}, {ACC_VOLATILE,false},   {ACC_BRIDGE,false}, 
+						   {ACC_TRANSIENT,false},    {ACC_VARARGS,false},    {ACC_NATIVE,false}, 
+						   {ACC_INTERFACE,false},    {ACC_ABSTRACT,false},   {ACC_STRICT,false},
+						   {ACC_SYNTHETIC,false},    {ACC_ANNOTATION,false}, {ACC_ENUM,false}};
 
 private:
-	std::string AcessFlagsStr[18] = {"ACC_PUBLIC", "ACC_FINAL", "ACC_SUPER",  
-	"ACC_INTERFACE", "ACC_ABSTRACT", "ACC_SYNTHETIC",  "ACC_ANNOTATION", "ACC_ENUM"};
+	std::string AcessFlagsStr[18] = {"ACC_PUBLIC",       "ACC_PRIVATE",    "ACC_PROTECTED", 
+						   			 "ACC_STATIC",       "ACC_FINAL",      "ACC_SUPER", 
+						  			 "ACC_SYNCHRONIZED", "ACC_VOLATILE",   "ACC_BRIDGE", 
+						   			 "ACC_TRANSIENT",    "ACC_VARARGS",    "ACC_NATIVE", 
+						   			 "ACC_INTERFACE",    "ACC_ABSTRACT",   "ACC_STRICT",
+						   			 "ACC_SYNTHETIC",    "ACC_ANNOTATION", "ACC_ENUM"};
 };
 
 

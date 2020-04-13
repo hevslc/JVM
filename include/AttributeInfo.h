@@ -10,7 +10,7 @@ class Attributes : public  std::vector<AttributeInfo*> {
 public:
 	Attributes() {}
 	Attributes(std::ifstream& f, u2 attributesCount, ConstantPool constantPool); /*!< Tabela de estruturas dos atributos */
-	std::string readName(Cpinfo cpi);
+    void getConstantValue(std::ifstream& f, ConstantPool cpt, u2 idx, std::string name);
     void print(std::ostream& out, ConstantPool cpt);
 };
 
@@ -26,11 +26,15 @@ public:
 };
 
 //__________________________________________________________________
+template<typename T>
 class ConstantValue : public AttributeInfo {
 public:
-	ConstantValue(u2 idx, std::ifstream& f, std::string name);
-    //void print(ConstantPool cpt);
+    T value;
+    u1 tagValue;
 	u2 	constantvalueIndex;	/*!< Indice para a tabela constant_pool contendo o valor constante deste atributo. */
+	ConstantValue() {}
+    ConstantValue(u1 tag, u2 idx, u4 l, std::string name, T v);
+    void print(std::ostream& out);
 };
 //__________________________________________________________________
 class ExceptionTableInfo{
@@ -76,9 +80,10 @@ public:
     u2  innerClassInfoIndex;
     u2  outerClassInfoIndex;
     u2  innerNameIndex;
-    u2  innerClassAccessFlags;public:
+    u2  innerClassAccessFlags;
+    AcessFlags acessFlags;
 };
-//__________________________________________________________________
+
 class Classes : public std::vector<ClassesInfo*>{
 public:
     Classes() {}
@@ -88,7 +93,7 @@ public:
 class InnerClasses : public AttributeInfo {
 public:
 	InnerClasses(u2 idx, std::ifstream& f, std::string name);
-    //void print(ConstantPool cpt);
+    void print(std::ostream& out, ConstantPool cpt);
     u2 	    numberOfClasses;
     Classes *classes;   
 };
@@ -96,7 +101,7 @@ public:
 class SourceFile : public AttributeInfo {
 public:
 	SourceFile(u2 idx, std::ifstream& f, std::string name);
-    //void print(ConstantPool cpt);
+    void print(std::ostream& out, ConstantPool cpt);
     u2 	sourcefileIndex;
 };
 //__________________________________________________________________

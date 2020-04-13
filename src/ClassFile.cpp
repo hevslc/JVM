@@ -90,11 +90,19 @@ void ClassFile::printBuf(std::streambuf  *buf){
 	out << "Minor Version....: " << std::hex << minorVersion << std::endl;
 	out << "Major Version....: " << std::hex << majorVersion;
 	out << "  [" << version.get() << "]" << std::endl;
-	constantPool.print(out);
+	out << "ConstantPoolCount: " << std::dec << constantPoolCount << std::endl;
 	acessFlags.print(out);
 	thisClass.print(out);
 	superClass.print(out);
-	//Tables
-	out << "ConstantPoolCount: " << std::dec << constantPoolCount << std::endl;
 	out << "Interfaces Count.: " << std::dec << interfacesCount << std::endl;
+	out << "Fields Count.....: " << std::dec << fieldsCount << std::endl;
+	out << "Methods Count....: " << std::dec << methodsCount << std::endl;
+	out << "Attributes Count.: " << std::dec << attributesCount << std::endl;
+	//Tables
+	constantPool.print(out);
+	//print Interfaces
+	//print fields
+	methods.print(out, constantPool);
+	out << "__________________ Attributes __________________" << std::endl;
+	attributes.print(out, constantPool);
 }

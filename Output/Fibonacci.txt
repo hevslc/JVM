@@ -1,11 +1,11 @@
 Magic............: 0xcafebabe
 Minor Version....: 0
 Major Version....: 0x2e  [1.2]
-ConstantPoolCount: 31
+ConstantPoolCount: 33
 
-Acess Flags......: ACC_PUBLIC, ACC_SUPER, 
-This Class.......: cp_info #8 double_aritmetica
-Super Class......: cp_info #9 java/lang/Object
+Acess Flags......: ACC_SUPER, 
+This Class.......: cp_info #6 Fibonacci
+Super Class......: cp_info #7 java/lang/Object
 Interfaces Count.: 0
 Fields Count.....: 0
 Methods Count....: 2
@@ -17,28 +17,23 @@ Tag..............: 10 (Method)
 Class Name.......: java/lang/Object
 Name and Type....: <init>  :  ()V
 ...................
-Tag..............: 6 (Double)
-High Bytes.......: 0x40588f5c
-Low Bytes........: 0x28f5c28f
-Number...........: 98.24
-...................
-...................
-Tag..............: 6 (Double)
-High Bytes.......: 0x4060dbd7
-Low Bytes........: 0xa3d70a4
-Number...........: 134.87
-...................
-...................
 Tag..............: 9 (Field)
 Class Name.......: java/lang/System
 Name and Type....: out  :  Ljava/io/PrintStream;
 ...................
+Tag..............: 8 (String)
+Name.............: Serie De Fibonacci: 
+...................
 Tag..............: 10 (Method)
 Class Name.......: java/io/PrintStream
-Name and Type....: println  :  (D)V
+Name and Type....: println  :  (Ljava/lang/String;)V
+...................
+Tag..............: 10 (Method)
+Class Name.......: java/io/PrintStream
+Name and Type....: print  :  (J)V
 ...................
 Tag..............: 7 (Class)
-Name.............: double_aritmetica
+Name.............: Fibonacci
 ...................
 Tag..............: 7 (Class)
 Name.............: java/lang/Object
@@ -65,7 +60,7 @@ Tag..............: 1 (Utf8)
 Bytes............: SourceFile
 ...................
 Tag..............: 1 (Utf8)
-Bytes............: double_aritmetica.java
+Bytes............: Fibonacci.java
 ...................
 Tag..............: 12 (NameAndType)
 Name and Type....: <init>  :  ()V
@@ -76,14 +71,20 @@ Name.............: java/lang/System
 Tag..............: 12 (NameAndType)
 Name and Type....: out  :  Ljava/io/PrintStream;
 ...................
+Tag..............: 1 (Utf8)
+Bytes............: Serie De Fibonacci: 
+...................
 Tag..............: 7 (Class)
 Name.............: java/io/PrintStream
 ...................
 Tag..............: 12 (NameAndType)
-Name and Type....: println  :  (D)V
+Name and Type....: println  :  (Ljava/lang/String;)V
+...................
+Tag..............: 12 (NameAndType)
+Name and Type....: print  :  (J)V
 ...................
 Tag..............: 1 (Utf8)
-Bytes............: double_aritmetica
+Bytes............: Fibonacci
 ...................
 Tag..............: 1 (Utf8)
 Bytes............: java/lang/Object
@@ -104,40 +105,46 @@ Tag..............: 1 (Utf8)
 Bytes............: println
 ...................
 Tag..............: 1 (Utf8)
-Bytes............: (D)V
+Bytes............: (Ljava/lang/String;)V
+...................
+Tag..............: 1 (Utf8)
+Bytes............: print
+...................
+Tag..............: 1 (Utf8)
+Bytes............: (J)V
 
 __________________ Methods __________________
 ..............................................
-AccessFlags......: 1
-Name index.......: 10
-Descriptor index.: 11
+AccessFlags......: 0
+Name index.......: 8
+Descriptor index.: 9
 Attributes count.: 1
 (Attribute)............:
-Attribute Name.........: ConstantPool[11] = Code
+Attribute Name.........: ConstantPool[9] = Code
 Attribute Length.......: 29
 Maximum depth..........: 1
 Nos of local variables.: 1
 Code...................: 0x2ab701b1
 Atributos opcionais associados:
 (Attribute)............:
-Attribute Name.........: ConstantPool[12] = LineNumberTable
+Attribute Name.........: ConstantPool[10] = LineNumberTable
 Attribute Length.......: 6
 ..............................................
 AccessFlags......: 9
-Name index.......: 14
-Descriptor index.: 15
+Name index.......: 12
+Descriptor index.: 13
 Attributes count.: 1
 (Attribute)............:
-Attribute Name.........: ConstantPool[11] = Code
-Attribute Length.......: 118
-Maximum depth..........: 5
-Nos of local variables.: 5
-Code...................: 0x14024814044ab206272963b607b206272967b607b20627296bb607b20627296fb607b2062777b607b206292773b607b1
+Attribute Name.........: ConstantPool[9] = Code
+Attribute Length.......: 114
+Maximum depth..........: 4
+Nos of local variables.: 9
+Code...................: 0x10c3cb202123b6049374a37643681581ba301eb202166b6051644116637420164613768481a7ffe2b1
 Atributos opcionais associados:
 (Attribute)............:
-Attribute Name.........: ConstantPool[12] = LineNumberTable
-Attribute Length.......: 38
+Attribute Name.........: ConstantPool[10] = LineNumberTable
+Attribute Length.......: 42
 __________________ Attributes __________________
 (Attribute)............:
-Attribute Name.........: ConstantPool[15] = SourceFile
+Attribute Name.........: ConstantPool[13] = SourceFile
 Attribute Length.......: 2

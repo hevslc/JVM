@@ -10,7 +10,7 @@ std::vector<MethodInfo*>(fieldsCount)
         at(i)->nameIndex = r2(file);
         at(i)->descriptorIndex = r2(file);
         at(i)->attributesCount = r2(file);
-           at(i)->attributes = new Attributes(file, at(i)->attributesCount, cpTable);
+        at(i)->attributes = new Attributes(file, at(i)->attributesCount, cpTable);
     }
 }
 
@@ -33,21 +33,20 @@ MethodInfo::~MethodInfo()
     }
 }
 
-void Methods::print(ConstantPool cpt) {
+void Methods::print(std::ostream& out, ConstantPool cpt) {
     if (size() > 0)
     {
-        std::cout << std::endl
+        out << std::endl
                   << "__________________ Methods __________________" << std::endl;
     }
     for (auto method : *this)
     {
         // TODO Melhorar a impressão com dados mais legíveis
-        std::cout << "................................................." << std::endl;
-        std::cout << "AccessFlags......: " << method->accessFlags << std::endl;
-        std::cout << "Name index.......: " << method->nameIndex << std::endl;
-        std::cout << "Descriptor index.: " << method->descriptorIndex << std::endl;
-        std::cout << "Attributes count.: " << method->attributesCount << std::endl;
-        //method->attributes->print(cpt);
-        (void)cpt; //coloquei só pra não dar warning pela falta de uso de cpt
+        out << ".............................................." << std::endl;
+        out << "AccessFlags......: " << method->accessFlags << std::endl;
+        out << "Name index.......: " << method->nameIndex << std::endl;
+        out << "Descriptor index.: " << method->descriptorIndex << std::endl;
+        out << "Attributes count.: " << method->attributesCount << std::endl;
+        method->attributes->print(out, cpt);
     }
 }

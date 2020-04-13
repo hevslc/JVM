@@ -43,7 +43,7 @@ public:
   /*!
      \brief Imprime o vetor no terminal.
    */
-  void print(ConstantPool cpt);
+  void print(std::ostream& out, ConstantPool cpt);
 
 };
 
