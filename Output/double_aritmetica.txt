@@ -112,32 +112,68 @@ AccessFlags......: 1
 Name index.......: 10
 Descriptor index.: 11
 Attributes count.: 1
+.......................:
 (Attribute)............:
-Attribute Name.........: ConstantPool[11] = Code
+Attribute Name.........: cp[11] = Code
 Attribute Length.......: 29
 Maximum depth..........: 1
 Nos of local variables.: 1
 Code...................: 0x2ab701b1
 Atributos opcionais associados:
+.......................:
 (Attribute)............:
-Attribute Name.........: ConstantPool[12] = LineNumberTable
+Attribute Name.........: cp[12] = LineNumberTable
 Attribute Length.......: 6
+.......................: 
+Start Pc...............: 0
+End Pc.................: 6
 ..............................................
 AccessFlags......: 9
 Name index.......: 14
 Descriptor index.: 15
 Attributes count.: 1
+.......................:
 (Attribute)............:
-Attribute Name.........: ConstantPool[11] = Code
+Attribute Name.........: cp[11] = Code
 Attribute Length.......: 118
 Maximum depth..........: 5
 Nos of local variables.: 5
 Code...................: 0x14024814044ab206272963b607b206272967b607b20627296bb607b20627296fb607b2062777b607b206292773b607b1
 Atributos opcionais associados:
+.......................:
 (Attribute)............:
-Attribute Name.........: ConstantPool[12] = LineNumberTable
+Attribute Name.........: cp[12] = LineNumberTable
 Attribute Length.......: 38
+.......................: 
+Start Pc...............: 0
+End Pc.................: 8
+.......................: 
+Start Pc...............: 4
+End Pc.................: 9
+.......................: 
+Start Pc...............: 8
+End Pc.................: 10
+.......................: 
+Start Pc...............: 17
+End Pc.................: 11
+.......................: 
+Start Pc...............: 26
+End Pc.................: 12
+.......................: 
+Start Pc...............: 35
+End Pc.................: 13
+.......................: 
+Start Pc...............: 44
+End Pc.................: 14
+.......................: 
+Start Pc...............: 52
+End Pc.................: 15
+.......................: 
+Start Pc...............: 61
+End Pc.................: 16
 __________________ Attributes __________________
+.......................:
 (Attribute)............:
-Attribute Name.........: ConstantPool[15] = SourceFile
+Attribute Name.........: cp[15] = SourceFile
 Attribute Length.......: 2
+Source File............: cp[16] = double_aritmetica.java

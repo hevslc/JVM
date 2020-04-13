@@ -170,12 +170,21 @@ Attributes::Attributes(std::ifstream& f, u2 attributesCount, ConstantPool cpt){
 
 // DISPLAY_______________________________________________________________________________
 void LineNumberTable::print(std::ostream& out){
-	if(lnTable->size()){
-		for(auto lntinfo : *lnTable){
-			out << ".......................: " << std::endl;
-			out << "Start Pc...............: " << lntinfo->startPc << std::endl;
-			out << "End Pc.................: " << lntinfo->lineNumber << std::endl;
-		}
+	for(auto lntinfo : *lnTable){
+		out << ".......................: " << std::endl;
+		out << "Start Pc...............: " << lntinfo->startPc << std::endl;
+		out << "End Pc.................: " << lntinfo->lineNumber << std::endl;
+	}
+}
+
+void LocalVariableTable::print(std::ostream& out, ConstantPool cpt){
+	for(auto lvtinfo : *lvTable){
+		out << ".......................: " << std::endl;
+		out << "Start Pc...............: " << lvtinfo->startPc << std::endl;
+		out << "length.................: " << lvtinfo->length << std::endl;
+		out << "Name...................: " << cpt.getUtf8Str(lvtinfo->nameIndex) << std::endl;
+		out << "Descriptor.............: " << cpt.getUtf8Str(lvtinfo->descriptorIndex) << std::endl;
+		
 	}
 }
 
@@ -193,8 +202,8 @@ void ExceptionTable::print(std::ostream& out){
 
 void Code::print(std::ostream& out, ConstantPool cpt){
 	out << std::noshowbase;
-	out << "Maximum depth..........: " << maxStack << std::endl;
-	out << "Nos of local variables.: " << maxLocals << std::endl;
+	out << "Maximum depth..........: " << std::dec << maxStack << std::endl;
+	out << "Nos of local variables.: " << std::dec << maxLocals << std::endl;
 	out << "Code...................: 0x";
 	for(u4 i=0; i<codeLength; i++) out << std::hex << (int)code[i];
 	exceptionTable->print(out);
@@ -206,9 +215,16 @@ void Code::print(std::ostream& out, ConstantPool cpt){
 	out << std::showbase;
 }
 
+void Exceptions::print(std::ostream& out, ConstantPool cpt){
+	out << "Number Of Exceptions...: " << std::dec << numberOfExceptions << std::endl;
+	for(u2 i=0; i<numberOfExceptions; i++) 
+		out << "Class whose method will throw: " << cpt.getUtf8Class(exceptionIndexTable[i]-1);
+	out << std::endl;
+}
+
 template<typename T>
 void ConstantValue<T>::print(std::ostream& out){
-	out << "Value..................: ConstantPool[" << std::dec << constantvalueIndex-1;
+	out << "Value..................: cp[" << std::dec << constantvalueIndex-1;
 	out << "] (";    
 	if(tagValue == CONSTANT_String) out << "String) = " << value << std::endl;
 	if(tagValue == CONSTANT_Integer) out << "Integer) = " << std::dec << value << std::endl;
@@ -221,15 +237,15 @@ void InnerClasses::print(std::ostream& out, ConstantPool cpt){
 	out << "Number of classes......: " << numberOfClasses << std::endl;
 	out << "Classes................: ";
 	for(auto c : *classes){
-		out << "Inner Class........: ConstantPool[" << std::dec << c->innerClassInfoIndex-1;
+		out << "Inner Class........: cp[" << std::dec << c->innerClassInfoIndex-1;
 		out << "] = " << cpt.getUtf8Class(c->innerClassInfoIndex-1) << std::endl;
 		if(c->innerNameIndex){
-			out << "Outer Class........: ConstantPool[" << std::dec << c->outerClassInfoIndex-1;
+			out << "Outer Class........: cp[" << std::dec << c->outerClassInfoIndex-1;
 			out << "] = " << cpt.Bytes2Str(cpt[c->innerNameIndex-1]) << std::endl;
 		}
 		else  out << "Original Name: " << std::dec << c->innerNameIndex;
 		if(c->outerClassInfoIndex){
-			out << "Outer Class........: ConstantPool[" << std::dec << c->outerClassInfoIndex-1;
+			out << "Outer Class........: cp[" << std::dec << c->outerClassInfoIndex-1;
 			out << "] = " << cpt.getUtf8Class(c->outerClassInfoIndex-1) << std::endl;
 		}
 		else  out << "OuterClassInfoIndex: " << std::dec << c->outerClassInfoIndex;
@@ -238,18 +254,18 @@ void InnerClasses::print(std::ostream& out, ConstantPool cpt){
 }
 
 void SourceFile::print(std::ostream& out, ConstantPool cpt){
-	out << "Source File............: ConstantPool[" << std::dec << sourcefileIndex-1;
+	out << "Source File............: cp[" << std::dec << sourcefileIndex-1;
 	out << "] = " << cpt.getUtf8Str(sourcefileIndex-1) << std::endl;
 }
 
 void Attributes::print(std::ostream& out, ConstantPool cpt){
-	if(size()){
-	    for(auto attribute : *this){
-	    	out << "(Attribute)............:" << std::endl;
-	    	out << "Attribute Name.........: ConstantPool[" << std::dec << attribute->attributeNameIndex-1;
-			out << "] = " << attribute->name << std::endl;
-			out << "Attribute Length.......: " << (int)attribute->attributeLength << std::endl;	
-	    	attribute->print(out, cpt);
-	    }	
+	for(auto attribute : *this){
+	   	out << ".......................:" << std::endl;
+	   	out << "(Attribute)............:" << std::endl;
+	   	out << "Attribute Name.........: cp[" << std::dec << attribute->attributeNameIndex-1;
+		out << "] = " << attribute->name << std::endl;
+		out << "Attribute Length.......: " << (int)attribute->attributeLength << std::endl;	
+	    attribute->print(out, cpt);
+	    attribute->print(out);
 	}
 }
