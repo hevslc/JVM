@@ -30,10 +30,10 @@ public:
 	u2				minorVersion;			/*!< Versão menor */
 	u2				majorVersion;			/*!< Versão maior */
 	u2				constantPoolCount;		/*!< Número de entradas na tabela constant_pool + 1 */
-	ConstantPoolT	constantPool;			/*!< Tabela de estruturas representando string, nomes...*/
-	u2				acess_flags;
-	u2				thisClass;
-	u2				superClass;
+	ConstantPool	constantPool;			/*!< Tabela de estruturas representando string, nomes...*/
+	u2				acessFlagsMask;
+	u2				thisClassIdx;
+	u2				superClassIdx;
 	u2				interfacesCount;
 	//u2			interfaces;
 	u2				fieldsCount;
@@ -44,13 +44,17 @@ public:
 	Attributes 		attributes;
 
 	//Additional
-	std::map<u2, bool> acessFlags{ {ACC_PUBLIC, false}, {ACC_FINAL, false},
-			{ACC_SUPER, false}, {ACC_INTERFACE, false}, {ACC_ABSTRACT, false},
-			{ACC_SYNTHETIC, false}, {ACC_ANNOTATION, false}, {ACC_ENUM, false}};	
+	Version 		version;
+	AcessFlags 		acessFlags;
+	ThisClass 		thisClass;
+	SuperClass 		superClass;
+	
 
-	//Decoding
-	void racessFlags(u2 mask);
+	//Print
+	void print(u1 mode, std::string argv);
+	void printBuf(std::streambuf  *buf);
 };
+
 
 
 

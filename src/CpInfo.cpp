@@ -1,5 +1,29 @@
 #include "CpInfo.h"
 
+float ConstantPool::getFloat(u4 bytes){
+	int s = ((bytes >> 31) == 0) ? 1 : -1;
+	int e = (bytes >> 23) & 0xff;
+	int m = (e == 0) ? (bytes & 0x7fffff) << 1 : (bytes & 0x7fffff) | 0x800000;
+	float v = s*m*pow(2, exp(1)-150);
+	if(bytes == 0x7f800000) return std::numeric_limits<float>::infinity();
+	else if(bytes ==  0xff800000) return -std::numeric_limits<float>::infinity();
+	else return v;
+}
+
+double ConstantPool::getDouble(u4 highBytes, u4 lowBytes){
+	uint64_t l = ((long)highBytes << 32) | (long)lowBytes;
+	int s = ((l >> 63) == 0) ? 1 : -1;
+	int e = (l >> 52) & 0x7ffL;
+	long m = (e == 0) ? ((l & 0xfffffffffffffL) << 1) : ((l & 0xfffffffffffffL) | 0x10000000000000L);
+	double v = (s*m*pow(2, e-1075));
+	if(l == 0x7ff0000000000000L) return std::numeric_limits<double>::infinity();
+	else if(l ==  0xfff0000000000000L) return -std::numeric_limits<double>::infinity();
+	else return v;
+}
+
+long ConstantPool::getLong(u4 highBytes, u4 lowBytes){
+	return ((long)highBytes << 32) | (long)lowBytes;
+}
 
 //! Método rconstantPool
 /*!
@@ -19,7 +43,7 @@
 		#CONSTANT_String, #CONSTANT_Integer, #CONSTANT_Float, #CONSTANT_Long, #CONSTANT_Double,
 		#CONSTANT_NameAndType, #CONSTANT_Utf8
 */ 
-ConstantPoolT::ConstantPoolT(std::ifstream& f, u2 constantPoolCount){
+ConstantPool::ConstantPool(std::ifstream& f, u2 constantPoolCount){
 	for(int i=0; i<constantPoolCount-1; i++){
 		bool largeN = false;
 		Cpinfo *cpinfo = new Cpinfo;
@@ -38,13 +62,24 @@ ConstantPoolT::ConstantPoolT(std::ifstream& f, u2 constantPoolCount){
 				cpinfo->String.stringIndex = r2(f);
 				break;
 			case CONSTANT_Integer:
+				cpinfo->Integer.bytes = r4(f);
+				cpinfo->Integer.nint = int(cpinfo->Integer.bytes);
+				break;
 			case CONSTANT_Float:
-				cpinfo->IntegerFloat.bytes = r4(f);
+				cpinfo->Float.bytes = r4(f);
+				cpinfo->Float.nfloat = getFloat(cpinfo->Float.bytes);
 				break;
 			case CONSTANT_Long:
+				cpinfo->Long.highBytes = r4(f);
+				cpinfo->Long.lowBytes = r4(f);
+				cpinfo->Long.nlong = getLong(cpinfo->Long.highBytes, cpinfo->Long.lowBytes);
+				i++;
+				largeN = true;
+				break;
 			case CONSTANT_Double:
-				cpinfo->LongDouble.highBytes = r4(f);
-				cpinfo->LongDouble.lowBytes = r4(f);
+				cpinfo->Double.highBytes = r4(f);
+				cpinfo->Double.lowBytes = r4(f);
+				cpinfo->Double.ndouble = getDouble(cpinfo->Double.highBytes, cpinfo->Double.lowBytes);
 				i++;
 				largeN = true;
 				break;
@@ -65,44 +100,89 @@ ConstantPoolT::ConstantPoolT(std::ifstream& f, u2 constantPoolCount){
 	}
 }
 
+std::string ConstantPool::Bytes2Str(Cpinfo cpi){
+	std::string name;
+	for(int i=0; i<cpi.Utf8.lenght; i++) name.push_back(char(cpi.Utf8.bytes[i]));
+	return name;
+}
 
-// PARA TESTE
-void ConstantPoolT::print(){
-	std::cout << "__________________constantPool__________________" << std::endl;
+std::string ConstantPool::getUtf8Str(u2 idxUtf8){
+	return Bytes2Str(at(idxUtf8));
+}
+
+std::string ConstantPool::getUtf8Class(u2 idxClass){
+	return getUtf8Str(at(idxClass).Class.nameIndex-1);
+}
+
+std::string ConstantPool::getDescriptor(u2 idxNameType){
+	return getUtf8Str(at(idxNameType).NameAndType.descriptorIndex-1);
+}
+
+std::string ConstantPool::getNNameAndType(u2 idxNameType){
+	return getUtf8Str(at(idxNameType).NameAndType.nameIndex-1);
+}
+
+void ConstantPool::print(std::ostream& out){
+	out << "\n__________________ConstantPool__________________" << std::endl;
+	out << std::showbase;
 	for (auto cp : *this){
-		std::cout << "tag: "   << (int)cp.tag << std::endl;
+		out << "..................." << std::endl;
+		if(cp.tag) out << "Tag..............: " << std::dec << int(cp.tag);
 		switch(cp.tag){
 			case CONSTANT_Class:
-				std::cout << "classIndex: "  << cp.Class.nameIndex << std::endl;
-				at(cp.Class.nameIndex).Utf8.print();
+				out << " (Class)" << std::endl;
+				out << "Name.............: " << getUtf8Str(cp.Class.nameIndex-1) << std::endl;
 				break;
 			case CONSTANT_Fieldref:
+				out << " (Field)" << std::endl;
+				out << "Class Name.......: " << getUtf8Class(cp.FieldMethInter.classIndex-1) << std::endl;
+				out << "Name and Type....: " << getNNameAndType(cp.FieldMethInter.nameTypeIndex-1);
+				out << "  :  " << getDescriptor(cp.FieldMethInter.nameTypeIndex-1) << std::endl;
+				break;			
 			case CONSTANT_Methodref:
+				out << " (Method)" << std::endl;
+				out << "Class Name.......: " << getUtf8Class(cp.FieldMethInter.classIndex-1) << std::endl;
+				out << "Name and Type....: " << getNNameAndType(cp.FieldMethInter.nameTypeIndex-1);
+				out << "  :  " << getDescriptor(cp.FieldMethInter.nameTypeIndex-1) << std::endl;
+				break;			
 			case CONSTANT_InterfaceMethodref:
-				std::cout << "classIndex: "  << cp.FieldMethInter.classIndex << std::endl;
-				std::cout << "nameTypeIndex: "  << cp.FieldMethInter.nameTypeIndex << std::endl;
+				out << " (Interface)" << std::endl;
+				out << "Class Name.......: " << getUtf8Class(cp.FieldMethInter.classIndex-1) << std::endl;
+				out << "Name and Type....: " << getNNameAndType(cp.FieldMethInter.nameTypeIndex-1);
+				out << "  :  " << getDescriptor(cp.FieldMethInter.nameTypeIndex-1) << std::endl;
 				break;
 			case CONSTANT_String:
-				std::cout << "stringIndex: "  << cp.String.stringIndex << std::endl;
+				out << " (String)" << std::endl;
+				out << "Name.............: " << getUtf8Str(cp.String.stringIndex-1) << std::endl;
 				break;
 			case CONSTANT_Integer:
+				out << " (Integer)" << std::endl;
+				out << "Number...........: " << std::dec << cp.Integer.nint  << std::endl;
+				break;
 			case CONSTANT_Float:
-				std::cout << "bytes: "  << cp.IntegerFloat.bytes << std::endl;
+				out << " (Float)" << std::endl;
+				out << "Number...........: " << cp.Float.nfloat << std::endl;
 				break;
 			case CONSTANT_Long:
+				out << " (Long)" << std::endl;
+				out << "High Bytes.......: " << std::hex << cp.Long.highBytes << std::endl;
+				out << "Low Bytes........: " << std::hex << cp.Long.lowBytes << std::endl;
+				out << "Number...........: " << std::dec << cp.Long.nlong << std::endl;
+				break;
 			case CONSTANT_Double:
-				std::cout << "highBytes: "  << cp.LongDouble.highBytes << std::endl;
-				std::cout << "lowBytes: "  << cp.LongDouble.lowBytes << std::endl;
+				out << " (Double)" << std::endl;
+				out << "High Bytes.......: " << std::hex << cp.Double.highBytes << std::endl;
+				out << "Low Bytes........: " << std::hex << cp.Double.lowBytes << std::endl;				
+				out << "Number...........: " << cp.Double.ndouble << std::endl;
 				break;
 			case CONSTANT_NameAndType:
-				std::cout << "nameIndex: "  << cp.NameAndType.nameIndex << std::endl;
-				std::cout << "descriptorIndex: "  << cp.NameAndType.descriptorIndex << std::endl;
+				out << " (NameAndType)" << std::endl;
+				out << "Name and Type....: " << getUtf8Str(cp.NameAndType.nameIndex-1);
+				out << "  :  " << getUtf8Str(cp.NameAndType.descriptorIndex-1) << std::endl;	
 				break;
 			case CONSTANT_Utf8:
-				std::cout << "lenght: "  << cp.Utf8.lenght << std::endl;
-				for(int j=0; j<cp.Utf8.lenght; j++) 
-					std::cout << cp.Utf8.bytes[j];
-				std::cout << std::endl;
+				out << " (Utf8)" << std::endl;
+				out << "Bytes............: " << Bytes2Str(cp) << std::endl;	
 				break;
 			default:
 				break;

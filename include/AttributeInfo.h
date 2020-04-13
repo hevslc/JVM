@@ -9,9 +9,9 @@ class AttributeInfo;
 class Attributes : public  std::vector<AttributeInfo*> {
 public:
 	Attributes() {}
-	Attributes(std::ifstream& f, u2 attributesCount, ConstantPoolT constantPool); /*!< Tabela de estruturas dos atributos */
-	std::string readName(Cpinfo cpi);
-    void print(ConstantPoolT cpt);
+	Attributes(std::ifstream& f, u2 attributesCount, ConstantPool constantPool); /*!< Tabela de estruturas dos atributos */
+    void getConstantValue(std::ifstream& f, ConstantPool cpt, u2 idx, std::string name);
+    void print(std::ostream& out, ConstantPool cpt);
 };
 
 class AttributeInfo {
@@ -22,15 +22,20 @@ public:
     AttributeInfo() {}
     AttributeInfo(u2 idx, std::ifstream& f, std::string n) : attributeNameIndex(idx), attributeLength(r4(f)), name(n) {}
     void generalInfo(u2 idx, std::ifstream& f, std::string name);
-    //virtual void print(ConstantPoolT cpt) {(void)cpt; }
+    virtual void print(std::ostream& out, ConstantPool cpt) {(void)cpt; (void)out;}
+    virtual void print(std::ostream& out) {(void)out;}
 };
 
 //__________________________________________________________________
+template<typename T>
 class ConstantValue : public AttributeInfo {
 public:
-	ConstantValue(u2 idx, std::ifstream& f, std::string name);
-    //void print(ConstantPoolT cpt);
+    T value;
+    u1 tagValue;
 	u2 	constantvalueIndex;	/*!< Indice para a tabela constant_pool contendo o valor constante deste atributo. */
+	ConstantValue() {}
+    ConstantValue(u1 tag, u2 idx, u4 l, std::string name, T v);
+    void print(std::ostream& out);
 };
 //__________________________________________________________________
 class ExceptionTableInfo{
@@ -46,13 +51,11 @@ class ExceptionTable : public std::vector<ExceptionTableInfo*>{
 public:
     ExceptionTable() {}
     ExceptionTable(std::ifstream& f, u2 len);
-    //void print();
+    void print(std::ostream& out);
 };
  
 class Code : public AttributeInfo {
 public:
-	Code(u2 idx, std::ifstream& f, ConstantPoolT constantPool, std::string name);
-    //void print(ConstantPoolT cpt);
 	u2	maxStack;	/*< Profundidade máxima da pilha de operandos deste método em qualquer ponto durante a execução do método. */
     u2 	maxLocals;	/*< Número de variáveis ​​locais na matriz de variáveis ​​locais alocadas na invocação deste método. */
     u4 	codeLength;	/*< Número de bytes na matriz de códigos para este método. Deve ser entre zero e 65536. */
@@ -61,14 +64,17 @@ public:
     u2 	attributesCount;	/*< Indica o número de atributos do atributo Code. */
     Attributes *attributes;	/*< Cada entrada é uma estrutura attribute_info. */					
     ExceptionTable *exceptionTable;
+    //futuramente, atributo para Intruções do código (um vetor de objetos talvez)
+	Code(u2 idx, std::ifstream& f, ConstantPool constantPool, std::string name);
+    void print(std::ostream& out, ConstantPool cpt);
 };
 //__________________________________________________________________
 class Exceptions : public AttributeInfo {
 public:
-	Exceptions(u2 idx, std::ifstream& f, std::string name);
-    //void print(ConstantPoolT cpt);
  	u2 	numberOfExceptions;
     u2 	*exceptionIndexTable;
+	Exceptions(u2 idx, std::ifstream& f, std::string name);
+    void print(std::ostream& out, ConstantPool cpt);
 }; 
 //__________________________________________________________________
 class ClassesInfo{
@@ -76,9 +82,10 @@ public:
     u2  innerClassInfoIndex;
     u2  outerClassInfoIndex;
     u2  innerNameIndex;
-    u2  innerClassAccessFlags;public:
+    u2  innerClassAccessFlags;
+    AcessFlags acessFlags;
 };
-//__________________________________________________________________
+
 class Classes : public std::vector<ClassesInfo*>{
 public:
     Classes() {}
@@ -87,17 +94,17 @@ public:
 
 class InnerClasses : public AttributeInfo {
 public:
-	InnerClasses(u2 idx, std::ifstream& f, std::string name);
-    //void print(ConstantPoolT cpt);
     u2 	    numberOfClasses;
     Classes *classes;   
+	InnerClasses(u2 idx, std::ifstream& f, std::string name);
+    void print(std::ostream& out, ConstantPool cpt);
 };
 //__________________________________________________________________
 class SourceFile : public AttributeInfo {
 public:
-	SourceFile(u2 idx, std::ifstream& f, std::string name);
-    //void print(ConstantPoolT cpt);
     u2 	sourcefileIndex;
+	SourceFile(u2 idx, std::ifstream& f, std::string name);
+    void print(std::ostream& out, ConstantPool cpt);
 };
 //__________________________________________________________________
 class LineNumberTableStrInfo{
@@ -110,15 +117,14 @@ class LineNumberTableStr : public std::vector<LineNumberTableStrInfo*>{
 public:
     LineNumberTableStr() {}
     LineNumberTableStr(std::ifstream& f, u2 len);   
-    //void print(); 
 };
 
 class LineNumberTable : public AttributeInfo {
 public:
-	LineNumberTable(u2 idx, std::ifstream& f, std::string name);
-    //void print(ConstantPoolT cpt);
 	u2 	lineNumberTableLength;
     LineNumberTableStr *lnTable;
+	LineNumberTable(u2 idx, std::ifstream& f, std::string name);
+    void print(std::ostream& out);
 };
 //__________________________________________________________________
 class LocalVariableTableStrInfo{   
@@ -138,10 +144,10 @@ public:
 
 class LocalVariableTable : public AttributeInfo {
 public:
-	LocalVariableTable(u2 idx, std::ifstream& f, std::string name);
-    //void print(ConstantPoolT cpt);
 	u2 localVariableTableLength;
     LocalVariableTableStr *lvTable;
+	LocalVariableTable(u2 idx, std::ifstream& f, std::string name);
+    void print(std::ostream& out, ConstantPool cpt);
 };
 
 

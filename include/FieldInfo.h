@@ -17,7 +17,7 @@ public:
 class Fields : public  std::vector<FieldInfo *> {
 public:
 	Fields() {}
-	Fields(std::ifstream& f, u2 fieldsCount ,ConstantPoolT constantPool);
+	Fields(std::ifstream& f, u2 fieldsCount ,ConstantPool constantPool);
 	void printFields();
 };
 

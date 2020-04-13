@@ -1,11 +1,9 @@
 #ifndef _METHOD_INFO_HPP_
 #define _METHOD_INFO_HPP_
 
-#include <vector>
 #include "Definitions.h"
 #include "AttributeInfo.h"
 #include "CpInfo.h"
-#include <fstream>
 
 /*!
    \brief Estrutura de um método na JVM.
@@ -35,7 +33,7 @@ public:
      \param fieldsCount Número de Fields.
      \param cpTable     Pool de constantes.
    */
-  Methods(std::ifstream& file, u2 fieldsCount, ConstantPoolT cpTable);
+  Methods(std::ifstream& file, u2 fieldsCount, ConstantPool cpTable);
 
   /*!
      \brief Destrói o vetor de métodos.
@@ -45,7 +43,7 @@ public:
   /*!
      \brief Imprime o vetor no terminal.
    */
-  void print(ConstantPoolT cpt);
+  void print(std::ostream& out, ConstantPool cpt);
 
 };
 

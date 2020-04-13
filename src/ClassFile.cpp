@@ -50,20 +50,59 @@ ClassFile::ClassFile(std::ifstream &f) : magic(r4(f)),
 										 majorVersion(r2(f)),
 										 constantPoolCount(r2(f)),
 										 constantPool(f, constantPoolCount),
-										 acess_flags(r2(f)),
-										 thisClass(r2(f)),
-										 superClass(r2(f)),
+										 acessFlagsMask(r2(f)),
+										 thisClassIdx(r2(f)),
+										 superClassIdx(r2(f)),
 										 interfacesCount(r2(f)),
 										 //ler interfaces
 										 fieldsCount(r2(f)),
 										 fields(f, fieldsCount, constantPool),
 										 methodsCount(r2(f)),
-										 methods(f, methodsCount, constantPool)
+										 methods(f, methodsCount, constantPool),
+										 attributesCount(r2(f)),
+										 attributes(f, attributesCount, constantPool)
 {
+	version.put(majorVersion);
+	acessFlags.set(acessFlagsMask);
+	thisClass.get(thisClassIdx, constantPool.getUtf8Class(thisClassIdx-1));
+	superClass.get(superClassIdx, constantPool.getUtf8Class(superClassIdx-1));
 }
 
-//_______ DECODING
-void ClassFile::racessFlags(u2 mask){
-	for(auto p=acessFlags.begin(); p!=acessFlags.end(); ++p)
-		p->second = ((p->first & mask)==p->first);	
+
+void ClassFile::print(u1 mode, std::string argv){
+	if(mode == infile){
+		mkdir("./Output", 0777);
+		std::string name = "./Output/" + argv.substr(9, argv.size()-15) + ".txt";
+		
+		std::ofstream f;
+	  	f.open(name);
+	  	printBuf(f.rdbuf());
+	  	f.close();
+	}
+	else if(mode == interminal)
+		printBuf(std::cout.rdbuf());
+}
+
+void ClassFile::printBuf(std::streambuf  *buf){
+	std::ostream out(buf);
+	out << std::showbase;
+	out << "Magic............: " << std::hex << magic << std::endl;
+	out << "Minor Version....: " << std::hex << minorVersion << std::endl;
+	out << "Major Version....: " << std::hex << majorVersion;
+	out << "  [" << version.get() << "]" << std::endl;
+	out << "ConstantPoolCount: " << std::dec << constantPoolCount << std::endl;
+	acessFlags.print(out);
+	thisClass.print(out);
+	superClass.print(out);
+	out << "Interfaces Count.: " << std::dec << interfacesCount << std::endl;
+	out << "Fields Count.....: " << std::dec << fieldsCount << std::endl;
+	out << "Methods Count....: " << std::dec << methodsCount << std::endl;
+	out << "Attributes Count.: " << std::dec << attributesCount << std::endl;
+	//Tables
+	constantPool.print(out);
+	//print Interfaces
+	//print fields
+	methods.print(out, constantPool);
+	out << "__________________ Attributes __________________" << std::endl;
+	attributes.print(out, constantPool);
 }
