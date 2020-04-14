@@ -8,15 +8,50 @@
 /*!
    \brief Estrutura de um método na JVM.
  */
-class MethodInfo {
-    public:
-        u2 accessFlags;         /*!< Flags de acesso do método */
-        u2 nameIndex;           /*!< Indica onde está o nome do método na tabela constant_pool */
-        u2 descriptorIndex;     /*!< Indica a posição do descritor do método na tabela constant_pool */
-        u2 attributesCount;     /*!< Indica o tamanho o vetor que comporta os atributos do método */
-        Attributes* attributes; /*!< Vetor de atributos */
+class MethodInfo
+{
+public:
+  AcessFlags accessFlags; /*!< Flags de acesso do método */
+  u2 nameIndex;           /*!< Indica onde está o nome do método na tabela constant_pool */
+  u2 descriptorIndex;     /*!< Indica a posição do descritor do método na tabela constant_pool */
+  u2 attributesCount;     /*!< Indica o tamanho o vetor que comporta os atributos do método */
+  Attributes *attributes; /*!< Vetor de atributos */
 
-        ~MethodInfo();
+  std::string name;       /*!< Nome do método */
+  std::string descriptor; /*!< Descritor do método */
+
+  ~MethodInfo();
+
+  /*!
+     \brief Inicializa um objeto MethodInfo.
+     Basicamente decodifica nome e descritor do método.
+     
+     \param cp Tabela pool de constantes.
+   */
+  void init(ConstantPool &cp);
+
+  /*!
+     \brief Imprime os dados do método em uma saída.
+     
+     \param out Saída onde o método será impresso.
+     \param cp Tabela pool de constantes.
+   */
+  void print(std::ostream &out, ConstantPool &cp);
+
+private:
+  /*!
+     \brief Imprime o nome do método em uma saída.
+     
+     \param out Local onde será impresso o nome do método.
+   */
+  void printName(std::ostream &out);
+
+  /*!
+     \brief Imprime o descritor do método.
+     
+     \param out Onde será impresso o método.
+   */
+  void printDescriptor(std::ostream &out);
 };
 
 /*!
