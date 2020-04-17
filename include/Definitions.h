@@ -172,7 +172,7 @@ public:
 	   \param idx Índice da classe no ConstantPool.
 	   \param n Nome da classe.
 	 */
-	void get(u2 idx, std::string n){ name = n; idxClass = idx; }
+	void set(u2 idx, std::string n){ name = n; idxClass = idx; }
 
 	/*!
 	   \brief Imprime os dados da classe em um Stream.
@@ -204,7 +204,7 @@ public:
 	   \param idx Índice da super classe no ConstantPool.
 	   \param n Nome da super classe.
 	 */
-	void get(u2 idx, std::string n){ name = n; idxClass = idx; }
+	void set(u2 idx, std::string n){ name = n; idxClass = idx; }
 
 	/*!
 	   \brief Imprime a super classe em um Stream.
