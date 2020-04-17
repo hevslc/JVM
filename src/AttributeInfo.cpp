@@ -163,8 +163,11 @@ Attributes::Attributes(std::ifstream& f, u2 attributesCount, ConstantPool cpt){
 			LocalVariableTable *lvt = new LocalVariableTable(idx, f, name);
 			push_back(lvt);
 		}	
-		else
-			std::cout << "Atributo não implementado!" << std::endl;
+		else {
+			u4 lentgh = r4(f);
+			f.seekg(lentgh + f.tellg());
+			std::cout << "Atributo não implementado: " + name << std::endl;
+		}
 	}
 }
 
