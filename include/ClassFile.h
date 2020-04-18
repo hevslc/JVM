@@ -25,37 +25,43 @@ public:
 	   \sa ClassFile::rconstantPoolt(std::ifstream&)
 	 */
 	ClassFile(std::ifstream &f);
+	u4			 magic;				/*!< Assinatura do arquivo: 0xCAFEBABE */
+	u2			 minorVersion;		/*!< Versão menor */
+	u2			 majorVersion;		/*!< Versão maior */
+	u2			 constantPoolCount;	/*!< Número de entradas na tabela constant_pool + 1 */
+	ConstantPool constantPool;		/*!< Tabela de estruturas representando  constantes de string, nomes e outras constantes mencionadas no ClassFile.*/
+	u2			 acessFlagsMask;	/*!< Máscara auxiliar para a inicialização do acessFlags */
+	u2			 thisClassIdx; 		/*!< Índice para Tabela de Constantes para a inicialização do thisClass */
+	u2			 superClassIdx; 	/*!< Se diferente de zero, índice para Tabela de Constantes para a inicialização do superClass */
+	u2			 interfacesCount; 	/*!< Contador do número de interfaces */
+	//u2		 interfaces; 		/*!< Vetor de interfaces */
+	u2			 fieldsCount; 		/*!< Contador do número de Fields */
+	Fields		 fields; 			/*!< Campos (Fields) da classe */
+	u2			 methodsCount; 		/*!< Contador do número de métodos */
+	Methods 	 methods; 			/*!< Métodos da classe */
+	u2			 attributesCount; 	/*!< Contador do número de atributos */
+	Attributes 	 attributes; 		/*!< Atributos da classe */
 
-	u4				magic;					/*!< Assinatura do arquivo: 0xCAFEBABE */
-	u2				minorVersion;			/*!< Versão menor */
-	u2				majorVersion;			/*!< Versão maior */
-	u2				constantPoolCount;		/*!< Número de entradas na tabela constant_pool + 1 */
-	ConstantPool	constantPool;			/*!< Tabela de estruturas representando string, nomes...*/
-	u2				acessFlagsMask;
-	u2				thisClassIdx;
-	u2				superClassIdx;
-	u2				interfacesCount;
-	//u2			interfaces;
-	u2				fieldsCount;
-	Fields			fields;
-	u2				methodsCount;
-	Methods 	    methods;
-	u2				attributesCount;
-	Attributes 		attributes;
+	// Additional
+	Version 		version; 		/*!< Versão Java utilizada no arquivo .class */
+	AcessFlags 		acessFlags; 	/*!< Flags de acesso da classe */
+	ThisClass 		thisClass; 		/*!< Indica esta classe (definido a partir do ConstantPool) */
+	SuperClass 		superClass;		/*!< Indica a super classe */
 
-	//Additional
-	Version 		version;
-	AcessFlags 		acessFlags;
-	ThisClass 		thisClass;
-	SuperClass 		superClass;
-	
-
-	//Print
+	/*!
+	   \brief Faz a impressão do ClassFile, podendo ser em arquivo ou no terminal.
+	   
+	   \param mode Indica o modo da impressão (infile ou interminal)
+	   \param argv Argumento que contém o nome do arquivo .class
+	 */
 	void print(u1 mode, std::string argv);
-	void printBuf(std::streambuf  *buf);
+
+	/*!
+	   \brief Imprime o ClassFile em um buffer.
+	   
+	   \param buf Buffer para impressão do arquivo.
+	 */
+	void printBuf(std::streambuf *buf);
 };
-
-
-
 
 #endif

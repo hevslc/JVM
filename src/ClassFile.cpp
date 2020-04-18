@@ -64,8 +64,8 @@ ClassFile::ClassFile(std::ifstream &f) : magic(r4(f)),
 {
 	version.put(majorVersion);
 	acessFlags.set(acessFlagsMask);
-	thisClass.get(thisClassIdx, constantPool.getUtf8Class(thisClassIdx-1));
-	superClass.get(superClassIdx, constantPool.getUtf8Class(superClassIdx-1));
+	thisClass.set(thisClassIdx, constantPool.getUtf8Class(thisClassIdx-1));
+	superClass.set(superClassIdx, constantPool.getUtf8Class(superClassIdx-1));
 }
 
 
