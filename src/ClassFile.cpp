@@ -101,7 +101,7 @@ void ClassFile::printBuf(std::streambuf  *buf){
 	//Tables
 	constantPool.print(out);
 	//print Interfaces
-	//print fields
+	fields.print(out, constantPool);
 	methods.print(out, constantPool);
 	out << "__________________ Attributes __________________" << std::endl;
 	attributes.print(out, constantPool);
