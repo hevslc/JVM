@@ -25,24 +25,6 @@ long ConstantPool::getLong(u4 highBytes, u4 lowBytes){
 	return ((long)highBytes << 32) | (long)lowBytes;
 }
 
-//! Método rconstantPool
-/*!
-	Método lê toda a tabela de constantes do arquivo .class armazenando as informações 
-	no objeto da classe cpinfo em seus respectivos atributos.
-	Na cada estrutura lida é da forma 
-	~~~~~{.cpp}
-	cp_info {
-	u1 tag;
-	u1 info[ ];
-	}
-	~~~~~
-	Portanto, a tribuição dos atributos é feita verificando a tag, o qual 
-	define o tipo da informação em cp_info.
-	\param f Arquivo .class a ser lido.
-	\sa #CONSTANT_Class, #CONSTANT_Fieldref, #CONSTANT_Methodref, #CONSTANT_InterfaceMethodref,
-		#CONSTANT_String, #CONSTANT_Integer, #CONSTANT_Float, #CONSTANT_Long, #CONSTANT_Double,
-		#CONSTANT_NameAndType, #CONSTANT_Utf8
-*/ 
 ConstantPool::ConstantPool(std::ifstream& f, u2 constantPoolCount){
 	for(int i=0; i<constantPoolCount-1; i++){
 		bool largeN = false;
