@@ -122,7 +122,7 @@ void Attributes::getConstantValue(std::ifstream& f, ConstantPool cpt, u2 idx, st
 		ConstantValue<long> *cv = new ConstantValue<long>(cpt[vidx-1].tag, idx, len, name, cpt[vidx-1].Long.nlong);
 		push_back(cv);
 	}
-	else if(cpt[vidx-1].tag == CONSTANT_Float){
+	else if(cpt[vidx-1].tag == CONSTANT_Double){
 		ConstantValue<double> *cv = new ConstantValue<double>(cpt[vidx-1].tag, idx, len, name, cpt[vidx-1].Double.ndouble);
 		push_back(cv);
 	}	
