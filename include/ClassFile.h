@@ -29,10 +29,10 @@ public:
 	u2			 minorVersion;		/*!< Versão menor */
 	u2			 majorVersion;		/*!< Versão maior */
 	u2			 constantPoolCount;	/*!< Número de entradas na tabela constant_pool + 1 */
-	ConstantPool constantPool;		/*!< Tabela de estruturas representando string, nomes...*/
+	ConstantPool constantPool;		/*!< Tabela de estruturas representando  constantes de string, nomes e outras constantes mencionadas no ClassFile.*/
 	u2			 acessFlagsMask;	/*!< Máscara auxiliar para a inicialização do acessFlags */
-	u2			 thisClassIdx; 		/*!< Máscara auxiliar para a inicialização do thisClass */
-	u2			 superClassIdx; 	/*!< Máscara auxiliar para a inicialização do superClass */
+	u2			 thisClassIdx; 		/*!< Índice para Tabela de Constantes para a inicialização do thisClass */
+	u2			 superClassIdx; 	/*!< Se diferente de zero, índice para Tabela de Constantes para a inicialização do superClass */
 	u2			 interfacesCount; 	/*!< Contador do número de interfaces */
 	//u2		 interfaces; 		/*!< Vetor de interfaces */
 	u2			 fieldsCount; 		/*!< Contador do número de Fields */
