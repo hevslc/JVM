@@ -37,3 +37,6 @@ main
 
 # Objects folder
 obj/*
+
+# Resultados
+Output/*.txt

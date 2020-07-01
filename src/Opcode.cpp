@@ -32,6 +32,24 @@ std::string U2OperandOpcode::getString()
     return "";
 }
 
+S2OperandOpcode::S2OperandOpcode(std::string name):
+Opcode(name)
+{
+    knowsCode = true;
+}
+
+std::string S2OperandOpcode::getString()
+{
+    if (code != nullptr)
+    {
+        u4 pos = *position;
+        u2 result = (code[pos + 1] << 8) | code[pos + 2];
+        *position += 2;
+        return name + " " + std::to_string((int16_t) result);
+    }
+    return "";
+}
+
 U1OperandOpcode::U1OperandOpcode(std::string name):
 Opcode(name)
 {
@@ -61,7 +79,7 @@ std::string IncrementOpcode::getString()
     {
         u4 pos = *position;
         *position += 2;
-        return name + " " + std::to_string(code[pos + 1]) + " " + std::to_string(code[pos + 2]);
+        return name + " " + std::to_string(code[pos + 1]) + " " + std::to_string((int8_t)code[pos + 2]);
     }
     return "";
 }
@@ -227,22 +245,22 @@ opcodes(0xff + 1, nullptr)
     opcodes[0x96] = new Opcode("fcmpg");
     opcodes[0x97] = new Opcode("dcmpl");
     opcodes[0x98] = new Opcode("dcmpg");
-    opcodes[0x99] = new U2OperandOpcode("ifeq");
-    opcodes[0x9A] = new U2OperandOpcode("ifne");
-    opcodes[0x9B] = new U2OperandOpcode("iflt");
-    opcodes[0x9C] = new U2OperandOpcode("ifge");
-    opcodes[0x9D] = new U2OperandOpcode("ifgt");
-    opcodes[0x9E] = new U2OperandOpcode("ifle");
-    opcodes[0x9F] = new U2OperandOpcode("if_icmpeq");
-    opcodes[0xA0] = new U2OperandOpcode("if_icmpne");
-    opcodes[0xA1] = new U2OperandOpcode("if_icmplt");
-    opcodes[0xA2] = new U2OperandOpcode("if_icmpge");
-    opcodes[0xA3] = new U2OperandOpcode("if_icmpgt");
-    opcodes[0xA4] = new U2OperandOpcode("if_icmple");
-    opcodes[0xA5] = new U2OperandOpcode("if_acmpeq");
-    opcodes[0xA6] = new U2OperandOpcode("if_acmpne");
-    opcodes[0xA7] = new U2OperandOpcode("goto");
-    opcodes[0xA8] = new U2OperandOpcode("jsr");
+    opcodes[0x99] = new S2OperandOpcode("ifeq");
+    opcodes[0x9A] = new S2OperandOpcode("ifne");
+    opcodes[0x9B] = new S2OperandOpcode("iflt");
+    opcodes[0x9C] = new S2OperandOpcode("ifge");
+    opcodes[0x9D] = new S2OperandOpcode("ifgt");
+    opcodes[0x9E] = new S2OperandOpcode("ifle");
+    opcodes[0x9F] = new S2OperandOpcode("if_icmpeq");
+    opcodes[0xA0] = new S2OperandOpcode("if_icmpne");
+    opcodes[0xA1] = new S2OperandOpcode("if_icmplt");
+    opcodes[0xA2] = new S2OperandOpcode("if_icmpge");
+    opcodes[0xA3] = new S2OperandOpcode("if_icmpgt");
+    opcodes[0xA4] = new S2OperandOpcode("if_icmple");
+    opcodes[0xA5] = new S2OperandOpcode("if_acmpeq");
+    opcodes[0xA6] = new S2OperandOpcode("if_acmpne");
+    opcodes[0xA7] = new S2OperandOpcode("goto");
+    opcodes[0xA8] = new S2OperandOpcode("jsr");
     opcodes[0xA9] = new U1OperandOpcode("ret");
     // TODO tableswitch 0xAA
     // TODO lookupswitch 0xAB
@@ -278,14 +296,6 @@ opcodes(0xff + 1, nullptr)
     // TODO jsr_w 0xC9
 }
 
-void Opcodes::clear()
-{
-    if (instance != nullptr)
-    {
-        delete instance;
-    }
-}
-
 Opcodes::~Opcodes()
 {
     for (Opcode* opcode : opcodes)
@@ -297,32 +307,29 @@ Opcodes::~Opcodes()
     }
 }
 
-Opcodes* Opcodes::instance;
-
-Opcodes* Opcodes::getInstance()
+Opcodes& Opcodes::getInstance()
 {
-    if (instance == nullptr)
-    {
-        instance = new Opcodes();
-    }
+    static Opcodes instance;
     return instance;
 }
 
-std::string Opcodes::getString(u1 code[], u4& position)
+std::string Opcodes::getString(u1 code[], u4 &position)
 {
-    try {
-        Opcode* op = Opcodes::getInstance()->opcodes.at(code[position]);
+    try
+    {
+        Opcode *op = Opcodes::getInstance().opcodes.at(code[position]);
         if (op != nullptr)
         {
             if (op->knowsCode)
             {
                 op->injectCode(code, position);
             }
-            return op->getString();            
+            return op->getString();
         }
         return "Not Implemented";
     }
-    catch (const std::out_of_range &e) {
+    catch (const std::out_of_range &e)
+    {
         return "Opcode too large";
     }
 }

@@ -63,9 +63,7 @@ public:
 	 */
 	void printBuf(std::streambuf *buf);
 
-	inline ~ClassFile() {
-		Opcodes::clear();
-	}
+	~ClassFile() = default;
 };
 
 #endif
