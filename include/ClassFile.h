@@ -62,6 +62,8 @@ public:
 	   \param buf Buffer para impressão do arquivo.
 	 */
 	void printBuf(std::streambuf *buf);
+
+	~ClassFile() = default;
 };
 
 #endif

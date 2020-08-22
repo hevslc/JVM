@@ -3,6 +3,7 @@
 
 #include "Definitions.h"
 #include "CpInfo.h"
+#include "Opcode.h"
 
 class AttributeInfo;
 
