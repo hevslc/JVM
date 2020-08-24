@@ -30,17 +30,17 @@ var NAVTREE =
       [ "Padrão de codificação", "md__r_e_a_d_m_e.html#autotoc_md2", null ]
     ] ],
     [ "Classes", "annotated.html", [
-      [ "Class List", "annotated.html", "annotated_dup" ],
-      [ "Class Index", "classes.html", null ],
-      [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
-      [ "Class Members", "functions.html", [
-        [ "All", "functions.html", null ],
-        [ "Functions", "functions_func.html", null ],
-        [ "Variables", "functions_vars.html", null ]
+      [ "Lista de componentes", "annotated.html", "annotated_dup" ],
+      [ "Índice dos componentes", "classes.html", null ],
+      [ "Hierarquia de classes", "hierarchy.html", "hierarchy" ],
+      [ "Componentes membro", "functions.html", [
+        [ "Tudo", "functions.html", null ],
+        [ "Funções", "functions_func.html", null ],
+        [ "Variáveis", "functions_vars.html", null ]
       ] ]
     ] ],
-    [ "Files", "files.html", [
-      [ "File List", "files.html", "files_dup" ]
+    [ "Ficheiros", "files.html", [
+      [ "Lista de ficheiros", "files.html", "files_dup" ]
     ] ]
   ] ]
 ];
@@ -51,5 +51,5 @@ var NAVTREEINDEX =
 "md__r_e_a_d_m_e.html#autotoc_md2"
 ];
 
-var SYNCONMSG = 'click to disable panel synchronisation';
-var SYNCOFFMSG = 'click to enable panel synchronisation';
+var SYNCONMSG = 'clique para desativar a sincronização do painel';
+var SYNCOFFMSG = 'clique para ativar a sincronização do painel';
