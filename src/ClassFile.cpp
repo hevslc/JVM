@@ -1,13 +1,3 @@
-/**
- * A brief history of JavaDoc-style (C-style) comments.
- *
- * This is the typical JavaDoc-style C-style comment. It starts with two
- * asterisks.
- *
- * @param theory Even if there is only one possible unified theory. it is just a
- *               set of rules and equations.
- */
-
 #include "ClassFile.h"
 
 
@@ -54,11 +44,6 @@ u4 r4(std::ifstream& f){
 	b = b | (u4)r1(f);
 	return b;	
 }
-
-//!  A test class. 
-/*!
-  A more elaborate class description.
-*/
 
 ClassFile::ClassFile(std::ifstream &f) : magic(r4(f)),
 										 minorVersion(r2(f)),
