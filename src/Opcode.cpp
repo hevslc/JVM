@@ -27,7 +27,8 @@ std::string U2OperandOpcode::getString()
         u4 pos = *position;
         u2 result = (code[pos + 1] << 8) | code[pos + 2];
         *position += 2;
-        return name + " " + std::to_string(result);
+        // std::cout << cp[result-1].FieldMethInter.nameTypeIndex-1 << std::endl;
+        return name + " " + std::to_string(result) + " <" + cp.getUtf8Class(cp[result-1].Class.nameIndex-1) + "." + cp.getNNameAndType(cp[result-1].FieldMethInter.nameTypeIndex-1) + ">";
     }
     return "";
 }
@@ -313,7 +314,7 @@ Opcodes& Opcodes::getInstance()
     return instance;
 }
 
-std::string Opcodes::getString(u1 code[], u4 &position)
+std::string Opcodes::getString(u1 code[], u4 &position, ConstantPool cp)
 {
     try
     {
@@ -322,7 +323,7 @@ std::string Opcodes::getString(u1 code[], u4 &position)
         {
             if (op->knowsCode)
             {
-                op->injectCode(code, position);
+                op->injectCode(code, position, cp);
             }
             return op->getString();
         }
@@ -334,10 +335,10 @@ std::string Opcodes::getString(u1 code[], u4 &position)
     }
 }
 
-void Opcodes::printCode(std::ostream& out, u1 code[], u4 codeLength)
+void Opcodes::printCode(std::ostream& out, ConstantPool cp, u1 code[], u4 codeLength)
 {
     for (u4 i = 0; i < codeLength; i++)
     {
-        out << Opcodes::getString(code, i) << std::endl;
+        out << Opcodes::getString(code, i, cp) << std::endl;
     }
 }
