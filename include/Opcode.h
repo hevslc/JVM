@@ -17,6 +17,7 @@ class Opcode
 {
     public:
         bool knowsCode = false; /*!< Indica se o objeto depende do array de códigos/opcodes */
+        bool knowsCp = false; /*!< Indica se o objeto depende de algum atributo dentro da Constant Pool*/
 
         Opcode(std::string name);
         virtual ~Opcode() = default;
@@ -51,6 +52,14 @@ public:
     U2OperandOpcode(std::string);
 };
 
+class CpOperandOpcode : public Opcode
+{
+  public:
+      virtual std::string getString();
+      CpOperandOpcode(std::string);
+};
+
+
 /*!
    \brief Opcode com dois bytes de operandos com sinal.
    Os dois bytes são juntados para formarem um inteiro de dois bytes com
@@ -61,6 +70,13 @@ class S2OperandOpcode : public Opcode
 public:
     virtual std::string getString();
     S2OperandOpcode(std::string);
+};
+
+class S4OperandOpcode : public Opcode
+{
+public:
+    virtual std::string getString();
+    S4OperandOpcode(std::string);
 };
 
 /*!
@@ -82,6 +98,13 @@ public:
     virtual std::string getString();
     IncrementOpcode(std::string);
 };
+
+class ModifyOpcode : public Opcode
+{
+  public:
+    virtual std::string getString();
+    ModifyOpcode(std::string);
+}
 
 /*!
    \brief Classe que reúne todos os opcodes.

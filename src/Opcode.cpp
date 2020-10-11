@@ -1,5 +1,11 @@
 #include "Opcode.h"
 
+#include "Definitions.h"
+#include "CpInfo.h"
+#include "AttributeInfo.h"
+#include "FieldInfo.h"
+#include "MethodInfo.h"
+
 /**
  * Classes derivadas do OPCODE
  */
@@ -32,6 +38,27 @@ std::string U2OperandOpcode::getString()
     return "";
 }
 
+CpOperandOpcode::CpOperandOpcode(std::string name):
+Opcode(name)
+{
+    knowsCp = true;
+}
+
+std::string CpOperandOpcode::getString()
+{
+    if (code != nullptr)
+    {
+        ConstantPool cp; //Passar de alguma forma a constant pool que já foi construída
+        u4 pos = *position;
+        u2 result = (code[pos + 1] << 8) | code[pos + 2];
+        *position += 2;
+        return name + " " + std::to_string(result) + cp.getUtf8Class(result)
+        + "." + cp.getNNameAndType(result);
+        //cp.getNNameAndType(result).find_first_of(" "); Utilizar para formatar o ".out"
+    }
+    return "";
+}
+
 S2OperandOpcode::S2OperandOpcode(std::string name):
 Opcode(name)
 {
@@ -49,6 +76,27 @@ std::string S2OperandOpcode::getString()
     }
     return "";
 }
+
+S4OperandOpcode::S4OperandOpcode(std::string name):
+Opcode(name)
+{
+    knowsCode = true;
+}
+
+std::string S4OperandOpcode::getString()
+{
+    if (code != nullptr)
+    {
+        u4 pos = *position;
+        u2 result = (code[pos + 1] << 24) | (code[pos + 2] << 16) | 
+        (code[pos + 3 << 8]) | code[pos + 4];
+        *position += 4;
+        return name + " " + std::to_string((int32_t) result);
+    }
+    return "";
+}
+
+
 
 U1OperandOpcode::U1OperandOpcode(std::string name):
 Opcode(name)
@@ -84,6 +132,29 @@ std::string IncrementOpcode::getString()
     return "";
 }
 
+ModifyOpcode::ModifyOpcode(std::string name):
+Opcode(name)
+{
+    knowsCode = true;
+}
+
+std::string ModifyOpcode::getString()
+{
+    if (code != nullptr)
+    {
+        u4 pos = *position;
+        u2 result = (code[pos + 1] << 8) | code[pos + 2];
+        
+        if (code[pos] == 0x84) {
+            u2 constant = (code[pos + 3] << 8) | code[pos + 4];
+            *position += 4;
+            return name + " " + std::to_string(result) + 
+            std::to_string((int16_t) constant);
+        }
+        *position += 2;
+        return name + " " + std::to_string(result);
+    }
+}
 
 /////////////////////////////////////////////////////////////////////////////
 // Classe Opcodes
@@ -262,8 +333,8 @@ opcodes(0xff + 1, nullptr)
     opcodes[0xA7] = new S2OperandOpcode("goto");
     opcodes[0xA8] = new S2OperandOpcode("jsr");
     opcodes[0xA9] = new U1OperandOpcode("ret");
-    // TODO tableswitch 0xAA
-    // TODO lookupswitch 0xAB
+    // TODO tableswitch 0xAA Estevam
+    // TODO lookupswitch 0xAB Estevam
     opcodes[0xAC] = new Opcode("ireturn");
     opcodes[0xAD] = new Opcode("lreturn");
     opcodes[0xAE] = new Opcode("freturn");
@@ -277,8 +348,8 @@ opcodes(0xff + 1, nullptr)
     opcodes[0xB6] = new U2OperandOpcode("invokevirtual");
     opcodes[0xB7] = new U2OperandOpcode("invokeSpecial");
     opcodes[0xB8] = new U2OperandOpcode("invokestatic");
-    // TODO invokeinterface 0xB9
-    // TODO invokedynamic 0xBA
+    // TODO invokeinterface 0xB9 Rodrigo
+    // TODO invokedynamic 0xBA Rodrigo
     opcodes[0xBB] = new U2OperandOpcode("new");
     opcodes[0xBC] = new U1OperandOpcode("newarray");
     opcodes[0xBD] = new U2OperandOpcode("anewarray");
@@ -288,12 +359,12 @@ opcodes(0xff + 1, nullptr)
     opcodes[0xC1] = new U2OperandOpcode("instanceof");
     opcodes[0xC2] = new Opcode("monitorenter");
     opcodes[0xC3] = new Opcode("monitorexit");
-    // TODO wide 0xC4
-    // TODO multianewarray 0xC5
+    opcodes[0xC4] = new ModifyOpcode("wide");
+    // TODO multianewarray 0xC5 Rodrigo
     opcodes[0xC6] = new U2OperandOpcode("ifnull");
     opcodes[0xC7] = new U2OperandOpcode("ifnonnull");
-    // TODO goto_w 0xC8
-    // TODO jsr_w 0xC9
+    opcodes[0xC8] = new S4OperandOpcode("goto_w");
+    opcodes[0xC9] = new S4OperandOpcode("jsr_w");
 }
 
 Opcodes::~Opcodes()
