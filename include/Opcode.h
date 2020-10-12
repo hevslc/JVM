@@ -113,6 +113,13 @@ class LookupswitchOpcode : public Opcode
     LookupswitchOpcode(std::string);
 };
 
+class TableswitchOpcode : public Opcode
+{
+  public:
+    virtual std::string getString();
+    TableswitchOpcode(std::string);
+};
+
 /*!
    \brief Classe que reúne todos os opcodes.
  */
