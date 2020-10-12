@@ -97,10 +97,9 @@ std::string U1OperandOpcodeCP::getString()
     if (code != nullptr)
     {
         u4 pos = *position;
-        u2 result = (code[pos] << 8) | code[pos + 1];
+        u2 result = code[pos + 1];
         *position += 1;
-        return name + " " + std::to_string(code[pos + 1]);
-        //  + " <" + cp.getUtf8Class(cp[result-1].Class.nameIndex-1) + "." + cp.getNNameAndType(cp[result-1].FieldMethInter.nameTypeIndex-1) + ">";
+        return name + " " + std::to_string(code[pos + 1]) + " <" + cp.getUtf8Str(cp[result].String.stringIndex-2) + ">";
     }
     return "";
 }
