@@ -1,0 +1,12 @@
+<map id="Code" name="Code">
+<area shape="rect" id="node1" title=" " alt="" coords="491,359,571,451"/>
+<area shape="rect" id="node2" href="$class_attribute_info.xhtml" title="Classe base a ser herdada pelas classes das entradas do vetor Attributes, contendo membros gerais." alt="" coords="230,160,359,296"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,13,80,90"/>
+<area shape="rect" id="node4" title=" " alt="" coords="360,13,435,90"/>
+<area shape="rect" id="node5" title=" " alt="" coords="212,13,271,90"/>
+<area shape="rect" id="node6" title=" " alt="" coords="577,189,626,267"/>
+<area shape="rect" id="node7" href="$class_exception_table.xhtml" title=" " alt="" coords="650,175,795,281"/>
+<area shape="rect" id="node8" title=" " alt="" coords="606,5,810,97"/>
+<area shape="rect" id="node9" href="$class_attributes.xhtml" title="Vetor (tabela) dos atributos. Cada entrada é do tipo AttributeInfo." alt="" coords="847,167,1009,289"/>
+<area shape="rect" id="node10" title=" " alt="" coords="834,13,1049,90"/>
+</map>

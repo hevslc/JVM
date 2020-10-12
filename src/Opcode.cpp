@@ -27,7 +27,6 @@ std::string U2OperandOpcode::getString()
         u4 pos = *position;
         u2 result = (code[pos + 1] << 8) | code[pos + 2];
         *position += 2;
-        // std::cout << cp[result-1].FieldMethInter.nameTypeIndex-1 << std::endl;
         return name + " " + std::to_string(result) + " <" + cp.getUtf8Class(cp[result-1].Class.nameIndex-1) + "." + cp.getNNameAndType(cp[result-1].FieldMethInter.nameTypeIndex-1) + ">";
     }
     return "";
@@ -62,8 +61,10 @@ std::string U1OperandOpcode::getString()
     if (code != nullptr)
     {
         u4 pos = *position;
+        // u2 result = (code[pos + 1] << 8) | code[pos + 2];
         *position += 1;
-        return name + " " + std::to_string(code[pos + 1]);
+        return name + " " + std::to_string(code[pos + 1]); 
+        // + " <" + cp.getUtf8Class(cp[result-1].Class.nameIndex-1) + "." + cp.getNNameAndType(cp[result-1].FieldMethInter.nameTypeIndex-1) + ">";
     }
     return "";
 }
