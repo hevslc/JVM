@@ -156,6 +156,57 @@ std::string ModifyOpcode::getString()
     }
 }
 
+
+LookupswitchOpcode::LookupswitchOpcode(std::string name):
+Opcode(name)
+{
+    knowsCode = true;
+}
+
+std::string LookupswitchOpcode::getString()
+{
+    if (code != nullptr) 
+    {
+        u4 pos = *position;
+        u1 paddingbytes = (3 - (pos % 4));
+
+        pos += paddingbytes;
+        
+        std::string out;
+
+        int32_t defaultbyte = (code[pos + 1] << 24) | (code[pos + 2] << 16)
+        | (code[pos + 3] << 8) | code[pos + 4];
+
+        uint32_t npairs = (code[pos + 5] << 24) | (code[pos + 6] << 16)
+        | (code[pos + 7] << 8) | code[pos + 8];
+
+        out = name + " " + std::to_string(npairs);
+        
+        // Incremento "padding" de
+        pos += 8;
+
+        // Crio minhas 2 variáveis para guardar os matchs de npairs (case n e o offset desse case)
+        int32_t intbytePair;
+        uint32_t offsetbytePair;
+
+        //for para percorrer todos os matchs do switch e construir a string de saída "out"
+        for (int i = 0; i < npairs; i++)
+        {
+            int32_t intbytePair = (code[pos + 1] << 24) | (code[pos + 2] << 16) | (code[pos + 3] << 8) | code[pos + 4];
+            uint32_t offsetbytePair = (code[pos + 5] << 24) | (code[pos + 6] << 16) | (code[pos + 7] << 8) | code[pos + 8];
+            out += "\n\t" + std::to_string(intbytePair) + ":   " + std::to_string(*position + offsetbytePair) + " (+" + std::to_string(offsetbytePair) + ")";
+            pos += 8;
+        };
+        
+        out += "\n\tdefault:   " + std::to_string(*position + defaultbyte) +  + " (+" + std::to_string(defaultbyte) + ")";
+        
+        //*position += npairs * 8 + 4 + 4 + paddingbytes;
+        *position = pos;
+
+        return out;
+    }
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // Classe Opcodes
 /////////////////////////////////////////////////////////////////////////////
@@ -334,7 +385,7 @@ opcodes(0xff + 1, nullptr)
     opcodes[0xA8] = new S2OperandOpcode("jsr");
     opcodes[0xA9] = new U1OperandOpcode("ret");
     // TODO tableswitch 0xAA Estevam
-    // TODO lookupswitch 0xAB Estevam
+    opcodes[0xAB] = new LookupswitchOpcode("lookupswitch");
     opcodes[0xAC] = new Opcode("ireturn");
     opcodes[0xAD] = new Opcode("lreturn");
     opcodes[0xAE] = new Opcode("freturn");

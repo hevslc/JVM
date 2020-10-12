@@ -104,7 +104,14 @@ class ModifyOpcode : public Opcode
   public:
     virtual std::string getString();
     ModifyOpcode(std::string);
-}
+};
+
+class LookupswitchOpcode : public Opcode
+{
+  public:
+    virtual std::string getString();
+    LookupswitchOpcode(std::string);
+};
 
 /*!
    \brief Classe que reúne todos os opcodes.
