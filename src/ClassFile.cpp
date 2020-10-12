@@ -71,7 +71,7 @@ ClassFile::ClassFile(std::ifstream &f) : magic(r4(f)),
 
 void ClassFile::print(u1 mode, std::string argv){
 	if(mode == infile){
-		_mkdir(".\\Output");
+		_mkdir("./Output");
 		std::string name = "./Output/" + argv.substr(9, argv.size()-15) + ".txt";
 		
 		std::ofstream f;
