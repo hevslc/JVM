@@ -24,31 +24,38 @@
 */
 var NAVTREE =
 [
-  [ "JVM - Java Virtual Machine", "index.html", [
-    [ "JVM", "md__r_e_a_d_m_e.html", [
-      [ "WorkFlow", "md__r_e_a_d_m_e.html#autotoc_md1", null ],
-      [ "Padrão de codificação", "md__r_e_a_d_m_e.html#autotoc_md2", null ]
+  [ "JVM - Java Virtual Machine", "index.xhtml", [
+    [ "JVM", "md__r_e_a_d_m_e.xhtml", [
+      [ "WorkFlow", "md__r_e_a_d_m_e.xhtml#autotoc_md1", null ],
+      [ "Padrão de codificação", "md__r_e_a_d_m_e.xhtml#autotoc_md2", null ]
     ] ],
-    [ "Classes", "annotated.html", [
-      [ "Lista de componentes", "annotated.html", "annotated_dup" ],
-      [ "Índice dos componentes", "classes.html", null ],
-      [ "Hierarquia de classes", "hierarchy.html", "hierarchy" ],
-      [ "Componentes membro", "functions.html", [
-        [ "Tudo", "functions.html", null ],
-        [ "Funções", "functions_func.html", null ],
-        [ "Variáveis", "functions_vars.html", null ]
+    [ "Classes", "annotated.xhtml", [
+      [ "Lista de componentes", "annotated.xhtml", "annotated_dup" ],
+      [ "Índice dos componentes", "classes.xhtml", null ],
+      [ "Hierarquia de classes", "hierarchy.xhtml", "hierarchy" ],
+      [ "Componentes membro", "functions.xhtml", [
+        [ "Tudo", "functions.xhtml", "functions_dup" ],
+        [ "Funções", "functions_func.xhtml", null ],
+        [ "Variáveis", "functions_vars.xhtml", null ]
       ] ]
     ] ],
-    [ "Ficheiros", "files.html", [
-      [ "Lista de ficheiros", "files.html", "files_dup" ]
+    [ "Ficheiros", "files.xhtml", [
+      [ "Lista de ficheiros", "files.xhtml", "files_dup" ],
+      [ "Membros dos Ficheiros", "globals.xhtml", [
+        [ "Tudo", "globals.xhtml", null ],
+        [ "Funções", "globals_func.xhtml", null ],
+        [ "Definições de tipos", "globals_type.xhtml", null ],
+        [ "Enumerações", "globals_enum.xhtml", null ],
+        [ "Valores de enumerações", "globals_eval.xhtml", null ]
+      ] ]
     ] ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
-"_attribute_info_8h_source.html",
-"md__r_e_a_d_m_e.html#autotoc_md2"
+"_attribute_info_8cpp.xhtml",
+"class_methods.xhtml"
 ];
 
 var SYNCONMSG = 'clique para desativar a sincronização do painel';

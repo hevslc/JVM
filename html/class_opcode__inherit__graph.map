@@ -1,0 +1,7 @@
+<map id="Opcode" name="Opcode">
+<area shape="rect" id="node1" title="Classe base para Opcodes. Ainda não está pronta para ser uma classe completa para instruções,..." alt="" coords="314,5,430,185"/>
+<area shape="rect" id="node2" href="$class_increment_opcode.xhtml" title="Opcode de incremento." alt="" coords="5,233,168,325"/>
+<area shape="rect" id="node3" href="$class_s2_operand_opcode.xhtml" title="Opcode com dois bytes de operandos com sinal. Os dois bytes são juntados para formarem um inteiro de ..." alt="" coords="193,233,359,325"/>
+<area shape="rect" id="node4" href="$class_u1_operand_opcode.xhtml" title="Opcode com um byte de operando." alt="" coords="383,233,553,325"/>
+<area shape="rect" id="node5" href="$class_u2_operand_opcode.xhtml" title="Opcode com dois bytes de operandos. Os dois bytes são juntados para formarem um u2 por (byte1 &lt;&lt; 8) |..." alt="" coords="577,233,746,325"/>
+</map>
