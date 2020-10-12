@@ -40,3 +40,23 @@ obj/*
 
 # Resultados
 Output/*.txt
+
+# Doxygen
+*~
+.*sw?
+\#*
+.DS_Store
+
+*.rej
+*.orig
+
+*.pro
+/packages/rpm/doxygen.spec
+*.idb
+*.pdb
+
+/doxygen_docs
+/doxygen.tag
+/build*
+
+.idea
