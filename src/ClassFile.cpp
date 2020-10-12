@@ -1,6 +1,5 @@
 #include "ClassFile.h"
 
-
 /** Método r1
 	*
 	*	Método lê 1 byte do arquivo
@@ -71,7 +70,6 @@ ClassFile::ClassFile(std::ifstream &f) : magic(r4(f)),
 
 void ClassFile::print(u1 mode, std::string argv){
 	if(mode == infile){
-		mkdir("./Output", 0777);
 		std::string name = "./Output/" + argv.substr(9, argv.size()-15) + ".txt";
 		
 		std::ofstream f;

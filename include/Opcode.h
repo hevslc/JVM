@@ -2,6 +2,7 @@
 #define _OPCODE_H_
 
 #include "Definitions.h"
+#include "CpInfo.h"
 
 /*!
    \brief Classe base para Opcodes.
@@ -29,16 +30,18 @@ class Opcode
            \param code Array com os códigos/opcodes.
            \param position Posição do opcode que se quer acessar.
          */
-        void inline injectCode(u1 code[], u4 &position)
+        void inline injectCode(u1 code[], u4 &position, ConstantPool cp)
         {
             this->code = code;
             this->position = &position;
+            this->cp = cp;
         }
 
     protected:
         std::string name; /*!< Nome do Opcode */
         u1* code; /*!< Array com os códigos/opcodes */
         u4* position; /*!< Posição do opcode de interesse */
+        ConstantPool cp;
 };
 
 /*!
@@ -52,13 +55,19 @@ public:
     U2OperandOpcode(std::string);
 };
 
-class CpOperandOpcode : public Opcode
+class U2OperandOpcodeCP : public Opcode
 {
-  public:
-      virtual std::string getString();
-      CpOperandOpcode(std::string);
+public:
+    virtual std::string getString();
+    U2OperandOpcodeCP(std::string);
 };
 
+class U2OperandOpcodeCPNew : public Opcode
+{
+public:
+    virtual std::string getString();
+    U2OperandOpcodeCPNew(std::string);
+};
 
 /*!
    \brief Opcode com dois bytes de operandos com sinal.
@@ -88,6 +97,14 @@ public:
     virtual std::string getString();
     U1OperandOpcode(std::string);
 };
+
+class U1OperandOpcodeCP : public Opcode
+{
+public:
+    virtual std::string getString();
+    U1OperandOpcodeCP(std::string);
+};
+
 
 /*!
    \brief Opcode de incremento.
@@ -132,7 +149,7 @@ public:
        \param position Posição do opcode desejado no array.
        \return std::string String que representa a forma textual de um opcode.
      */
-    static std::string getString(u1 code[], u4& position);
+    static std::string getString(u1 code[], u4& position, ConstantPool cp);
 
     /*!
        \brief Imprime na tela os opcodes em um array de opcodes.
@@ -141,7 +158,7 @@ public:
        \param code Array com os opcodes.
        \param codeLength Comprimento do array de opcodes.
      */
-    static void printCode(std::ostream& out, u1 code[], u4 codeLength);
+    static void printCode(std::ostream& out, ConstantPool cp, u1 code[], u4 codeLength);
 
 private:
 

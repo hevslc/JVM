@@ -38,23 +38,40 @@ std::string U2OperandOpcode::getString()
     return "";
 }
 
-CpOperandOpcode::CpOperandOpcode(std::string name):
+U2OperandOpcodeCP::U2OperandOpcodeCP(std::string name):
 Opcode(name)
 {
-    knowsCp = true;
+    knowsCode = true;
 }
 
-std::string CpOperandOpcode::getString()
+std::string U2OperandOpcodeCP::getString()
 {
     if (code != nullptr)
     {
-        ConstantPool cp; //Passar de alguma forma a constant pool que já foi construída
         u4 pos = *position;
         u2 result = (code[pos + 1] << 8) | code[pos + 2];
         *position += 2;
-        return name + " " + std::to_string(result) + cp.getUtf8Class(result)
-        + "." + cp.getNNameAndType(result);
-        //cp.getNNameAndType(result).find_first_of(" "); Utilizar para formatar o ".out"
+
+        return name + " " + std::to_string(result) + " <" + cp.getUtf8Class(cp[result-1].Class.nameIndex-1) + "." + cp.getNNameAndType(cp[result-1].FieldMethInter.nameTypeIndex-1) + ">";
+    }
+    return "";
+}
+
+U2OperandOpcodeCPNew::U2OperandOpcodeCPNew(std::string name):
+Opcode(name)
+{
+    knowsCode = true;
+}
+
+std::string U2OperandOpcodeCPNew::getString()
+{
+    if (code != nullptr)
+    {
+        u4 pos = *position;
+        u2 result = (code[pos + 1] << 8) | code[pos + 2];
+        *position += 2;
+
+        return name + " " + std::to_string(result) + " <" + cp.getUtf8Str(cp[result-1].Class.nameIndex-1) + ">";
     }
     return "";
 }
@@ -110,10 +127,31 @@ std::string U1OperandOpcode::getString()
     {
         u4 pos = *position;
         *position += 1;
-        return name + " " + std::to_string(code[pos + 1]);
+        return name + " " + std::to_string(code[pos + 1]); 
     }
     return "";
 }
+
+
+U1OperandOpcodeCP::U1OperandOpcodeCP(std::string name):
+Opcode(name)
+{
+    knowsCode = true;
+}
+
+std::string U1OperandOpcodeCP::getString()
+{
+    if (code != nullptr)
+    {
+        u4 pos = *position;
+        u2 result = code[pos + 1];
+        *position += 1;
+
+        return name + " " + std::to_string(code[pos + 1]) + " <" + cp.getUtf8Str(cp[result-1].String.stringIndex-1) + ">";
+    }
+    return "";
+}
+
 
 IncrementOpcode::IncrementOpcode(std::string name):
 Opcode(name)
@@ -232,9 +270,9 @@ opcodes(0xff + 1, nullptr)
     opcodes[0x0F] = new Opcode("dconst_1");
     opcodes[0x10] = new U1OperandOpcode("bipush");
     opcodes[0x11] = new U2OperandOpcode("sipush");
-    opcodes[0x12] = new U1OperandOpcode("ldc");
-    opcodes[0x13] = new U2OperandOpcode("ldc_w");
-    opcodes[0x14] = new U2OperandOpcode("ldc2_w");
+    opcodes[0x12] = new U1OperandOpcodeCP("ldc");
+    opcodes[0x13] = new U2OperandOpcodeCP("ldc_w");
+    opcodes[0x14] = new U2OperandOpcodeCP("ldc2_w");
     opcodes[0x15] = new U1OperandOpcode("iload");
     opcodes[0x16] = new U1OperandOpcode("lload");
     opcodes[0x17] = new U1OperandOpcode("fload");
@@ -392,22 +430,22 @@ opcodes(0xff + 1, nullptr)
     opcodes[0xAF] = new Opcode("dreturn");
     opcodes[0xB0] = new Opcode("areturn");
     opcodes[0xB1] = new Opcode("return");
-    opcodes[0xB2] = new U2OperandOpcode("getstatic");
-    opcodes[0xB3] = new U2OperandOpcode("putstatic");
-    opcodes[0xB4] = new U2OperandOpcode("getField");
-    opcodes[0xB5] = new U2OperandOpcode("putfield");
-    opcodes[0xB6] = new U2OperandOpcode("invokevirtual");
-    opcodes[0xB7] = new U2OperandOpcode("invokeSpecial");
-    opcodes[0xB8] = new U2OperandOpcode("invokestatic");
+    opcodes[0xB2] = new U2OperandOpcodeCP("getstatic");
+    opcodes[0xB3] = new U2OperandOpcodeCP("putstatic");
+    opcodes[0xB4] = new U2OperandOpcodeCP("getField");
+    opcodes[0xB5] = new U2OperandOpcodeCP("putfield");
+    opcodes[0xB6] = new U2OperandOpcodeCP("invokevirtual");
+    opcodes[0xB7] = new U2OperandOpcodeCP("invokeSpecial");
+    opcodes[0xB8] = new U2OperandOpcodeCP("invokestatic");
     // TODO invokeinterface 0xB9 Rodrigo
     // TODO invokedynamic 0xBA Rodrigo
-    opcodes[0xBB] = new U2OperandOpcode("new");
+    opcodes[0xBB] = new U2OperandOpcodeCPNew("new");
     opcodes[0xBC] = new U1OperandOpcode("newarray");
-    opcodes[0xBD] = new U2OperandOpcode("anewarray");
+    opcodes[0xBD] = new U2OperandOpcodeCPNew("anewarray");
     opcodes[0xBE] = new Opcode("arraylength");
     opcodes[0xBF] = new Opcode("athrow");
-    opcodes[0xC0] = new U2OperandOpcode("checkcast");
-    opcodes[0xC1] = new U2OperandOpcode("instanceof");
+    opcodes[0xC0] = new U2OperandOpcodeCP("checkcast");
+    opcodes[0xC1] = new U2OperandOpcodeCP("instanceof");
     opcodes[0xC2] = new Opcode("monitorenter");
     opcodes[0xC3] = new Opcode("monitorexit");
     opcodes[0xC4] = new ModifyOpcode("wide");
@@ -435,7 +473,7 @@ Opcodes& Opcodes::getInstance()
     return instance;
 }
 
-std::string Opcodes::getString(u1 code[], u4 &position)
+std::string Opcodes::getString(u1 code[], u4 &position, ConstantPool cp)
 {
     try
     {
@@ -444,7 +482,7 @@ std::string Opcodes::getString(u1 code[], u4 &position)
         {
             if (op->knowsCode)
             {
-                op->injectCode(code, position);
+                op->injectCode(code, position, cp);
             }
             return op->getString();
         }
@@ -456,10 +494,10 @@ std::string Opcodes::getString(u1 code[], u4 &position)
     }
 }
 
-void Opcodes::printCode(std::ostream& out, u1 code[], u4 codeLength)
+void Opcodes::printCode(std::ostream& out, ConstantPool cp, u1 code[], u4 codeLength)
 {
     for (u4 i = 0; i < codeLength; i++)
     {
-        out << Opcodes::getString(code, i) << std::endl;
+        out << Opcodes::getString(code, i, cp) << std::endl;
     }
 }

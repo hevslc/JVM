@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>JVM - Java Virtual Machine: Código-Fonte de include/Opcode.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">JVM - Java Virtual Machine
+   </div>
+   <div id="projectbrief">Projeto da disciplina Software Básico - UnB - 02/2020</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Gerado por Doxygen 1.9.0 -->
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',false,false,'search.php','Localizar');
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('_opcode_8h_source.xhtml',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<div class="header">
+  <div class="headertitle">
+<div class="title">Opcode.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="_opcode_8h.xhtml">Ir para a documentação deste ficheiro.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef _OPCODE_H_</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define _OPCODE_H_</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_definitions_8h.xhtml">Definitions.h</a>&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_cp_info_8h.xhtml">CpInfo.h</a>&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="class_opcode.xhtml">   17</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_opcode.xhtml">Opcode</a></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;{</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="class_opcode.xhtml#a0bfebdb7ba7e871a120827ca51348144">   20</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="class_opcode.xhtml#a0bfebdb7ba7e871a120827ca51348144">knowsCode</a> = <span class="keyword">false</span>; </div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <a class="code" href="class_opcode.xhtml#addbc37e04da29e5160a3041d3732cff7">Opcode</a>(std::string <a class="code" href="class_opcode.xhtml#a111a67898fc1420ddcafa1f37e51bb2e">name</a>);</div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="class_opcode.xhtml#a51dcc38fc032c8aa72296dbe2702925c">   23</a></span>&#160;        <span class="keyword">virtual</span> <a class="code" href="class_opcode.xhtml#a51dcc38fc032c8aa72296dbe2702925c">~Opcode</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <span class="keyword">virtual</span> std::string <a class="code" href="class_opcode.xhtml#a34fd65614e23d04ee5dc17bd14dbd8e8">getString</a>();</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="class_opcode.xhtml#a4e2aa0862203f258ac9a4e0f0c9abb6c">   32</a></span>&#160;        <span class="keywordtype">void</span> <span class="keyword">inline</span> <a class="code" href="class_opcode.xhtml#a4e2aa0862203f258ac9a4e0f0c9abb6c">injectCode</a>(<a class="code" href="_definitions_8h.xhtml#ad9f4cdb6757615aae2fad89dab3c5470">u1</a> <a class="code" href="class_opcode.xhtml#a33b19a97021d9781084303e1e1035ece">code</a>[], <a class="code" href="_definitions_8h.xhtml#ae5be1f726785414dd1b77d60df074c9d">u4</a> &amp;<a class="code" href="class_opcode.xhtml#aa54102265badaab18694f06975a6716d">position</a>, <a class="code" href="class_constant_pool.xhtml">ConstantPool</a> <a class="code" href="class_opcode.xhtml#a9958b0b7ce482a2f5e0a1a7e338e59cc">cp</a>)</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            this-&gt;code = <a class="code" href="class_opcode.xhtml#a33b19a97021d9781084303e1e1035ece">code</a>;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            this-&gt;position = &amp;<a class="code" href="class_opcode.xhtml#aa54102265badaab18694f06975a6716d">position</a>;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            this-&gt;cp = <a class="code" href="class_opcode.xhtml#a9958b0b7ce482a2f5e0a1a7e338e59cc">cp</a>;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        }</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="class_opcode.xhtml#a111a67898fc1420ddcafa1f37e51bb2e">   40</a></span>&#160;        std::string <a class="code" href="class_opcode.xhtml#a111a67898fc1420ddcafa1f37e51bb2e">name</a>; </div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="class_opcode.xhtml#a33b19a97021d9781084303e1e1035ece">   41</a></span>&#160;        <a class="code" href="_definitions_8h.xhtml#ad9f4cdb6757615aae2fad89dab3c5470">u1</a>* <a class="code" href="class_opcode.xhtml#a33b19a97021d9781084303e1e1035ece">code</a>; </div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="class_opcode.xhtml#aa54102265badaab18694f06975a6716d">   42</a></span>&#160;        <a class="code" href="_definitions_8h.xhtml#ae5be1f726785414dd1b77d60df074c9d">u4</a>* <a class="code" href="class_opcode.xhtml#aa54102265badaab18694f06975a6716d">position</a>; </div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="class_opcode.xhtml#a9958b0b7ce482a2f5e0a1a7e338e59cc">   43</a></span>&#160;        <a class="code" href="class_constant_pool.xhtml">ConstantPool</a> <a class="code" href="class_opcode.xhtml#a9958b0b7ce482a2f5e0a1a7e338e59cc">cp</a>;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;};</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="class_u2_operand_opcode.xhtml">   50</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_u2_operand_opcode.xhtml">U2OperandOpcode</a> : <span class="keyword">public</span> <a class="code" href="class_opcode.xhtml">Opcode</a></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;{</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">virtual</span> std::string <a class="code" href="class_u2_operand_opcode.xhtml#a5bcc7d5c3f4dcdf346f14853e6890a1a">getString</a>();</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <a class="code" href="class_u2_operand_opcode.xhtml#aa4f22d742612a2ca980714ff0786b010">U2OperandOpcode</a>(std::string);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;};</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="class_s2_operand_opcode.xhtml">   62</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_s2_operand_opcode.xhtml">S2OperandOpcode</a> : <span class="keyword">public</span> <a class="code" href="class_opcode.xhtml">Opcode</a></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;{</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keyword">virtual</span> std::string <a class="code" href="class_s2_operand_opcode.xhtml#a077214149f9503bb126ca3cc393f7ed2">getString</a>();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <a class="code" href="class_s2_operand_opcode.xhtml#af63b8b8f4d79362e43cba96d34606fba">S2OperandOpcode</a>(std::string);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;};</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="class_u1_operand_opcode.xhtml">   72</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_u1_operand_opcode.xhtml">U1OperandOpcode</a> : <span class="keyword">public</span> <a class="code" href="class_opcode.xhtml">Opcode</a></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;{</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keyword">virtual</span> std::string <a class="code" href="class_u1_operand_opcode.xhtml#adc7e028f04673142b896e383f064e535">getString</a>();</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <a class="code" href="class_u1_operand_opcode.xhtml#a6a4fd4b2076a81ffd844cec6b0ac22e6">U1OperandOpcode</a>(std::string);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;};</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="class_increment_opcode.xhtml">   82</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_increment_opcode.xhtml">IncrementOpcode</a> : <span class="keyword">public</span> <a class="code" href="class_opcode.xhtml">Opcode</a></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;{</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keyword">virtual</span> std::string <a class="code" href="class_increment_opcode.xhtml#af748b936e0462286a643276e7e51c507">getString</a>();</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <a class="code" href="class_increment_opcode.xhtml#a84be164e19b55db3efc7f8c8727bc554">IncrementOpcode</a>(std::string);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;};</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="class_opcodes.xhtml">   92</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_opcodes.xhtml">Opcodes</a></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;{</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keyword">static</span> <a class="code" href="class_opcodes.xhtml">Opcodes</a>&amp; <a class="code" href="class_opcodes.xhtml#a055145cbe9af7dc8d8ba6c489a0bb933">getInstance</a>();</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keyword">static</span> std::string <a class="code" href="class_opcodes.xhtml#a47a9870d215ab711e40c378bc2f4225b">getString</a>(<a class="code" href="_definitions_8h.xhtml#ad9f4cdb6757615aae2fad89dab3c5470">u1</a> code[], <a class="code" href="_definitions_8h.xhtml#ae5be1f726785414dd1b77d60df074c9d">u4</a>&amp; position, <a class="code" href="class_constant_pool.xhtml">ConstantPool</a> cp);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="class_opcodes.xhtml#a73de1ee156e571d03f094873c6217d9e">printCode</a>(std::ostream&amp; out, <a class="code" href="class_constant_pool.xhtml">ConstantPool</a> cp, <a class="code" href="_definitions_8h.xhtml#ad9f4cdb6757615aae2fad89dab3c5470">u1</a> code[], <a class="code" href="_definitions_8h.xhtml#ae5be1f726785414dd1b77d60df074c9d">u4</a> codeLength);</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <a class="code" href="class_opcodes.xhtml">Opcodes</a>();</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    ~<a class="code" href="class_opcodes.xhtml">Opcodes</a>();</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    std::vector&lt;Opcode*&gt; opcodes; </div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="comment">/* Como a classe implementa o padrão Singleton, os métodos seguintes foram</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="comment">       deletados para evitar uma nova instância fora o single do objeto */</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno"><a class="line" href="class_opcodes.xhtml#a944b3b45eab5201829f3590127e189f7">  137</a></span>&#160;    <a class="code" href="class_opcodes.xhtml#a944b3b45eab5201829f3590127e189f7">Opcodes</a>(<span class="keyword">const</span> <a class="code" href="class_opcodes.xhtml">Opcodes</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00138"></a><span class="lineno"><a class="line" href="class_opcodes.xhtml#a34ef27bd8b58f3d209781f02b0bdb58a">  138</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_opcodes.xhtml#a34ef27bd8b58f3d209781f02b0bdb58a">operator=</a>(<a class="code" href="class_opcodes.xhtml">Opcodes</a> <span class="keyword">const</span>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; </div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;};</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160; </div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// _OPCODE_H_</span></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<div class="ttc" id="aclass_constant_pool_xhtml"><div class="ttname"><a href="class_constant_pool.xhtml">ConstantPool</a></div><div class="ttdoc">Vetor (tabela) das constantes. Cada entrada é do tipo Cpinfo.</div><div class="ttdef"><b>Definition:</b> CpInfo.h:95</div></div>
+<div class="ttc" id="aclass_opcodes_xhtml_a47a9870d215ab711e40c378bc2f4225b"><div class="ttname"><a href="class_opcodes.xhtml#a47a9870d215ab711e40c378bc2f4225b">Opcodes::getString</a></div><div class="ttdeci">static std::string getString(u1 code[], u4 &amp;position, ConstantPool cp)</div><div class="ttdoc">Retorna a string de um opcode.</div><div class="ttdef"><b>Definition:</b> Opcode.cpp:318</div></div>
+<div class="ttc" id="aclass_opcode_xhtml_a0bfebdb7ba7e871a120827ca51348144"><div class="ttname"><a href="class_opcode.xhtml#a0bfebdb7ba7e871a120827ca51348144">Opcode::knowsCode</a></div><div class="ttdeci">bool knowsCode</div><div class="ttdef"><b>Definition:</b> Opcode.h:20</div></div>
+<div class="ttc" id="aclass_u2_operand_opcode_xhtml"><div class="ttname"><a href="class_u2_operand_opcode.xhtml">U2OperandOpcode</a></div><div class="ttdoc">Opcode com dois bytes de operandos. Os dois bytes são juntados para formarem um u2 por (byte1 &lt;&lt; 8) |...</div><div class="ttdef"><b>Definition:</b> Opcode.h:51</div></div>
+<div class="ttc" id="a_definitions_8h_xhtml"><div class="ttname"><a href="_definitions_8h.xhtml">Definitions.h</a></div></div>
+<div class="ttc" id="aclass_u1_operand_opcode_xhtml_adc7e028f04673142b896e383f064e535"><div class="ttname"><a href="class_u1_operand_opcode.xhtml#adc7e028f04673142b896e383f064e535">U1OperandOpcode::getString</a></div><div class="ttdeci">virtual std::string getString()</div><div class="ttdef"><b>Definition:</b> Opcode.cpp:59</div></div>
+<div class="ttc" id="aclass_opcodes_xhtml_a944b3b45eab5201829f3590127e189f7"><div class="ttname"><a href="class_opcodes.xhtml#a944b3b45eab5201829f3590127e189f7">Opcodes::Opcodes</a></div><div class="ttdeci">Opcodes(const Opcodes &amp;)=delete</div></div>
+<div class="ttc" id="a_definitions_8h_xhtml_ad9f4cdb6757615aae2fad89dab3c5470"><div class="ttname"><a href="_definitions_8h.xhtml#ad9f4cdb6757615aae2fad89dab3c5470">u1</a></div><div class="ttdeci">uint8_t u1</div><div class="ttdef"><b>Definition:</b> Definitions.h:15</div></div>
+<div class="ttc" id="aclass_opcode_xhtml"><div class="ttname"><a href="class_opcode.xhtml">Opcode</a></div><div class="ttdoc">Classe base para Opcodes. Ainda não está pronta para ser uma classe completa para instruções,...</div><div class="ttdef"><b>Definition:</b> Opcode.h:18</div></div>
+<div class="ttc" id="aclass_opcodes_xhtml"><div class="ttname"><a href="class_opcodes.xhtml">Opcodes</a></div><div class="ttdoc">Classe que reúne todos os opcodes.</div><div class="ttdef"><b>Definition:</b> Opcode.h:93</div></div>
+<div class="ttc" id="aclass_s2_operand_opcode_xhtml_a077214149f9503bb126ca3cc393f7ed2"><div class="ttname"><a href="class_s2_operand_opcode.xhtml#a077214149f9503bb126ca3cc393f7ed2">S2OperandOpcode::getString</a></div><div class="ttdeci">virtual std::string getString()</div><div class="ttdef"><b>Definition:</b> Opcode.cpp:41</div></div>
+<div class="ttc" id="aclass_opcode_xhtml_a33b19a97021d9781084303e1e1035ece"><div class="ttname"><a href="class_opcode.xhtml#a33b19a97021d9781084303e1e1035ece">Opcode::code</a></div><div class="ttdeci">u1 * code</div><div class="ttdef"><b>Definition:</b> Opcode.h:41</div></div>
+<div class="ttc" id="a_definitions_8h_xhtml_ae5be1f726785414dd1b77d60df074c9d"><div class="ttname"><a href="_definitions_8h.xhtml#ae5be1f726785414dd1b77d60df074c9d">u4</a></div><div class="ttdeci">uint32_t u4</div><div class="ttdef"><b>Definition:</b> Definitions.h:17</div></div>
+<div class="ttc" id="aclass_opcode_xhtml_a4e2aa0862203f258ac9a4e0f0c9abb6c"><div class="ttname"><a href="class_opcode.xhtml#a4e2aa0862203f258ac9a4e0f0c9abb6c">Opcode::injectCode</a></div><div class="ttdeci">void injectCode(u1 code[], u4 &amp;position, ConstantPool cp)</div><div class="ttdoc">Injeção de dependência do array de códigos.</div><div class="ttdef"><b>Definition:</b> Opcode.h:32</div></div>
+<div class="ttc" id="aclass_u1_operand_opcode_xhtml"><div class="ttname"><a href="class_u1_operand_opcode.xhtml">U1OperandOpcode</a></div><div class="ttdoc">Opcode com um byte de operando.</div><div class="ttdef"><b>Definition:</b> Opcode.h:73</div></div>
+<div class="ttc" id="aclass_opcodes_xhtml_a34ef27bd8b58f3d209781f02b0bdb58a"><div class="ttname"><a href="class_opcodes.xhtml#a34ef27bd8b58f3d209781f02b0bdb58a">Opcodes::operator=</a></div><div class="ttdeci">void operator=(Opcodes const &amp;)=delete</div></div>
+<div class="ttc" id="aclass_u2_operand_opcode_xhtml_a5bcc7d5c3f4dcdf346f14853e6890a1a"><div class="ttname"><a href="class_u2_operand_opcode.xhtml#a5bcc7d5c3f4dcdf346f14853e6890a1a">U2OperandOpcode::getString</a></div><div class="ttdeci">virtual std::string getString()</div><div class="ttdef"><b>Definition:</b> Opcode.cpp:23</div></div>
+<div class="ttc" id="aclass_s2_operand_opcode_xhtml"><div class="ttname"><a href="class_s2_operand_opcode.xhtml">S2OperandOpcode</a></div><div class="ttdoc">Opcode com dois bytes de operandos com sinal. Os dois bytes são juntados para formarem um inteiro de ...</div><div class="ttdef"><b>Definition:</b> Opcode.h:63</div></div>
+<div class="ttc" id="aclass_opcode_xhtml_addbc37e04da29e5160a3041d3732cff7"><div class="ttname"><a href="class_opcode.xhtml#addbc37e04da29e5160a3041d3732cff7">Opcode::Opcode</a></div><div class="ttdeci">Opcode(std::string name)</div><div class="ttdef"><b>Definition:</b> Opcode.cpp:7</div></div>
+<div class="ttc" id="aclass_increment_opcode_xhtml"><div class="ttname"><a href="class_increment_opcode.xhtml">IncrementOpcode</a></div><div class="ttdoc">Opcode de incremento.</div><div class="ttdef"><b>Definition:</b> Opcode.h:83</div></div>
+<div class="ttc" id="aclass_opcode_xhtml_a111a67898fc1420ddcafa1f37e51bb2e"><div class="ttname"><a href="class_opcode.xhtml#a111a67898fc1420ddcafa1f37e51bb2e">Opcode::name</a></div><div class="ttdeci">std::string name</div><div class="ttdef"><b>Definition:</b> Opcode.h:40</div></div>
+<div class="ttc" id="aclass_opcode_xhtml_a9958b0b7ce482a2f5e0a1a7e338e59cc"><div class="ttname"><a href="class_opcode.xhtml#a9958b0b7ce482a2f5e0a1a7e338e59cc">Opcode::cp</a></div><div class="ttdeci">ConstantPool cp</div><div class="ttdef"><b>Definition:</b> Opcode.h:43</div></div>
+<div class="ttc" id="aclass_u2_operand_opcode_xhtml_aa4f22d742612a2ca980714ff0786b010"><div class="ttname"><a href="class_u2_operand_opcode.xhtml#aa4f22d742612a2ca980714ff0786b010">U2OperandOpcode::U2OperandOpcode</a></div><div class="ttdeci">U2OperandOpcode(std::string)</div><div class="ttdef"><b>Definition:</b> Opcode.cpp:17</div></div>
+<div class="ttc" id="aclass_opcode_xhtml_a51dcc38fc032c8aa72296dbe2702925c"><div class="ttname"><a href="class_opcode.xhtml#a51dcc38fc032c8aa72296dbe2702925c">Opcode::~Opcode</a></div><div class="ttdeci">virtual ~Opcode()=default</div></div>
+<div class="ttc" id="aclass_opcodes_xhtml_a055145cbe9af7dc8d8ba6c489a0bb933"><div class="ttname"><a href="class_opcodes.xhtml#a055145cbe9af7dc8d8ba6c489a0bb933">Opcodes::getInstance</a></div><div class="ttdeci">static Opcodes &amp; getInstance()</div><div class="ttdef"><b>Definition:</b> Opcode.cpp:312</div></div>
+<div class="ttc" id="aclass_opcode_xhtml_a34fd65614e23d04ee5dc17bd14dbd8e8"><div class="ttname"><a href="class_opcode.xhtml#a34fd65614e23d04ee5dc17bd14dbd8e8">Opcode::getString</a></div><div class="ttdeci">virtual std::string getString()</div><div class="ttdef"><b>Definition:</b> Opcode.cpp:12</div></div>
+<div class="ttc" id="aclass_opcode_xhtml_aa54102265badaab18694f06975a6716d"><div class="ttname"><a href="class_opcode.xhtml#aa54102265badaab18694f06975a6716d">Opcode::position</a></div><div class="ttdeci">u4 * position</div><div class="ttdef"><b>Definition:</b> Opcode.h:42</div></div>
+<div class="ttc" id="a_cp_info_8h_xhtml"><div class="ttname"><a href="_cp_info_8h.xhtml">CpInfo.h</a></div></div>
+<div class="ttc" id="aclass_u1_operand_opcode_xhtml_a6a4fd4b2076a81ffd844cec6b0ac22e6"><div class="ttname"><a href="class_u1_operand_opcode.xhtml#a6a4fd4b2076a81ffd844cec6b0ac22e6">U1OperandOpcode::U1OperandOpcode</a></div><div class="ttdeci">U1OperandOpcode(std::string)</div><div class="ttdef"><b>Definition:</b> Opcode.cpp:53</div></div>
+<div class="ttc" id="aclass_opcodes_xhtml_a73de1ee156e571d03f094873c6217d9e"><div class="ttname"><a href="class_opcodes.xhtml#a73de1ee156e571d03f094873c6217d9e">Opcodes::printCode</a></div><div class="ttdeci">static void printCode(std::ostream &amp;out, ConstantPool cp, u1 code[], u4 codeLength)</div><div class="ttdoc">Imprime na tela os opcodes em um array de opcodes.</div><div class="ttdef"><b>Definition:</b> Opcode.cpp:339</div></div>
+<div class="ttc" id="aclass_increment_opcode_xhtml_af748b936e0462286a643276e7e51c507"><div class="ttname"><a href="class_increment_opcode.xhtml#af748b936e0462286a643276e7e51c507">IncrementOpcode::getString</a></div><div class="ttdeci">virtual std::string getString()</div><div class="ttdef"><b>Definition:</b> Opcode.cpp:78</div></div>
+<div class="ttc" id="aclass_increment_opcode_xhtml_a84be164e19b55db3efc7f8c8727bc554"><div class="ttname"><a href="class_increment_opcode.xhtml#a84be164e19b55db3efc7f8c8727bc554">IncrementOpcode::IncrementOpcode</a></div><div class="ttdeci">IncrementOpcode(std::string)</div><div class="ttdef"><b>Definition:</b> Opcode.cpp:72</div></div>
+<div class="ttc" id="aclass_s2_operand_opcode_xhtml_af63b8b8f4d79362e43cba96d34606fba"><div class="ttname"><a href="class_s2_operand_opcode.xhtml#af63b8b8f4d79362e43cba96d34606fba">S2OperandOpcode::S2OperandOpcode</a></div><div class="ttdeci">S2OperandOpcode(std::string)</div><div class="ttdef"><b>Definition:</b> Opcode.cpp:35</div></div>
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.xhtml">include</a></li><li class="navelem"><a class="el" href="_opcode_8h.xhtml">Opcode.h</a></li>
+    <li class="footer">Gerado por <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.0 </li>
+  </ul>
+</div>
+</body>
+</html>

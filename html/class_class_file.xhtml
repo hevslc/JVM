@@ -1,0 +1,557 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>JVM - Java Virtual Machine: Referência à classe ClassFile</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">JVM - Java Virtual Machine
+   </div>
+   <div id="projectbrief">Projeto da disciplina Software Básico - UnB - 02/2020</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Gerado por Doxygen 1.9.0 -->
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',false,false,'search.php','Localizar');
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('class_class_file.xhtml',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Membros públicos</a> &#124;
+<a href="#pub-attribs">Atributos Públicos</a> &#124;
+<a href="class_class_file-members.xhtml">Mostrar lista completa dos membros</a>  </div>
+  <div class="headertitle">
+<div class="title">Referência à classe ClassFile</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Classe que representa o arquivo .class.  
+ <a href="class_class_file.xhtml#details">Mais...</a></p>
+
+<p><code>#include &lt;<a class="el" href="_class_file_8h_source.xhtml">ClassFile.h</a>&gt;</code></p>
+<div class="dynheader">
+Diagrama de colaboração para ClassFile:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_class_file__coll__graph.svg" width="1638" height="574"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Membros públicos</h2></td></tr>
+<tr class="memitem:a0b0b87e0363a545e1ae72ac469a1ba24"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_file.xhtml#a0b0b87e0363a545e1ae72ac469a1ba24">ClassFile</a> (std::ifstream &amp;f)</td></tr>
+<tr class="memdesc:a0b0b87e0363a545e1ae72ac469a1ba24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrói um novo objeto <a class="el" href="class_class_file.xhtml" title="Classe que representa o arquivo .class.">ClassFile</a>. Lê todo o conteúdo do arquivo .class armazenando as informações no objeto <a class="el" href="class_class_file.xhtml" title="Classe que representa o arquivo .class.">ClassFile</a> em seus respectivos atributos.  <a href="class_class_file.xhtml#a0b0b87e0363a545e1ae72ac469a1ba24">Mais...</a><br /></td></tr>
+<tr class="separator:a0b0b87e0363a545e1ae72ac469a1ba24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacce1312652c9115db70ff43c1e8e6ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_file.xhtml#aacce1312652c9115db70ff43c1e8e6ea">print</a> (<a class="el" href="_definitions_8h.xhtml#ad9f4cdb6757615aae2fad89dab3c5470">u1</a> mode, std::string argv)</td></tr>
+<tr class="memdesc:aacce1312652c9115db70ff43c1e8e6ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Faz a impressão do <a class="el" href="class_class_file.xhtml" title="Classe que representa o arquivo .class.">ClassFile</a>, podendo ser em arquivo ou no terminal.  <a href="class_class_file.xhtml#aacce1312652c9115db70ff43c1e8e6ea">Mais...</a><br /></td></tr>
+<tr class="separator:aacce1312652c9115db70ff43c1e8e6ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f11a8c3afb5c053875b09eb5e0d3469"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_file.xhtml#a6f11a8c3afb5c053875b09eb5e0d3469">printBuf</a> (std::streambuf *buf)</td></tr>
+<tr class="memdesc:a6f11a8c3afb5c053875b09eb5e0d3469"><td class="mdescLeft">&#160;</td><td class="mdescRight">Imprime o <a class="el" href="class_class_file.xhtml" title="Classe que representa o arquivo .class.">ClassFile</a> em um buffer.  <a href="class_class_file.xhtml#a6f11a8c3afb5c053875b09eb5e0d3469">Mais...</a><br /></td></tr>
+<tr class="separator:a6f11a8c3afb5c053875b09eb5e0d3469"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae849765389c0310891fd6991eadd7428"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_file.xhtml#ae849765389c0310891fd6991eadd7428">~ClassFile</a> ()=default</td></tr>
+<tr class="separator:ae849765389c0310891fd6991eadd7428"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Atributos Públicos</h2></td></tr>
+<tr class="memitem:a09085e9db513dae2f46da6e0a26c1b59"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_definitions_8h.xhtml#ae5be1f726785414dd1b77d60df074c9d">u4</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_file.xhtml#a09085e9db513dae2f46da6e0a26c1b59">magic</a></td></tr>
+<tr class="separator:a09085e9db513dae2f46da6e0a26c1b59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44c02e5fbce1083ab0ac7efb311584c4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_definitions_8h.xhtml#a732cde1300aafb73b0ea6c2558a7a54f">u2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_file.xhtml#a44c02e5fbce1083ab0ac7efb311584c4">minorVersion</a></td></tr>
+<tr class="separator:a44c02e5fbce1083ab0ac7efb311584c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ca0fc5cd030456f055f7e199ca15e3d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_definitions_8h.xhtml#a732cde1300aafb73b0ea6c2558a7a54f">u2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_file.xhtml#a2ca0fc5cd030456f055f7e199ca15e3d">majorVersion</a></td></tr>
+<tr class="separator:a2ca0fc5cd030456f055f7e199ca15e3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac4e2e22d057a5c4ced3f8b1b0a53d37"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_definitions_8h.xhtml#a732cde1300aafb73b0ea6c2558a7a54f">u2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_file.xhtml#aac4e2e22d057a5c4ced3f8b1b0a53d37">constantPoolCount</a></td></tr>
+<tr class="separator:aac4e2e22d057a5c4ced3f8b1b0a53d37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91e6659f3216dadfc07ea265a2f7995f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_constant_pool.xhtml">ConstantPool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_file.xhtml#a91e6659f3216dadfc07ea265a2f7995f">constantPool</a></td></tr>
+<tr class="separator:a91e6659f3216dadfc07ea265a2f7995f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67eef5c23700942ba2bc0b2afad7a37e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_definitions_8h.xhtml#a732cde1300aafb73b0ea6c2558a7a54f">u2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_file.xhtml#a67eef5c23700942ba2bc0b2afad7a37e">acessFlagsMask</a></td></tr>
+<tr class="separator:a67eef5c23700942ba2bc0b2afad7a37e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d88c4d777a6b2d2ca1a3f135b8b8057"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_definitions_8h.xhtml#a732cde1300aafb73b0ea6c2558a7a54f">u2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_file.xhtml#a4d88c4d777a6b2d2ca1a3f135b8b8057">thisClassIdx</a></td></tr>
+<tr class="separator:a4d88c4d777a6b2d2ca1a3f135b8b8057"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa76af99c8cfbc99313b7bce350708f7d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_definitions_8h.xhtml#a732cde1300aafb73b0ea6c2558a7a54f">u2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_file.xhtml#aa76af99c8cfbc99313b7bce350708f7d">superClassIdx</a></td></tr>
+<tr class="separator:aa76af99c8cfbc99313b7bce350708f7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96bdca8f3944b196cde15ade573d87b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_definitions_8h.xhtml#a732cde1300aafb73b0ea6c2558a7a54f">u2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_file.xhtml#a96bdca8f3944b196cde15ade573d87b2">interfacesCount</a></td></tr>
+<tr class="separator:a96bdca8f3944b196cde15ade573d87b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4771d2bbb06291c73d9578237a81e480"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_definitions_8h.xhtml#a732cde1300aafb73b0ea6c2558a7a54f">u2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_file.xhtml#a4771d2bbb06291c73d9578237a81e480">fieldsCount</a></td></tr>
+<tr class="separator:a4771d2bbb06291c73d9578237a81e480"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab475d09debccba78e22fdce390698196"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_fields.xhtml">Fields</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_file.xhtml#ab475d09debccba78e22fdce390698196">fields</a></td></tr>
+<tr class="separator:ab475d09debccba78e22fdce390698196"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3835e46c2702d17213cbce398c7c542d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_definitions_8h.xhtml#a732cde1300aafb73b0ea6c2558a7a54f">u2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_file.xhtml#a3835e46c2702d17213cbce398c7c542d">methodsCount</a></td></tr>
+<tr class="separator:a3835e46c2702d17213cbce398c7c542d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f632b87c02350eea4afe8f8d331e1f5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_methods.xhtml">Methods</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_file.xhtml#a7f632b87c02350eea4afe8f8d331e1f5">methods</a></td></tr>
+<tr class="separator:a7f632b87c02350eea4afe8f8d331e1f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2ff64e83ed1aca26c11f97c879c2382"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_definitions_8h.xhtml#a732cde1300aafb73b0ea6c2558a7a54f">u2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_file.xhtml#aa2ff64e83ed1aca26c11f97c879c2382">attributesCount</a></td></tr>
+<tr class="separator:aa2ff64e83ed1aca26c11f97c879c2382"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad249db7b2e77a1cd131c3d081fd5e116"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_attributes.xhtml">Attributes</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_file.xhtml#ad249db7b2e77a1cd131c3d081fd5e116">attributes</a></td></tr>
+<tr class="separator:ad249db7b2e77a1cd131c3d081fd5e116"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4a14c4da4c5b08d3bb6d78c26458ccd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_version.xhtml">Version</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_file.xhtml#ad4a14c4da4c5b08d3bb6d78c26458ccd">version</a></td></tr>
+<tr class="separator:ad4a14c4da4c5b08d3bb6d78c26458ccd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad989c686b0b87177659aebbcca100e00"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_acess_flags.xhtml">AcessFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_file.xhtml#ad989c686b0b87177659aebbcca100e00">acessFlags</a></td></tr>
+<tr class="separator:ad989c686b0b87177659aebbcca100e00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c290b9ab428566e67589e771c4b8e76"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_this_class.xhtml">ThisClass</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_file.xhtml#a2c290b9ab428566e67589e771c4b8e76">thisClass</a></td></tr>
+<tr class="separator:a2c290b9ab428566e67589e771c4b8e76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a667d52eb8dc6211e6fcb352a970bd3f3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_super_class.xhtml">SuperClass</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_class_file.xhtml#a667d52eb8dc6211e6fcb352a970bd3f3">superClass</a></td></tr>
+<tr class="separator:a667d52eb8dc6211e6fcb352a970bd3f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Descrição detalhada</h2>
+<div class="textblock"><p>Classe que representa o arquivo .class. </p>
+<p>As informações extraídas da leitura do arquivo são armazenadas nos atributos. Seus métodos são funções de leitura. </p>
+</div><h2 class="groupheader">Documentação dos Construtores &amp; Destrutor</h2>
+<a id="a0b0b87e0363a545e1ae72ac469a1ba24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b0b87e0363a545e1ae72ac469a1ba24">&#9670;&nbsp;</a></span>ClassFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ClassFile::ClassFile </td>
+          <td>(</td>
+          <td class="paramtype">std::ifstream &amp;&#160;</td>
+          <td class="paramname"><em>f</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constrói um novo objeto <a class="el" href="class_class_file.xhtml" title="Classe que representa o arquivo .class.">ClassFile</a>. Lê todo o conteúdo do arquivo .class armazenando as informações no objeto <a class="el" href="class_class_file.xhtml" title="Classe que representa o arquivo .class.">ClassFile</a> em seus respectivos atributos. </p>
+<dl class="params"><dt>Parâmetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">f</td><td>Arquivo .class a ser lido. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>Veja também</dt><dd>ClassFile::rconstantPoolt(std::ifstream&amp;) </dd></dl>
+
+</div>
+</div>
+<a id="ae849765389c0310891fd6991eadd7428"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae849765389c0310891fd6991eadd7428">&#9670;&nbsp;</a></span>~ClassFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ClassFile::~ClassFile </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Documentação dos métodos</h2>
+<a id="aacce1312652c9115db70ff43c1e8e6ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aacce1312652c9115db70ff43c1e8e6ea">&#9670;&nbsp;</a></span>print()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ClassFile::print </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_definitions_8h.xhtml#ad9f4cdb6757615aae2fad89dab3c5470">u1</a>&#160;</td>
+          <td class="paramname"><em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>argv</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Faz a impressão do <a class="el" href="class_class_file.xhtml" title="Classe que representa o arquivo .class.">ClassFile</a>, podendo ser em arquivo ou no terminal. </p>
+<dl class="params"><dt>Parâmetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mode</td><td>Indica o modo da impressão (infile ou interminal) </td></tr>
+    <tr><td class="paramname">argv</td><td>Argumento que contém o nome do arquivo .class </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6f11a8c3afb5c053875b09eb5e0d3469"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f11a8c3afb5c053875b09eb5e0d3469">&#9670;&nbsp;</a></span>printBuf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ClassFile::printBuf </td>
+          <td>(</td>
+          <td class="paramtype">std::streambuf *&#160;</td>
+          <td class="paramname"><em>buf</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Imprime o <a class="el" href="class_class_file.xhtml" title="Classe que representa o arquivo .class.">ClassFile</a> em um buffer. </p>
+<dl class="params"><dt>Parâmetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buf</td><td>Buffer para impressão do arquivo. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Documentação dos dados membro</h2>
+<a id="ad989c686b0b87177659aebbcca100e00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad989c686b0b87177659aebbcca100e00">&#9670;&nbsp;</a></span>acessFlags</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_acess_flags.xhtml">AcessFlags</a> ClassFile::acessFlags</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Flags de acesso da classe </p>
+
+</div>
+</div>
+<a id="a67eef5c23700942ba2bc0b2afad7a37e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67eef5c23700942ba2bc0b2afad7a37e">&#9670;&nbsp;</a></span>acessFlagsMask</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_definitions_8h.xhtml#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> ClassFile::acessFlagsMask</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Máscara auxiliar para a inicialização do acessFlags </p>
+
+</div>
+</div>
+<a id="ad249db7b2e77a1cd131c3d081fd5e116"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad249db7b2e77a1cd131c3d081fd5e116">&#9670;&nbsp;</a></span>attributes</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_attributes.xhtml">Attributes</a> ClassFile::attributes</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Atributos da classe </p>
+
+</div>
+</div>
+<a id="aa2ff64e83ed1aca26c11f97c879c2382"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2ff64e83ed1aca26c11f97c879c2382">&#9670;&nbsp;</a></span>attributesCount</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_definitions_8h.xhtml#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> ClassFile::attributesCount</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Contador do número de atributos </p>
+
+</div>
+</div>
+<a id="a91e6659f3216dadfc07ea265a2f7995f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91e6659f3216dadfc07ea265a2f7995f">&#9670;&nbsp;</a></span>constantPool</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_constant_pool.xhtml">ConstantPool</a> ClassFile::constantPool</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Tabela de estruturas representando constantes de string, nomes e outras constantes mencionadas no <a class="el" href="class_class_file.xhtml" title="Classe que representa o arquivo .class.">ClassFile</a>. </p>
+
+</div>
+</div>
+<a id="aac4e2e22d057a5c4ced3f8b1b0a53d37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac4e2e22d057a5c4ced3f8b1b0a53d37">&#9670;&nbsp;</a></span>constantPoolCount</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_definitions_8h.xhtml#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> ClassFile::constantPoolCount</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Número de entradas na tabela constant_pool + 1 </p>
+
+</div>
+</div>
+<a id="ab475d09debccba78e22fdce390698196"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab475d09debccba78e22fdce390698196">&#9670;&nbsp;</a></span>fields</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_fields.xhtml">Fields</a> ClassFile::fields</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Campos (<a class="el" href="class_fields.xhtml" title="Vetor de fields da JVM.">Fields</a>) da classe </p>
+
+</div>
+</div>
+<a id="a4771d2bbb06291c73d9578237a81e480"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4771d2bbb06291c73d9578237a81e480">&#9670;&nbsp;</a></span>fieldsCount</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_definitions_8h.xhtml#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> ClassFile::fieldsCount</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Contador do número de <a class="el" href="class_fields.xhtml" title="Vetor de fields da JVM.">Fields</a> </p>
+
+</div>
+</div>
+<a id="a96bdca8f3944b196cde15ade573d87b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96bdca8f3944b196cde15ade573d87b2">&#9670;&nbsp;</a></span>interfacesCount</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_definitions_8h.xhtml#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> ClassFile::interfacesCount</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Contador do número de interfaces </p>
+
+</div>
+</div>
+<a id="a09085e9db513dae2f46da6e0a26c1b59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09085e9db513dae2f46da6e0a26c1b59">&#9670;&nbsp;</a></span>magic</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_definitions_8h.xhtml#ae5be1f726785414dd1b77d60df074c9d">u4</a> ClassFile::magic</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Assinatura do arquivo: 0xCAFEBABE </p>
+
+</div>
+</div>
+<a id="a2ca0fc5cd030456f055f7e199ca15e3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ca0fc5cd030456f055f7e199ca15e3d">&#9670;&nbsp;</a></span>majorVersion</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_definitions_8h.xhtml#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> ClassFile::majorVersion</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Versão maior </p>
+
+</div>
+</div>
+<a id="a7f632b87c02350eea4afe8f8d331e1f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f632b87c02350eea4afe8f8d331e1f5">&#9670;&nbsp;</a></span>methods</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_methods.xhtml">Methods</a> ClassFile::methods</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Métodos da classe </p>
+
+</div>
+</div>
+<a id="a3835e46c2702d17213cbce398c7c542d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3835e46c2702d17213cbce398c7c542d">&#9670;&nbsp;</a></span>methodsCount</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_definitions_8h.xhtml#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> ClassFile::methodsCount</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Contador do número de métodos </p>
+
+</div>
+</div>
+<a id="a44c02e5fbce1083ab0ac7efb311584c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44c02e5fbce1083ab0ac7efb311584c4">&#9670;&nbsp;</a></span>minorVersion</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_definitions_8h.xhtml#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> ClassFile::minorVersion</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Versão menor </p>
+
+</div>
+</div>
+<a id="a667d52eb8dc6211e6fcb352a970bd3f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a667d52eb8dc6211e6fcb352a970bd3f3">&#9670;&nbsp;</a></span>superClass</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_super_class.xhtml">SuperClass</a> ClassFile::superClass</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Indica a super classe </p>
+
+</div>
+</div>
+<a id="aa76af99c8cfbc99313b7bce350708f7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa76af99c8cfbc99313b7bce350708f7d">&#9670;&nbsp;</a></span>superClassIdx</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_definitions_8h.xhtml#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> ClassFile::superClassIdx</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Se diferente de zero, índice para Tabela de Constantes para a inicialização do superClass </p>
+
+</div>
+</div>
+<a id="a2c290b9ab428566e67589e771c4b8e76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c290b9ab428566e67589e771c4b8e76">&#9670;&nbsp;</a></span>thisClass</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_this_class.xhtml">ThisClass</a> ClassFile::thisClass</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Indica esta classe (definido a partir do <a class="el" href="class_constant_pool.xhtml" title="Vetor (tabela) das constantes. Cada entrada é do tipo Cpinfo.">ConstantPool</a>) </p>
+
+</div>
+</div>
+<a id="a4d88c4d777a6b2d2ca1a3f135b8b8057"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d88c4d777a6b2d2ca1a3f135b8b8057">&#9670;&nbsp;</a></span>thisClassIdx</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_definitions_8h.xhtml#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> ClassFile::thisClassIdx</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Índice para Tabela de Constantes para a inicialização do thisClass </p>
+
+</div>
+</div>
+<a id="ad4a14c4da4c5b08d3bb6d78c26458ccd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4a14c4da4c5b08d3bb6d78c26458ccd">&#9670;&nbsp;</a></span>version</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_version.xhtml">Version</a> ClassFile::version</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Versão Java utilizada no arquivo .class </p>
+
+</div>
+</div>
+<hr/>A documentação para esta classe foi gerada a partir dos seguintes ficheiros:<ul>
+<li>include/<a class="el" href="_class_file_8h_source.xhtml">ClassFile.h</a></li>
+<li>src/<a class="el" href="_class_file_8cpp.xhtml">ClassFile.cpp</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="class_class_file.xhtml">ClassFile</a></li>
+    <li class="footer">Gerado por <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.0 </li>
+  </ul>
+</div>
+</body>
+</html>
