@@ -45,7 +45,27 @@ std::string U2OperandOpcodeCP::getString()
         u4 pos = *position;
         u2 result = (code[pos + 1] << 8) | code[pos + 2];
         *position += 2;
+
         return name + " " + std::to_string(result) + " <" + cp.getUtf8Class(cp[result-1].Class.nameIndex-1) + "." + cp.getNNameAndType(cp[result-1].FieldMethInter.nameTypeIndex-1) + ">";
+    }
+    return "";
+}
+
+U2OperandOpcodeCPNew::U2OperandOpcodeCPNew(std::string name):
+Opcode(name)
+{
+    knowsCode = true;
+}
+
+std::string U2OperandOpcodeCPNew::getString()
+{
+    if (code != nullptr)
+    {
+        u4 pos = *position;
+        u2 result = (code[pos + 1] << 8) | code[pos + 2];
+        *position += 2;
+
+        return name + " " + std::to_string(result) + " <" + cp.getUtf8Str(cp[result-1].Class.nameIndex-1) + ">";
     }
     return "";
 }
@@ -99,7 +119,8 @@ std::string U1OperandOpcodeCP::getString()
         u4 pos = *position;
         u2 result = code[pos + 1];
         *position += 1;
-        return name + " " + std::to_string(code[pos + 1]) + " <" + cp.getUtf8Str(cp[result].String.stringIndex-2) + ">";
+
+        return name + " " + std::to_string(code[pos + 1]) + " <" + cp.getUtf8Str(cp[result-1].String.stringIndex-1) + ">";
     }
     return "";
 }
@@ -317,9 +338,9 @@ opcodes(0xff + 1, nullptr)
     opcodes[0xB8] = new U2OperandOpcodeCP("invokestatic");
     // TODO invokeinterface 0xB9
     // TODO invokedynamic 0xBA
-    opcodes[0xBB] = new U2OperandOpcodeCP("new");
+    opcodes[0xBB] = new U2OperandOpcodeCPNew("new");
     opcodes[0xBC] = new U1OperandOpcode("newarray");
-    opcodes[0xBD] = new U2OperandOpcodeCP("anewarray");
+    opcodes[0xBD] = new U2OperandOpcodeCPNew("anewarray");
     opcodes[0xBE] = new Opcode("arraylength");
     opcodes[0xBF] = new Opcode("athrow");
     opcodes[0xC0] = new U2OperandOpcodeCP("checkcast");
