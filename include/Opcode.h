@@ -54,6 +54,13 @@ public:
     U2OperandOpcode(std::string);
 };
 
+class U2OperandOpcodeCP : public Opcode
+{
+public:
+    virtual std::string getString();
+    U2OperandOpcodeCP(std::string);
+};
+
 /*!
    \brief Opcode com dois bytes de operandos com sinal.
    Os dois bytes são juntados para formarem um inteiro de dois bytes com
@@ -75,6 +82,14 @@ public:
     virtual std::string getString();
     U1OperandOpcode(std::string);
 };
+
+class U1OperandOpcodeCP : public Opcode
+{
+public:
+    virtual std::string getString();
+    U1OperandOpcodeCP(std::string);
+};
+
 
 /*!
    \brief Opcode de incremento.
