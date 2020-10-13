@@ -6,7 +6,7 @@
 #include "AttributeInfo.h"
 #include "FieldInfo.h"
 #include "MethodInfo.h"
-
+#include "Interface.h"
 
 /*! \class ClassFile reader.h "include/reader.h"
  *  \brief Classe que representa o arquivo .class. 
@@ -34,7 +34,7 @@ public:
 	u2			 thisClassIdx; 		/*!< Índice para Tabela de Constantes para a inicialização do thisClass */
 	u2			 superClassIdx; 	/*!< Se diferente de zero, índice para Tabela de Constantes para a inicialização do superClass */
 	u2			 interfacesCount; 	/*!< Contador do número de interfaces */
-	//u2		 interfaces; 		/*!< Vetor de interfaces */
+	Interfaces	 interfaces; 		/*!< Vetor de interfaces */
 	u2			 fieldsCount; 		/*!< Contador do número de Fields */
 	Fields		 fields; 			/*!< Campos (Fields) da classe */
 	u2			 methodsCount; 		/*!< Contador do número de métodos */
