@@ -52,14 +52,6 @@ public:
     U2OperandOpcode(std::string);
 };
 
-class CpOperandOpcode : public Opcode
-{
-  public:
-      virtual std::string getString();
-      CpOperandOpcode(std::string);
-};
-
-
 /*!
    \brief Opcode com dois bytes de operandos com sinal.
    Os dois bytes são juntados para formarem um inteiro de dois bytes com
