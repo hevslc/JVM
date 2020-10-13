@@ -53,7 +53,7 @@ ClassFile::ClassFile(std::ifstream &f) : magic(r4(f)),
 										 thisClassIdx(r2(f)),
 										 superClassIdx(r2(f)),
 										 interfacesCount(r2(f)),
-										 //ler interfaces
+										 interfaces(f, interfacesCount),
 										 fieldsCount(r2(f)),
 										 fields(f, fieldsCount, constantPool),
 										 methodsCount(r2(f)),
@@ -98,7 +98,7 @@ void ClassFile::printBuf(std::streambuf  *buf){
 	out << "Attributes Count.: " << std::dec << attributesCount << std::endl;
 	//Tables
 	constantPool.print(out);
-	//print Interfaces
+	interfaces.print(constantPool, out);
 	fields.print(out, constantPool);
 	methods.print(out, constantPool);
 	out << "__________________ Attributes __________________" << std::endl;
