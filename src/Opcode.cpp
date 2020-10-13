@@ -245,8 +245,43 @@ std::string LookupswitchOpcode::getString()
     }
 }
 
+TableswitchOpcode::TableswitchOpcode(std::string name):
+Opcode(name)
+{
+    knowsCode = true;
+}
+
+std::string TableswitchOpcode::getString()
+{
+    if (code != nullptr) 
+    {
+        u4 pos = *position;
+        u1 paddingbytes = (3 - (pos % 4));
+
+        pos += paddingbytes;
+        
+        std::string out;
+
+        int32_t defaultbyte = (code[pos + 1] << 24) | (code[pos + 2] << 16)
+        | (code[pos + 3] << 8) | code[pos + 4];
+
+        int32_t lowbyte = (code[pos + 5] << 24) | (code[pos + 6] << 16)
+        | (code[pos + 7] << 8) | code[pos + 8];
+
+        int32_t highbyte = (code[pos + 9] << 24) | (code[pos + 10] << 16)
+        | (code[pos + 11] << 8) | code[pos + 12];
+
+        out = name + " " + std::to_string(lowbyte) + " to " + std::to_string(highbyte);
+        out += "\n\tdefault:   " + std::to_string(*position + defaultbyte) +  + " (+" + std::to_string(defaultbyte) + ")"; 
+
+        *position = pos + 12 + (highbyte-lowbyte+1)*4;
+        //*position += 32;
+        return out;
+    }
+}
+
 /////////////////////////////////////////////////////////////////////////////
-// Classe Opcodes
+// Classe Opcodes                                                          //
 /////////////////////////////////////////////////////////////////////////////
 
 Opcodes::Opcodes():
@@ -422,7 +457,7 @@ opcodes(0xff + 1, nullptr)
     opcodes[0xA7] = new S2OperandOpcode("goto");
     opcodes[0xA8] = new S2OperandOpcode("jsr");
     opcodes[0xA9] = new U1OperandOpcode("ret");
-    // TODO tableswitch 0xAA Estevam
+    opcodes[0xAA] = new TableswitchOpcode("tableswitch");
     opcodes[0xAB] = new LookupswitchOpcode("lookupswitch");
     opcodes[0xAC] = new Opcode("ireturn");
     opcodes[0xAD] = new Opcode("lreturn");
