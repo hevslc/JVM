@@ -62,11 +62,11 @@ public:
     U2OperandOpcodeCP(std::string);
 };
 
-class U2OperandOpcodeCPNew : public Opcode
+class U2OperandOpcodeCPClass : public Opcode
 {
 public:
     virtual std::string getString();
-    U2OperandOpcodeCPNew(std::string);
+    U2OperandOpcodeCPClass(std::string);
 };
 
 class U2OperandOpcodeCPDouble : public Opcode
@@ -142,6 +142,13 @@ class TableswitchOpcode : public Opcode
   public:
     virtual std::string getString();
     TableswitchOpcode(std::string);
+};
+
+class MultiNewArrayOpcode : public Opcode
+{
+  public:
+    virtual std::string getString();
+    MultiNewArrayOpcode(std::string);
 };
 
 /*!
