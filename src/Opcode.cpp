@@ -304,25 +304,6 @@ std::string TableswitchOpcode::getString()
     }
 }
 
-InvokeInterfaceOpcode::InvokeInterfaceOpcode(std::string name):
-Opcode(name)
-{
-    knowsCode = true;
-}
-
-std::string InvokeInterfaceOpcode::getString()
-{
-    if (code != nullptr)
-    {
-        u4 pos = *position;
-        u2 result = (code[pos + 1] << 8) | code[pos + 2];
-        // u2 count = 
-        *position += 2;
-        return name + " " + std::to_string(result) + ", " + "\n\t0";
-    }
-    return "";
-}
-
 MultiNewArrayOpcode::MultiNewArrayOpcode(std::string name):
 Opcode(name)
 {
@@ -333,12 +314,20 @@ std::string MultiNewArrayOpcode::getString()
 {
     if (code != nullptr)
     {
+        
         u4 pos = *position;
         u2 result = (code[pos + 1] << 8) | code[pos + 2];
+        u2 dimensions = code[pos + 3];
         *position += 2;
 
+        if (dimensions < 1)
+        {
+            return "NegativeArraySizeException";
+        }
+
         return name + " " + std::to_string(result) + " <" 
-        + cp.getUtf8Str(cp[result-1].Class.nameIndex-1) + ">";
+        + cp.getUtf8Str(cp[result-1].Class.nameIndex-1) + "> dim " 
+        + std::to_string(dimensions);
     }
     return "";
 }
@@ -534,7 +523,7 @@ opcodes(0xff + 1, nullptr)
     opcodes[0xB6] = new U2OperandOpcodeCP("invokevirtual");
     opcodes[0xB7] = new U2OperandOpcodeCP("invokeSpecial");
     opcodes[0xB8] = new U2OperandOpcodeCP("invokestatic");
-    opcodes[0xB9] = new InvokeInterfaceOpcode("invokeinterface");
+    // opcodes[0xB9] = new InvokeInterfaceOpcode("invokeinterface");
     // opcodes[0xBA] = new InvokeDynamicOpcode("invokdynamic");
     opcodes[0xBB] = new U2OperandOpcodeCPClass("new");
     opcodes[0xBC] = new U1OperandOpcode("newarray");

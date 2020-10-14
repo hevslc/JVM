@@ -144,13 +144,6 @@ class TableswitchOpcode : public Opcode
     TableswitchOpcode(std::string);
 };
 
-class InvokeInterfaceOpcode : public Opcode
-{
-  public:
-    virtual std::string getString();
-    InvokeInterfaceOpcode(std::string);
-};
-
 class MultiNewArrayOpcode : public Opcode
 {
   public:
