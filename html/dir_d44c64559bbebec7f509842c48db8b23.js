@@ -32,6 +32,9 @@ var dir_d44c64559bbebec7f509842c48db8b23 =
       [ "FieldInfo", "class_field_info.xhtml", "class_field_info" ],
       [ "Fields", "class_fields.xhtml", "class_fields" ]
     ] ],
+    [ "Interface.h", "_interface_8h.xhtml", [
+      [ "Interfaces", "class_interfaces.xhtml", "class_interfaces" ]
+    ] ],
     [ "MethodInfo.h", "_method_info_8h.xhtml", [
       [ "MethodInfo", "class_method_info.xhtml", "class_method_info" ],
       [ "Methods", "class_methods.xhtml", "class_methods" ]
@@ -39,9 +42,18 @@ var dir_d44c64559bbebec7f509842c48db8b23 =
     [ "Opcode.h", "_opcode_8h.xhtml", [
       [ "Opcode", "class_opcode.xhtml", "class_opcode" ],
       [ "U2OperandOpcode", "class_u2_operand_opcode.xhtml", "class_u2_operand_opcode" ],
+      [ "U2OperandOpcodeCP", "class_u2_operand_opcode_c_p.xhtml", "class_u2_operand_opcode_c_p" ],
+      [ "U2OperandOpcodeCPClass", "class_u2_operand_opcode_c_p_class.xhtml", "class_u2_operand_opcode_c_p_class" ],
+      [ "U2OperandOpcodeCPDouble", "class_u2_operand_opcode_c_p_double.xhtml", "class_u2_operand_opcode_c_p_double" ],
       [ "S2OperandOpcode", "class_s2_operand_opcode.xhtml", "class_s2_operand_opcode" ],
+      [ "S4OperandOpcode", "class_s4_operand_opcode.xhtml", "class_s4_operand_opcode" ],
       [ "U1OperandOpcode", "class_u1_operand_opcode.xhtml", "class_u1_operand_opcode" ],
+      [ "U1OperandOpcodeCP", "class_u1_operand_opcode_c_p.xhtml", "class_u1_operand_opcode_c_p" ],
       [ "IncrementOpcode", "class_increment_opcode.xhtml", "class_increment_opcode" ],
+      [ "ModifyOpcode", "class_modify_opcode.xhtml", "class_modify_opcode" ],
+      [ "LookupswitchOpcode", "class_lookupswitch_opcode.xhtml", "class_lookupswitch_opcode" ],
+      [ "TableswitchOpcode", "class_tableswitch_opcode.xhtml", "class_tableswitch_opcode" ],
+      [ "MultiNewArrayOpcode", "class_multi_new_array_opcode.xhtml", "class_multi_new_array_opcode" ],
       [ "Opcodes", "class_opcodes.xhtml", "class_opcodes" ]
     ] ]
 ];

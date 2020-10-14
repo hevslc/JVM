@@ -1,11 +1,12 @@
 <map id="Representação gráfica da hiearquia da classe" name="Representação gráfica da hiearquia da classe">
-<area shape="rect" id="node1" title=" " alt="" coords="5,183,68,209"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,208,68,235"/>
 <area shape="rect" id="node2" href="$class_attributes.xhtml" title="Vetor (tabela) dos atributos. Cada entrada é do tipo AttributeInfo." alt="" coords="154,5,241,32"/>
 <area shape="rect" id="node3" href="$class_classes.xhtml" title=" " alt="" coords="161,56,233,83"/>
 <area shape="rect" id="node4" href="$class_constant_pool.xhtml" title="Vetor (tabela) das constantes. Cada entrada é do tipo Cpinfo." alt="" coords="143,107,251,133"/>
 <area shape="rect" id="node5" href="$class_exception_table.xhtml" title=" " alt="" coords="137,157,257,184"/>
 <area shape="rect" id="node6" href="$class_fields.xhtml" title="Vetor de fields da JVM." alt="" coords="168,208,227,235"/>
-<area shape="rect" id="node7" href="$class_line_number_table_str.xhtml" title=" " alt="" coords="121,259,274,285"/>
-<area shape="rect" id="node8" href="$class_local_variable_table_str.xhtml" title=" " alt="" coords="116,309,279,336"/>
-<area shape="rect" id="node9" href="$class_methods.xhtml" title="Vetor dos métodos da JVM." alt="" coords="158,360,237,387"/>
+<area shape="rect" id="node7" href="$class_interfaces.xhtml" title="Métodos para extração e impressão das interfaces do arquivo." alt="" coords="154,259,241,285"/>
+<area shape="rect" id="node8" href="$class_line_number_table_str.xhtml" title=" " alt="" coords="121,309,274,336"/>
+<area shape="rect" id="node9" href="$class_local_variable_table_str.xhtml" title=" " alt="" coords="116,360,279,387"/>
+<area shape="rect" id="node10" href="$class_methods.xhtml" title="Vetor dos métodos da JVM." alt="" coords="158,411,237,437"/>
 </map>
