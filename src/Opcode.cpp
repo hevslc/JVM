@@ -59,13 +59,13 @@ std::string U2OperandOpcodeCP::getString()
     return "";
 }
 
-U2OperandOpcodeCPNew::U2OperandOpcodeCPNew(std::string name):
+U2OperandOpcodeCPClass::U2OperandOpcodeCPClass(std::string name):
 Opcode(name)
 {
     knowsCode = true;
 }
 
-std::string U2OperandOpcodeCPNew::getString()
+std::string U2OperandOpcodeCPClass::getString()
 {
     if (code != nullptr)
     {
@@ -304,6 +304,44 @@ std::string TableswitchOpcode::getString()
     }
 }
 
+InvokeInterfaceOpcode::InvokeInterfaceOpcode(std::string name):
+Opcode(name)
+{
+    knowsCode = true;
+}
+
+std::string InvokeInterfaceOpcode::getString()
+{
+    if (code != nullptr)
+    {
+        u4 pos = *position;
+        u2 result = (code[pos + 1] << 8) | code[pos + 2];
+        // u2 count = 
+        *position += 2;
+        return name + " " + std::to_string(result) + ", " + "\n\t0";
+    }
+    return "";
+}
+
+MultiNewArrayOpcode::MultiNewArrayOpcode(std::string name):
+Opcode(name)
+{
+    knowsCode = true;
+}
+
+std::string MultiNewArrayOpcode::getString()
+{
+    if (code != nullptr)
+    {
+        u4 pos = *position;
+        u2 result = (code[pos + 1] << 8) | code[pos + 2];
+        *position += 2;
+
+        return name + " " + std::to_string(result) + " <" 
+        + cp.getUtf8Str(cp[result-1].Class.nameIndex-1) + ">";
+    }
+    return "";
+}
 /////////////////////////////////////////////////////////////////////////////
 // Classe Opcodes                                                          //
 /////////////////////////////////////////////////////////////////////////////
@@ -496,19 +534,19 @@ opcodes(0xff + 1, nullptr)
     opcodes[0xB6] = new U2OperandOpcodeCP("invokevirtual");
     opcodes[0xB7] = new U2OperandOpcodeCP("invokeSpecial");
     opcodes[0xB8] = new U2OperandOpcodeCP("invokestatic");
-    // TODO invokeinterface 0xB9 Rodrigo
-    // TODO invokedynamic 0xBA Rodrigo
-    opcodes[0xBB] = new U2OperandOpcodeCPNew("new");
+    opcodes[0xB9] = new InvokeInterfaceOpcode("invokeinterface");
+    // opcodes[0xBA] = new InvokeDynamicOpcode("invokdynamic");
+    opcodes[0xBB] = new U2OperandOpcodeCPClass("new");
     opcodes[0xBC] = new U1OperandOpcode("newarray");
-    opcodes[0xBD] = new U2OperandOpcodeCPNew("anewarray");
+    opcodes[0xBD] = new U2OperandOpcodeCPClass("anewarray");
     opcodes[0xBE] = new Opcode("arraylength");
     opcodes[0xBF] = new Opcode("athrow");
-    opcodes[0xC0] = new U2OperandOpcodeCPNew("checkcast");
+    opcodes[0xC0] = new U2OperandOpcodeCPClass("checkcast");
     opcodes[0xC1] = new U2OperandOpcodeCP("instanceof");
     opcodes[0xC2] = new Opcode("monitorenter");
     opcodes[0xC3] = new Opcode("monitorexit");
     opcodes[0xC4] = new ModifyOpcode("wide");
-    // TODO multianewarray 0xC5 Rodrigo
+    opcodes[0xC5] = new MultiNewArrayOpcode("multianewarray");
     opcodes[0xC6] = new U2OperandOpcode("ifnull");
     opcodes[0xC7] = new U2OperandOpcode("ifnonnull");
     opcodes[0xC8] = new S4OperandOpcode("goto_w");
