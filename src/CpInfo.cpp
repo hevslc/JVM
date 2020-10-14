@@ -104,6 +104,10 @@ std::string ConstantPool::getNNameAndType(u2 idxNameType){
 	return getUtf8Str(at(idxNameType).NameAndType.nameIndex-1);
 }
 
+// std::string ConstantPool::getDouble(u2 idxDouble){
+// 	return getUtf8Str(at(idxDouble).NameAndType.nameIndex-1);
+// }
+
 void ConstantPool::print(std::ostream& out){
 	out << "\n__________________ConstantPool__________________" << std::endl;
 	out << std::showbase;
