@@ -1,6 +1,11 @@
 # JVM
 Uma implementação simples de uma Máquina Virtual Java.
 
+# Execução
+* Clonar o repositório
+* Na raíz, executar o comando ```make``` para gerar o executável
+* Para executar, utilize o comando ```.\main.exe .\examples\<arquivo_.class>```
+
 ## WorkFlow
 * Criar uma **nova issue** para uma situação ou escolher uma existente.
 * Criar um **novo branch** para cada nova **issue**, apagar a branch quando terminar a implementação.
@@ -16,3 +21,4 @@ Uma implementação simples de uma Máquina Virtual Java.
 * Kálley Wilkerson - 170038050
 * Patrick Vitas Reguera Beal - 150143672
 * Rodrigo Matias Xavier - 150147431
+
