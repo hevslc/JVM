@@ -8,3 +8,11 @@ Uma implementação simples de uma Máquina Virtual Java.
 
 ## Padrão de codificação
 * Separar nomes de atributos, métodos ou classes por **caixa alta/baixa** e não por underline.
+
+# Integrantes
+* Ayllah Ahmad Lopes - 170056465
+* Estevam Galvão Albuquerque - 160005663
+* Hevelyn Sthefany Lima de Carvalho  - 170059031
+* Kálley Wilkerson - 170038050
+* Patrick Vitas Reguera Beal - 150143672
+* Rodrigo Matias Xavier - 150147431
