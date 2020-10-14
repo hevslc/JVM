@@ -52,7 +52,9 @@ std::string U2OperandOpcodeCP::getString()
         u2 result = (code[pos + 1] << 8) | code[pos + 2];
         *position += 2;
 
-        return name + " " + std::to_string(result) + " <" + cp.getUtf8Class(cp[result-1].Class.nameIndex-1) + "." + cp.getNNameAndType(cp[result-1].FieldMethInter.nameTypeIndex-1) + ">";
+        return name + " " + std::to_string(result) + " <" 
+        + cp.getUtf8Class(cp[result-1].Class.nameIndex-1) + "." 
+        + cp.getNNameAndType(cp[result-1].FieldMethInter.nameTypeIndex-1) + ">";
     }
     return "";
 }
@@ -71,7 +73,28 @@ std::string U2OperandOpcodeCPNew::getString()
         u2 result = (code[pos + 1] << 8) | code[pos + 2];
         *position += 2;
 
-        return name + " " + std::to_string(result) + " <" + cp.getUtf8Str(cp[result-1].Class.nameIndex-1) + ">";
+        return name + " " + std::to_string(result) + " <" 
+        + cp.getUtf8Str(cp[result-1].Class.nameIndex-1) + ">";
+    }
+    return "";
+}
+
+U2OperandOpcodeCPDouble::U2OperandOpcodeCPDouble(std::string name):
+Opcode(name)
+{
+    knowsCode = true;
+}
+
+std::string U2OperandOpcodeCPDouble::getString()
+{
+    if (code != nullptr)
+    {
+        u4 pos = *position;
+        u2 result = (code[pos + 1] << 8) | code[pos + 2];
+        *position += 2;
+
+        return name + " " + std::to_string(result) + " <" 
+        + std::to_string(cp.getDouble(cp[result-1].Double.highBytes-1, cp[result-1].Double.lowBytes-1)) + ">";
     }
     return "";
 }
@@ -147,7 +170,8 @@ std::string U1OperandOpcodeCP::getString()
         u2 result = code[pos + 1];
         *position += 1;
 
-        return name + " " + std::to_string(code[pos + 1]) + " <" + cp.getUtf8Str(cp[result-1].String.stringIndex-1) + ">";
+        return name + " " + std::to_string(code[pos + 1]) + " <" 
+        + cp.getUtf8Str(cp[result-1].String.stringIndex-1) + ">";
     }
     return "";
 }
@@ -307,7 +331,7 @@ opcodes(0xff + 1, nullptr)
     opcodes[0x11] = new U2OperandOpcode("sipush");
     opcodes[0x12] = new U1OperandOpcodeCP("ldc");
     opcodes[0x13] = new U2OperandOpcodeCP("ldc_w");
-    opcodes[0x14] = new U2OperandOpcodeCP("ldc2_w");
+    opcodes[0x14] = new U2OperandOpcodeCPDouble("ldc2_w");
     opcodes[0x15] = new U1OperandOpcode("iload");
     opcodes[0x16] = new U1OperandOpcode("lload");
     opcodes[0x17] = new U1OperandOpcode("fload");
@@ -479,7 +503,7 @@ opcodes(0xff + 1, nullptr)
     opcodes[0xBD] = new U2OperandOpcodeCPNew("anewarray");
     opcodes[0xBE] = new Opcode("arraylength");
     opcodes[0xBF] = new Opcode("athrow");
-    opcodes[0xC0] = new U2OperandOpcodeCP("checkcast");
+    opcodes[0xC0] = new U2OperandOpcodeCPNew("checkcast");
     opcodes[0xC1] = new U2OperandOpcodeCP("instanceof");
     opcodes[0xC2] = new Opcode("monitorenter");
     opcodes[0xC3] = new Opcode("monitorexit");
