@@ -76,13 +76,13 @@ $(document).ready(function(){initNavTree('class_opcode.xhtml',''); initResizable
 <div class="dynheader">
 Diagrama de heranças da classe Opcode</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_opcode__inherit__graph.svg" width="752" height="331"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_opcode__inherit__graph.svg" width="2656" height="346"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 <div class="dynheader">
 Diagrama de colaboração para Opcode:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_opcode__coll__graph.svg" width="532" height="546"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_opcode__coll__graph.svg" width="532" height="560"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 <table class="memberdecls">
@@ -102,6 +102,8 @@ Membros públicos</h2></td></tr>
 Atributos Públicos</h2></td></tr>
 <tr class="memitem:a0bfebdb7ba7e871a120827ca51348144"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_opcode.xhtml#a0bfebdb7ba7e871a120827ca51348144">knowsCode</a> = false</td></tr>
 <tr class="separator:a0bfebdb7ba7e871a120827ca51348144"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2dc35b8a9caded904a9533c2356412c8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_opcode.xhtml#a2dc35b8a9caded904a9533c2356412c8">knowsCp</a> = false</td></tr>
+<tr class="separator:a2dc35b8a9caded904a9533c2356412c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Atributos Protegidos</h2></td></tr>
@@ -186,7 +188,7 @@ Atributos Protegidos</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplementado em <a class="el" href="class_increment_opcode.xhtml#af748b936e0462286a643276e7e51c507">IncrementOpcode</a>, <a class="el" href="class_u1_operand_opcode.xhtml#adc7e028f04673142b896e383f064e535">U1OperandOpcode</a>, <a class="el" href="class_s2_operand_opcode.xhtml#a077214149f9503bb126ca3cc393f7ed2">S2OperandOpcode</a> e <a class="el" href="class_u2_operand_opcode.xhtml#a5bcc7d5c3f4dcdf346f14853e6890a1a">U2OperandOpcode</a>.</p>
+<p>Reimplementado em <a class="el" href="class_multi_new_array_opcode.xhtml#a799b079407e22ec70a53ab2090ab4d8a">MultiNewArrayOpcode</a>, <a class="el" href="class_tableswitch_opcode.xhtml#a837444f60859e3128c2e6aa1663717d2">TableswitchOpcode</a>, <a class="el" href="class_lookupswitch_opcode.xhtml#a6f1d1bec1faf8c70a2d2cea6172344c9">LookupswitchOpcode</a>, <a class="el" href="class_modify_opcode.xhtml#a7bc591634a4d6fc60de851ad80a148f1">ModifyOpcode</a>, <a class="el" href="class_increment_opcode.xhtml#af748b936e0462286a643276e7e51c507">IncrementOpcode</a>, <a class="el" href="class_u1_operand_opcode_c_p.xhtml#a9bf8f0147535f9a50fc86a6938f44767">U1OperandOpcodeCP</a>, <a class="el" href="class_u1_operand_opcode.xhtml#adc7e028f04673142b896e383f064e535">U1OperandOpcode</a>, <a class="el" href="class_s4_operand_opcode.xhtml#a84536ec9176a9e1a450cbe39b0b0dde9">S4OperandOpcode</a>, <a class="el" href="class_s2_operand_opcode.xhtml#a077214149f9503bb126ca3cc393f7ed2">S2OperandOpcode</a>, <a class="el" href="class_u2_operand_opcode_c_p_double.xhtml#a5e3662a083199b9087280285ab472f9b">U2OperandOpcodeCPDouble</a>, <a class="el" href="class_u2_operand_opcode_c_p_class.xhtml#a5b8f304908e78b565dd68375ca9b4737">U2OperandOpcodeCPClass</a>, <a class="el" href="class_u2_operand_opcode_c_p.xhtml#ac631731c9e95c6ef518ef4a737eb0925">U2OperandOpcodeCP</a> e <a class="el" href="class_u2_operand_opcode.xhtml#a5bcc7d5c3f4dcdf346f14853e6890a1a">U2OperandOpcode</a>.</p>
 
 </div>
 </div>
@@ -299,6 +301,21 @@ Atributos Protegidos</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Indica se o objeto depende do array de códigos/opcodes </p>
+
+</div>
+</div>
+<a id="a2dc35b8a9caded904a9533c2356412c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2dc35b8a9caded904a9533c2356412c8">&#9670;&nbsp;</a></span>knowsCp</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Opcode::knowsCp = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Indica se o objeto depende de algum atributo dentro da Constant Pool </p>
 
 </div>
 </div>

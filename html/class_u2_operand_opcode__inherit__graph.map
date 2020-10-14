@@ -1,4 +1,4 @@
 <map id="U2OperandOpcode" name="U2OperandOpcode">
-<area shape="rect" id="node1" title="Opcode com dois bytes de operandos. Os dois bytes são juntados para formarem um u2 por (byte1 &lt;&lt; 8) |..." alt="" coords="5,233,175,325"/>
-<area shape="rect" id="node2" href="$class_opcode.xhtml" title="Classe base para Opcodes. Ainda não está pronta para ser uma classe completa para instruções,..." alt="" coords="32,5,148,185"/>
+<area shape="rect" id="node1" title="Opcode com dois bytes de operandos. Os dois bytes são juntados para formarem um u2 por (byte1 &lt;&lt; 8) |..." alt="" coords="5,248,175,340"/>
+<area shape="rect" id="node2" href="$class_opcode.xhtml" title="Classe base para Opcodes. Ainda não está pronta para ser uma classe completa para instruções,..." alt="" coords="32,5,148,200"/>
 </map>

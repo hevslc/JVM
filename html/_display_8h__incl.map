@@ -1,19 +1,20 @@
 <map id="include/Display.h" name="include/Display.h">
-<area shape="rect" id="node1" title=" " alt="" coords="311,5,443,32"/>
-<area shape="rect" id="node2" href="$_definitions_8h.xhtml" title=" " alt="" coords="387,453,493,480"/>
-<area shape="rect" id="node12" href="$_class_file_8h.xhtml" title=" " alt="" coords="583,80,673,107"/>
-<area shape="rect" id="node13" href="$_cp_info_8h.xhtml" title=" " alt="" coords="531,379,607,405"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,528,91,555"/>
-<area shape="rect" id="node4" title=" " alt="" coords="115,528,189,555"/>
-<area shape="rect" id="node5" title=" " alt="" coords="213,528,293,555"/>
-<area shape="rect" id="node6" title=" " alt="" coords="317,528,384,555"/>
-<area shape="rect" id="node7" title=" " alt="" coords="409,528,471,555"/>
-<area shape="rect" id="node8" title=" " alt="" coords="496,528,555,555"/>
-<area shape="rect" id="node9" title=" " alt="" coords="579,528,629,555"/>
-<area shape="rect" id="node10" title=" " alt="" coords="653,528,712,555"/>
-<area shape="rect" id="node11" title=" " alt="" coords="737,528,805,555"/>
-<area shape="rect" id="node14" href="$_attribute_info_8h.xhtml" title=" " alt="" coords="466,229,582,256"/>
-<area shape="rect" id="node16" href="$_field_info_8h.xhtml" title=" " alt="" coords="455,155,545,181"/>
-<area shape="rect" id="node17" href="$_method_info_8h.xhtml" title=" " alt="" coords="621,155,729,181"/>
-<area shape="rect" id="node15" href="$_opcode_8h.xhtml" title=" " alt="" coords="399,304,481,331"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,5,137,32"/>
+<area shape="rect" id="node2" href="$_definitions_8h.xhtml" title=" " alt="" coords="403,453,508,480"/>
+<area shape="rect" id="node12" href="$_class_file_8h.xhtml" title=" " alt="" coords="270,80,361,107"/>
+<area shape="rect" id="node13" href="$_cp_info_8h.xhtml" title=" " alt="" coords="261,379,337,405"/>
+<area shape="rect" id="node3" title=" " alt="" coords="21,528,106,555"/>
+<area shape="rect" id="node4" title=" " alt="" coords="131,528,204,555"/>
+<area shape="rect" id="node5" title=" " alt="" coords="229,528,309,555"/>
+<area shape="rect" id="node6" title=" " alt="" coords="333,528,399,555"/>
+<area shape="rect" id="node7" title=" " alt="" coords="424,528,487,555"/>
+<area shape="rect" id="node8" title=" " alt="" coords="511,528,570,555"/>
+<area shape="rect" id="node9" title=" " alt="" coords="594,528,645,555"/>
+<area shape="rect" id="node10" title=" " alt="" coords="669,528,727,555"/>
+<area shape="rect" id="node11" title=" " alt="" coords="752,528,820,555"/>
+<area shape="rect" id="node14" href="$_attribute_info_8h.xhtml" title=" " alt="" coords="327,229,443,256"/>
+<area shape="rect" id="node16" href="$_field_info_8h.xhtml" title=" " alt="" coords="353,155,443,181"/>
+<area shape="rect" id="node17" href="$_method_info_8h.xhtml" title=" " alt="" coords="169,155,277,181"/>
+<area shape="rect" id="node18" href="$_interface_8h.xhtml" title=" " alt="" coords="571,304,663,331"/>
+<area shape="rect" id="node15" href="$_opcode_8h.xhtml" title=" " alt="" coords="362,304,445,331"/>
 </map>

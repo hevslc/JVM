@@ -12,6 +12,7 @@ var class_class_file =
     [ "constantPoolCount", "class_class_file.xhtml#aac4e2e22d057a5c4ced3f8b1b0a53d37", null ],
     [ "fields", "class_class_file.xhtml#ab475d09debccba78e22fdce390698196", null ],
     [ "fieldsCount", "class_class_file.xhtml#a4771d2bbb06291c73d9578237a81e480", null ],
+    [ "interfaces", "class_class_file.xhtml#aa6705d349f2c740cee4b618778ba22e8", null ],
     [ "interfacesCount", "class_class_file.xhtml#a96bdca8f3944b196cde15ade573d87b2", null ],
     [ "magic", "class_class_file.xhtml#a09085e9db513dae2f46da6e0a26c1b59", null ],
     [ "majorVersion", "class_class_file.xhtml#a2ca0fc5cd030456f055f7e199ca15e3d", null ],
