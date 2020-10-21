@@ -129,7 +129,7 @@ std::string S4OperandOpcode::getString()
     {
         u4 pos = *position;
         u2 result = (code[pos + 1] << 24) | (code[pos + 2] << 16) | 
-        (code[pos + 3 << 8]) | code[pos + 4];
+        (code[pos + 3] << 8) | code[pos + 4];
         *position += 4;
         return name + " " + std::to_string((int32_t) result);
     }
@@ -216,6 +216,8 @@ std::string ModifyOpcode::getString()
         *position += 2;
         return name + " " + std::to_string(result);
     }
+
+    return "";
 }
 
 
@@ -247,12 +249,8 @@ std::string LookupswitchOpcode::getString()
         // Incremento "padding" de
         pos += 8;
 
-        // Crio minhas 2 variáveis para guardar os matchs de npairs (case n e o offset desse case)
-        int32_t intbytePair;
-        uint32_t offsetbytePair;
-
         //for para percorrer todos os matchs do switch e construir a string de saída "out"
-        for (int i = 0; i < npairs; i++)
+        for (uint32_t i = 0; i < npairs; i++)
         {
             int32_t intbytePair = (code[pos + 1] << 24) | (code[pos + 2] << 16) | (code[pos + 3] << 8) | code[pos + 4];
             uint32_t offsetbytePair = (code[pos + 5] << 24) | (code[pos + 6] << 16) | (code[pos + 7] << 8) | code[pos + 8];
@@ -267,6 +265,8 @@ std::string LookupswitchOpcode::getString()
 
         return out;
     }
+
+    return "";
 }
 
 TableswitchOpcode::TableswitchOpcode(std::string name):
@@ -302,6 +302,8 @@ std::string TableswitchOpcode::getString()
         //*position += 32;
         return out;
     }
+
+    return "";
 }
 
 MultiNewArrayOpcode::MultiNewArrayOpcode(std::string name):
