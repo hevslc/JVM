@@ -10,11 +10,17 @@ int main(int argc, char const *argv[]){
 
 	ClassFile classFile(f);
 
-  	classFile.print(interminal, std::string(argv[1]));
-  	classFile.print(infile, std::string(argv[1]));
+	if(argc == 3){
+		if(atoi(argv[2]) == 0 ){
+	  		classFile.print(interminal, std::string(argv[1]));
+	  		classFile.print(infile, std::string(argv[1]));
+		}
+	}else{			
+		std::cout << "Aqui vem a chamada da JVM..." << std::endl;
+	}
 
 	f.close();
 	
 
-	return 0;
+	return 0;	
 }
