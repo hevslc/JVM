@@ -5,16 +5,29 @@
 #include "ClassFile.h"
 
 class Instructions;
-typedef void (Instructions::*instrFunction)();
+typedef void (Instructions::*instrFunction)(); /*!< Ponteiro para um método de Instructions */
 
+//! \class Instructions
+/*! 
+   \brief Contém os métodos para cada instrução e informações necessárias
+         a execução.
+ */
 class Instructions{
 public:
-    u4                          PC;
-    //std::stack<Frame>         frames;
-    std::vector<ClassFile>      classes;
-    std::vector<instrFunction>  instrs;
+    u4                          PC;      /*!< Contador de Programa PC */
+    //std::stack<Frame>         frames;  /*!< Pilha de frames */
+    std::vector<ClassFile>      classes; /*!< Vetor de classes */
+    std::vector<instrFunction>  instrs;  /*!< vetor de ponteiros para os métodos das instruções */
 
     Instructions() {};
+    //! Construtor
+    /*!
+    Define os atributos. Constrói o vetor de instruções.
+    \param PC Contador de Programa
+    \param frames pilha de frames
+    \param classes pilha de classes
+    \sa ClassFile, Frame
+    */ 
     Instructions(u4 PC, /*std::stack<Frame> frames,*/ std::vector<ClassFile> classes);
 
     void _nop();
@@ -220,14 +233,6 @@ public:
     void _goto_w();
     void _jsr_w();
 };
-
-
-
-
-
-
-
-
 
 
 #endif
