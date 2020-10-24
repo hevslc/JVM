@@ -16,8 +16,7 @@ enum class SlotType
     LONG,
     REFERENCE,
     RETURN_ADDRESS,
-    DOUBLE,
-    LONG
+    DOUBLE
 };
 
 /**

@@ -10,6 +10,7 @@
 #include <map>
 #include <limits>
 #include <math.h>       /* exp */
+#include <stack>
 
 
 typedef uint8_t 	u1;	/*!< Tipo de dado (8 bits)  */
