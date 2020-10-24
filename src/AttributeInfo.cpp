@@ -207,6 +207,9 @@ void Code::print(std::ostream& out, ConstantPool cpt){
 	out << std::noshowbase;
 	out << "Maximum depth..........: " << std::dec << maxStack << std::endl;
 	out << "Nos of local variables.: " << std::dec << maxLocals << std::endl;
+	out << "code length............: " << std::dec << codeLength << std::endl;
+	out << "exception Table Length.: " << std::dec << exceptionTableLength << std::endl;
+	out << "Number of attributes...: " << std::dec << attributesCount << std::endl;	
 	out << "ByteCode...............: " << std::endl;
 	Opcodes::printCode(out, cpt, code, codeLength);
 	exceptionTable->print(out);
