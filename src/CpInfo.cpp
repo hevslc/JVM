@@ -11,7 +11,8 @@ float ConstantPool::getFloat(u4 bytes){
 }
 
 double ConstantPool::getDouble(u4 highBytes, u4 lowBytes){
-	uint64_t l = ((long)highBytes << 32) | (long)lowBytes;
+	uint64_t lhb = highBytes;
+	uint64_t l = (lhb << 32) | (long)lowBytes;
 	int s = ((l >> 63) == 0) ? 1 : -1;
 	int e = (l >> 52) & 0x7ffL;
 	long m = (e == 0) ? ((l & 0xfffffffffffffL) << 1) : ((l & 0xfffffffffffffL) | 0x10000000000000L);
@@ -22,7 +23,8 @@ double ConstantPool::getDouble(u4 highBytes, u4 lowBytes){
 }
 
 long ConstantPool::getLong(u4 highBytes, u4 lowBytes){
-	return ((long)highBytes << 32) | (long)lowBytes;
+	uint64_t lhb = highBytes;
+	return (lhb << 32) | (long)lowBytes;
 }
 
 ConstantPool::ConstantPool(std::ifstream& f, u2 constantPoolCount){
