@@ -13,11 +13,13 @@
 Opcode::Opcode(std::string name):
 name(name)
 {
+    knowsCode = true; // Agora que precisamos exibir pos em todos os OPCODEs, até o opcodes simples dependem do array de códigos/opcodes
 }
 
 std::string Opcode::getString()
 {
-    return name;
+    u4 pos = *position;
+    return std::to_string(pos) + " " + name;
 }
 
 U2OperandOpcode::U2OperandOpcode(std::string name):
@@ -33,7 +35,7 @@ std::string U2OperandOpcode::getString()
         u4 pos = *position;
         u2 result = (code[pos + 1] << 8) | code[pos + 2];
         *position += 2;
-        return name + " " + std::to_string(result);
+        return std::to_string(pos) + " " + name + " " + std::to_string(result);
     }
     return "";
 }
@@ -52,7 +54,7 @@ std::string U2OperandOpcodeCP::getString()
         u2 result = (code[pos + 1] << 8) | code[pos + 2];
         *position += 2;
 
-        return name + " " + std::to_string(result) + " <" 
+        return std::to_string(pos) + " " + name + " " + std::to_string(result) + " <" 
         + cp.getUtf8Class(cp[result-1].Class.nameIndex-1) + "." 
         + cp.getNNameAndType(cp[result-1].FieldMethInter.nameTypeIndex-1) + ">";
     }
@@ -73,7 +75,7 @@ std::string U2OperandOpcodeCPClass::getString()
         u2 result = (code[pos + 1] << 8) | code[pos + 2];
         *position += 2;
 
-        return name + " " + std::to_string(result) + " <" 
+        return std::to_string(pos) + " " + name + " " + std::to_string(result) + " <" 
         + cp.getUtf8Str(cp[result-1].Class.nameIndex-1) + ">";
     }
     return "";
@@ -93,7 +95,7 @@ std::string U2OperandOpcodeCPDouble::getString()
         u2 result = (code[pos + 1] << 8) | code[pos + 2];
         *position += 2;
 
-        return name + " " + std::to_string(result) + " <" 
+        return std::to_string(pos) + " " + name + " " + std::to_string(result) + " <" 
         + std::to_string(cp.getDouble(cp[result-1].Double.highBytes-1, cp[result-1].Double.lowBytes-1)) + ">";
     }
     return "";
@@ -112,7 +114,7 @@ std::string S2OperandOpcode::getString()
         u4 pos = *position;
         u2 result = (code[pos + 1] << 8) | code[pos + 2];
         *position += 2;
-        return name + " " + std::to_string((int16_t) result);
+        return std::to_string(pos) + " " + name + " " + std::to_string((int16_t) result);
     }
     return "";
 }
@@ -131,7 +133,7 @@ std::string S4OperandOpcode::getString()
         u2 result = (code[pos + 1] << 24) | (code[pos + 2] << 16) | 
         (code[pos + 3] << 8) | code[pos + 4];
         *position += 4;
-        return name + " " + std::to_string((int32_t) result);
+        return std::to_string(pos) + " " + name + " " + std::to_string((int32_t) result);
     }
     return "";
 }
@@ -150,7 +152,7 @@ std::string U1OperandOpcode::getString()
     {
         u4 pos = *position;
         *position += 1;
-        return name + " " + std::to_string(code[pos + 1]); 
+        return std::to_string(pos) + " " + name + " " + std::to_string(code[pos + 1]); 
     }
     return "";
 }
@@ -170,7 +172,7 @@ std::string U1OperandOpcodeCP::getString()
         u2 result = code[pos + 1];
         *position += 1;
 
-        return name + " " + std::to_string(code[pos + 1]) + " <" 
+        return std::to_string(pos) + " " + name + " " + std::to_string(code[pos + 1]) + " <" 
         + cp.getUtf8Str(cp[result-1].String.stringIndex-1) + ">";
     }
     return "";
@@ -189,7 +191,7 @@ std::string IncrementOpcode::getString()
     {
         u4 pos = *position;
         *position += 2;
-        return name + " " + std::to_string(code[pos + 1]) + " " + std::to_string((int8_t)code[pos + 2]);
+        return std::to_string(pos) + " " + name + " " + std::to_string(code[pos + 1]) + " " + std::to_string((int8_t)code[pos + 2]);
     }
     return "";
 }
@@ -210,16 +212,15 @@ std::string ModifyOpcode::getString()
         if (code[pos] == 0x84) {
             u2 constant = (code[pos + 3] << 8) | code[pos + 4];
             *position += 4;
-            return name + " " + std::to_string(result) + 
+            return std::to_string(pos) + " " + name + " " + std::to_string(result) + 
             std::to_string((int16_t) constant);
         }
         *position += 2;
-        return name + " " + std::to_string(result);
+        return std::to_string(pos) + " " + name + " " + std::to_string(result);
     }
 
     return "";
 }
-
 
 LookupswitchOpcode::LookupswitchOpcode(std::string name):
 Opcode(name)
@@ -244,7 +245,7 @@ std::string LookupswitchOpcode::getString()
         uint32_t npairs = (code[pos + 5] << 24) | (code[pos + 6] << 16)
         | (code[pos + 7] << 8) | code[pos + 8];
 
-        out = name + " " + std::to_string(npairs);
+        out = std::to_string(pos) + " " + name + " " + std::to_string(npairs);
         
         // Incremento "padding" de
         pos += 8;
@@ -260,7 +261,6 @@ std::string LookupswitchOpcode::getString()
         
         out += "\n\tdefault:   " + std::to_string(*position + defaultbyte) +  + " (+" + std::to_string(defaultbyte) + ")";
         
-        //*position += npairs * 8 + 4 + 4 + paddingbytes;
         *position = pos;
 
         return out;
@@ -286,6 +286,7 @@ std::string TableswitchOpcode::getString()
         
         std::string out;
 
+        // Pego os 3 primeiros quartetos de bytes padrão do OP
         int32_t defaultbyte = (code[pos + 1] << 24) | (code[pos + 2] << 16)
         | (code[pos + 3] << 8) | code[pos + 4];
 
@@ -295,11 +296,25 @@ std::string TableswitchOpcode::getString()
         int32_t highbyte = (code[pos + 9] << 24) | (code[pos + 10] << 16)
         | (code[pos + 11] << 8) | code[pos + 12];
 
-        out = name + " " + std::to_string(lowbyte) + " to " + std::to_string(highbyte);
-        out += "\n\tdefault:   " + std::to_string(*position + defaultbyte) +  + " (+" + std::to_string(defaultbyte) + ")"; 
+        out = std::to_string(pos) + " " + name + " " + std::to_string(lowbyte) + " to " + std::to_string(highbyte);
 
+        uint32_t auxPos = 0;
+        int32_t jumpbyte;
+
+
+        // Construo o for para percorrer os bytes derivados dos jumps das alternativas
+        for (int32_t i = 0; i <= highbyte-lowbyte; i++) 
+        {
+        jumpbyte = (code[pos + 13 + auxPos] << 24) | (code[pos + 14 + auxPos] << 16)
+        | (code[pos + 15 + auxPos] << 8) | code[pos + 16 + auxPos];
+        
+        out += "\n\t" + std::to_string(i+lowbyte) + ":   " + std::to_string(*position + jumpbyte) + " (+" + std::to_string(jumpbyte) + ")";
+        auxPos += 4;
+        };
+
+        out += "\n\tdefault:   " + std::to_string(*position + defaultbyte) + " (+" + std::to_string(defaultbyte) + ")";
         *position = pos + 12 + (highbyte-lowbyte+1)*4;
-        //*position += 32;
+
         return out;
     }
 
@@ -327,7 +342,7 @@ std::string MultiNewArrayOpcode::getString()
             return "NegativeArraySizeException";
         }
 
-        return name + " " + std::to_string(result) + " <" 
+        return std::to_string(pos) + " " + name + " " + std::to_string(result) + " <" 
         + cp.getUtf8Str(cp[result-1].Class.nameIndex-1) + "> dim " 
         + std::to_string(dimensions);
     }
