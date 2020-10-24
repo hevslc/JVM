@@ -8,19 +8,19 @@ int main(int argc, char const *argv[]){
 		return 0;
 	}
 
-	if(atoi(argv[2]) == 0 ){
-		ClassFile classFile(f);
+	ClassFile classFile(f);
 
-  		classFile.print(interminal, std::string(argv[1]));
-  		classFile.print(infile, std::string(argv[1]));
-	}
-	if(atoi(argv[2]) == 1 ){
-			std::cout << "Aqui vem a chamada da JVM..." << std::endl;
+	if(argc == 3){
+		if(atoi(argv[2]) == 0 ){
+	  		classFile.print(interminal, std::string(argv[1]));
+	  		classFile.print(infile, std::string(argv[1]));
+		}
+	}else{			
+		std::cout << "Aqui vem a chamada da JVM..." << std::endl;
 	}
 
-	
 	f.close();
 	
 
-	return 0;
+	return 0;	
 }
