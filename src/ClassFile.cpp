@@ -74,15 +74,16 @@ void ClassFile::print(u1 mode, std::string argv){
 		
 		std::ofstream f;
 	  	f.open(name);
-	  	printBuf(f.rdbuf());
+	  	printBuf(f.rdbuf(), argv);
 	  	f.close();
 	}
 	else if(mode == interminal)
-		printBuf(std::cout.rdbuf());
+		printBuf(std::cout.rdbuf(), argv);
 }
 
-void ClassFile::printBuf(std::streambuf  *buf){
+void ClassFile::printBuf(std::streambuf  *buf, std::string argv){
 	std::ostream out(buf);
+	out << "File name........: " << getFileName(argv) << std::endl;
 	out << std::showbase;
 	out << "Magic............: " << std::hex << magic << std::endl;
 	out << "Minor Version....: " << std::hex << minorVersion << std::endl;
@@ -103,4 +104,10 @@ void ClassFile::printBuf(std::streambuf  *buf){
 	methods.print(out, constantPool);
 	out << "__________________ Attributes __________________" << std::endl;
 	attributes.print(out, constantPool);
+}
+
+std::string ClassFile::getFileName(std::string argv){
+	std::size_t pos1 = argv.find_last_of("/\\");
+	std::size_t pos2 = argv.find_last_of(".");
+	return argv.substr(pos1+1, pos2-pos1-1);
 }
