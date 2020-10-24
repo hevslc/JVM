@@ -61,7 +61,14 @@ public:
 	   
 	   \param buf Buffer para impressão do arquivo.
 	 */
-	void printBuf(std::streambuf *buf);
+	void printBuf(std::streambuf *buf, std::string argv);
+	
+	/*!
+	   \brief Retorna o nome do arquivo
+	   \param argv Caminho + nome do arquivo .class
+	   \return string contendo o nome do arquivo
+	*/
+	std::string getFileName(std::string argv);
 
 	~ClassFile() = default;
 };
