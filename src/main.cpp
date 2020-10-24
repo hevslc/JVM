@@ -8,11 +8,17 @@ int main(int argc, char const *argv[]){
 		return 0;
 	}
 
-	ClassFile classFile(f);
+	if(atoi(argv[2]) == 0 ){
+		ClassFile classFile(f);
 
-  	classFile.print(interminal, std::string(argv[1]));
-  	classFile.print(infile, std::string(argv[1]));
+  		classFile.print(interminal, std::string(argv[1]));
+  		classFile.print(infile, std::string(argv[1]));
+	}
+	if(atoi(argv[2]) == 1 ){
+			std::cout << "Aqui vem a chamada da JVM..." << std::endl;
+	}
 
+	
 	f.close();
 	
 
