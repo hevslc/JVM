@@ -5,6 +5,7 @@
 #include "AttributeInfo.h"
 #include "FieldInfo.h"
 #include "MethodInfo.h"
+#include "Utils.h"
 
 /**
  * Classes derivadas do OPCODE
@@ -96,7 +97,7 @@ std::string U2OperandOpcodeCPDouble::getString()
         *position += 2;
 
         return std::to_string(pos) + " " + name + " " + std::to_string(result) + " <" 
-        + std::to_string(cp.getDouble(cp[result-1].Double.highBytes-1, cp[result-1].Double.lowBytes-1)) + ">";
+        + std::to_string(getDouble(cp[result-1].Double.highBytes-1, cp[result-1].Double.lowBytes-1)) + ">";
     }
     return "";
 }

@@ -168,33 +168,6 @@ public:
 	\param bytes Bytes do valor numérico
     \return valor \a float decodificado
     */
-	float getFloat(u4 bytes);
-	/*!
-    \brief Decodifica o valor \a float dos bytes dados à função.
-    O valor \a float será dado por ((long) #highBytes << 32) + #lowBytes
-	\param highBytes Bytes mais significativos do valor numérico (Big-endian)
-	\param lowBytes Bytes menos significativos do valor numérico (Big-endian)
-    \return valor \a long decodificado
-    */
-	long getLong(u4 highBytes, u4 lowBytes);
-	/*!
-    \brief Decodifica o valor \a float dos bytes dados à função.
-    Os bytes highBytes e highBytes são primeiro convertidos em \a long. Então:
-		- Se bytes é 0x7ff0000000000000L, o valor \a double será infinito positivo.
-		- Se bytes é 0xfff0000000000000L, o valor \a double será infinito negativo.
-		- Se bytes no intervalo [0x7ff0000000000001L, 0x7fffffffffffffffL] 
-			ou no intervalo [0xfff0000000000001L, 0xffffffffffffffffL], 
-			então o valor \a double será NaN (not a number).
-		- Em outros casos, seja \a s, \a e, e \a m três valores que são computados de \a bytes :
-			-# int s = ((bytes >> 63) == 0) ? 1 : -1;
-			-# int e = (int)((bytes >> 52) & 0x7ffL);
-			-# long m = (e == 0) ? (bytes & 0xfffffffffffffL) << 1 : (bytes & 0xfffffffffffffL) | 0x10000000000000L;
-			Então o valor numérico será resultado da expressão matemática \f$ s \cdot m \cdot 2^{e-1075} \f$.
-	\param highBytes Bytes mais significativos do valor numérico (Big-endian) de ponto flutuante IEEE 754.
-	\param lowBytes Bytes menos significativos do valor numérico (Big-endian) de ponto flutuante IEEE 754.
-    \return valor \a double decodificado
-    */
-	double getDouble(u4 highBytes, u4 lowBytes);
 };
 
 #endif // _CP_INFO_H_
