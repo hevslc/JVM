@@ -1,5 +1,4 @@
 #include "CpInfo.h"
-#include "Utils.h"
 
 ConstantPool::ConstantPool(std::ifstream& f, u2 constantPoolCount){
 	for(int i=0; i<constantPoolCount-1; i++){

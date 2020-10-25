@@ -2,6 +2,7 @@
 #define CPINFO_H
 
 #include "Definitions.h"
+#include "Utils.h"
 
 //! \class Cpinfo 
 /*!

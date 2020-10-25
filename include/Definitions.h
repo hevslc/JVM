@@ -13,9 +13,10 @@
 #include <stack>
 
 
-typedef uint8_t 	u1;	/*!< Tipo de dado (8 bits)  */
-typedef uint16_t	u2;	/*!< Tipo de dado (16 bits) */
-typedef uint32_t 	u4;	/*!< Tipo de dado (32 bits) */
+typedef uint8_t 	u1;	/*!< Tipo de dado (1 byte)  */
+typedef uint16_t	u2;	/*!< Tipo de dado (4 bytes) */
+typedef uint32_t 	u4;	/*!< Tipo de dado (4 bytes) */
+typedef uint64_t 	u8;	/*!< Tipo de dado (8 bytes) */
 
 /*!
    \brief Flags de acesso para um CpInfo.
