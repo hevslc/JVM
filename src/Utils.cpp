@@ -12,18 +12,15 @@ float getFloat(u4 bytes){
 }
 
 double getDouble(u4 highBytes, u4 lowBytes){
-	uint64_t l = ((long)highBytes << 32) | (long)lowBytes;
-	int s = ((l >> 63) == 0) ? 1 : -1;
-	int e = (l >> 52) & 0x7ffL;
-	long m = (e == 0) ? ((l & 0xfffffffffffffL) << 1) : ((l & 0xfffffffffffffL) | 0x10000000000000L);
-	double v = (s*m*pow(2, e-1075));
-	if(l == 0x7ff0000000000000L) return std::numeric_limits<double>::infinity();
-	else if(l ==  0xfff0000000000000L) return -std::numeric_limits<double>::infinity();
-	else return v;
+	uint64_t hb = highBytes;
+	uint64_t l = (hb << 32) | (long)lowBytes;
+	return reinterpret_cast<double&>(l);
 }
 
 long getLong(u4 highBytes, u4 lowBytes){
-	return ((long)highBytes << 32) | (long)lowBytes;
+	uint64_t hb = highBytes;
+	uint64_t l = (hb << 32) | (long)lowBytes;
+	return reinterpret_cast<long&>(l);
 }
 
 int getInt(u4 bytes){
