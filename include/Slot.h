@@ -26,7 +26,7 @@ enum class SlotType
 class Slot
 {
 public:
-
+    Slot() {}
     Slot(SlotType, u4);
 
     SlotType type;
