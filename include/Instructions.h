@@ -3,6 +3,7 @@
 
 #include "Definitions.h"
 #include "ClassFile.h"
+#include "Slot.h"
 
 class Instructions;
 typedef void (Instructions::*instrFunction)(); /*!< Ponteiro para um método de Instructions */
@@ -18,7 +19,8 @@ public:
     //std::stack<Frame>         frames;  /*!< Pilha de frames */
     std::vector<ClassFile>      classes; /*!< Vetor de classes */
     std::vector<instrFunction>  instrs;  /*!< vetor de ponteiros para os métodos das instruções */
-
+    std::vector<Slot>           localVariables;
+    
     Instructions() {};
     //! Construtor
     /*!
