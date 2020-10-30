@@ -17,7 +17,7 @@ public:
     u4              returnResult; /*!< valor de retorno de uma método (instrução) */
     u1*             bytecode;     /*!< bytes da instrução */
 
-    Frame() {};
+    Frame() {}
     //! Construtor
     /*!
     \param bytecode bytes da instrução

@@ -1,4 +1,5 @@
 #include "ClassFile.h"
+#include "Interpreter.h"
 
 int main(int argc, char const *argv[]){
 	std::ifstream f;
@@ -15,8 +16,9 @@ int main(int argc, char const *argv[]){
 	  		classFile.print(interminal, std::string(argv[1]));
 	  		classFile.print(infile, std::string(argv[1]));
 		}
-	}else{			
-		std::cout << "Aqui vem a chamada da JVM..." << std::endl;
+	}
+	else{			
+		Interpreter interpreter(classFile);
 	}
 
 	f.close();
