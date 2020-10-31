@@ -2,8 +2,8 @@
 #define _VARIABLES_HPP_
 
 #include <vector>
-#include "Definitions.h"
 #include "Slot.h"
+#include "Utils.h"
 
 class Variables : public std::vector<Slot>
 {
