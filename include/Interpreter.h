@@ -12,7 +12,7 @@
 class Interpreter{
 public:
     ClassFile        classFile;     /*!< .class lido */
-    Instructions     instruction;  /*!< vetor de instruções */
+    Instructions     instructions;  /*!< vetor de instruções */
 
     Interpreter() {};
     //! Construtor

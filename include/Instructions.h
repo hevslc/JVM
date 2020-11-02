@@ -15,7 +15,7 @@ typedef void (Instructions::*instrFunction)(); /*!< Ponteiro para um método de 
  */
 class Instructions{
 public:
-    u4                          PC;      /*!< Contador de Programa PC */
+    u4                          PC=0;      /*!< Contador de Programa PC */
     std::stack<Frame>           frames;  /*!< Pilha de frames */
     std::vector<ClassFile>      classes; /*!< Vetor de classes */
     std::vector<instrFunction>  instrs;  /*!< vetor de ponteiros para os métodos das instruções */
@@ -29,7 +29,9 @@ public:
     \param classes pilha de classes
     \sa ClassFile, Frame
     */ 
-    Instructions(u4 PC, /*std::stack<Frame> frames,*/ std::vector<ClassFile> classes);
+    Instructions(ClassFile classFile);
+    
+    void execInstr(u1 opcode);
 
     void _nop();
     void _aconst_null();

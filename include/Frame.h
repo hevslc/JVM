@@ -12,7 +12,7 @@
 class Frame{
 public:
     Operands        operands;     /*!< Pilha de operandos */
-    //Variables       variables;  /*!< Pilha de variáveis locais */
+    //Variables       variables;  /*!< Vetor de variáveis locais */
     u4              PC=0;         /*!< Contador de Programa PC */
     u4              returnResult; /*!< valor de retorno de uma método (instrução) */
     u1*             bytecode;     /*!< bytes da instrução */
