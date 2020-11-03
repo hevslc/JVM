@@ -1,7 +1,7 @@
 #include "Instructions.h"
 
 
-Instructions::Instructions(ClassFile classFile){
+Instructions::Instructions(ClassFile* classFile){
     classes.push_back(classFile);
     instrs = {
         &Instructions::_nop,

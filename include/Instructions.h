@@ -17,7 +17,7 @@ class Instructions{
 public:
     u4                          PC=0;      /*!< Contador de Programa PC */
     std::stack<Frame>           frames;  /*!< Pilha de frames */
-    std::vector<ClassFile>      classes; /*!< Vetor de classes */
+    std::vector<ClassFile*>     classes; /*!< Vetor de classes */
     std::vector<instrFunction>  instrs;  /*!< vetor de ponteiros para os métodos das instruções */
     
     Instructions() {};
@@ -29,7 +29,7 @@ public:
     \param classes pilha de classes
     \sa ClassFile, Frame
     */ 
-    Instructions(ClassFile classFile);
+    Instructions(ClassFile *classFile);
     
     void execInstr(u1 opcode);
 

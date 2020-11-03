@@ -18,8 +18,8 @@ int main(int argc, char const *argv[]){
 		}
 	}
 	else{			
-		Interpreter interpreter(classFile);
-		//interpreter.execute();
+		Interpreter interpreter(&classFile);
+		interpreter.execute();
 	}
 
 	f.close();

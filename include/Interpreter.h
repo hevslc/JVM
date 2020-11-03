@@ -11,7 +11,7 @@
  */
 class Interpreter{
 public:
-    ClassFile        classFile;     /*!< .class lido */
+    ClassFile        *classFile;     /*!< ponteiro para .class lido */
     Instructions     instructions;  /*!< vetor de instruções */
 
     Interpreter() {};
@@ -20,7 +20,7 @@ public:
     \param bytecode bytes da instrução
     \sa Operands, Variables
     */ 
-    Interpreter(ClassFile classFile);
+    Interpreter(ClassFile* classFile);
 
     void execute();
     
