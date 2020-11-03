@@ -72,6 +72,7 @@ public:
     void generalInfo(u2 idx, std::ifstream& f, std::string name);
     virtual void print(std::ostream& out, ConstantPool cpt) {(void)cpt; (void)out;}  /*!< Função virtual de impressão */
     virtual void print(std::ostream& out) {(void)out;} /*!< Função virtual de impressão */
+    virtual u1* getCode() { return 0;};
 };
 
 //__________________________________________________________________
@@ -156,6 +157,7 @@ public:
     \param  name Nome do atributo.
    */
 	Code(u2 idx, std::ifstream& f, ConstantPool constantPool, std::string name);
+    u1* getCode();
     void print(std::ostream& out, ConstantPool cpt); /*!< Imprime estrutura. */
 };
 //__________________________________________________________________

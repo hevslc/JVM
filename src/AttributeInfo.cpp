@@ -63,6 +63,10 @@ Code::Code(u2 idx, std::ifstream& f, ConstantPool constantPool, std::string name
 	attributes = new Attributes(f, attributesCount, constantPool);
 }
 
+u1* Code::getCode(){
+	return code;
+}
+
 Exceptions::Exceptions(u2 idx, std::ifstream& f, std::string name){
 	generalInfo(idx, f, name);
 	numberOfExceptions = r2(f);

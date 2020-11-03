@@ -1,8 +1,8 @@
 #include "Instructions.h"
 
 
-Instructions::Instructions(u4 PC, /*std::stack<Frame> frames,*/ std::vector<ClassFile> classes):
-    PC(PC), /*frames(frames),*/ classes(classes){
+Instructions::Instructions(ClassFile* classFile){
+    classes.push_back(classFile);
     instrs = {
         &Instructions::_nop,
         &Instructions::_aconst_null,
@@ -209,8 +209,13 @@ Instructions::Instructions(u4 PC, /*std::stack<Frame> frames,*/ std::vector<Clas
     };
 }
 
+void Instructions::execInstr(u1 opcode){
+    instrFunction f = instrs[opcode];
+    (this->*f)();
+}
+
 void Instructions::_nop(){
-    //...
+    std::cout << "nop" << std::endl;
 }
 
 void Instructions::_aconst_null(){

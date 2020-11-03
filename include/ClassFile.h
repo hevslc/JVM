@@ -16,6 +16,7 @@
  */
 class ClassFile{
 public:
+	ClassFile(){}
 	/*!
 	   \brief Constrói um novo objeto ClassFile.
 	   Lê todo o conteúdo do arquivo .class armazenando as informações 
