@@ -3,6 +3,7 @@
 
 #include "Definitions.h"
 #include "OperandStack.h"
+#include "MethodInfo.h"
 
 /**
  * @brief Define um frame
@@ -16,6 +17,7 @@ public:
     u4              PC=0;         /*!< Contador de Programa PC */
     u4              returnResult; /*!< valor de retorno de uma método (instrução) */
     u1*             bytecode;     /*!< bytes da instrução */
+    MethodInfo*     method;
 
     Frame() {}
     //! Construtor
@@ -24,6 +26,8 @@ public:
     \sa Operands, Variables
     */ 
     Frame(u1* bytecode) : bytecode(bytecode) {};
+
+    Frame(MethodInfo* method);
 
     
 };
