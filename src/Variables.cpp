@@ -9,7 +9,7 @@ float Variables::asFloat(int position)
 double Variables::asDouble(int position)
 {
     Slot slot1 = at(position);
-    Slot slot2 = at(position - 1);
+    Slot slot2 = at(position + 1);
     return getDouble(slot1.value, slot2.value);
 }
 
@@ -22,7 +22,7 @@ int Variables::asInt(int position)
 long Variables::asLong(int position)
 {
     Slot slot1 = at(position);
-    Slot slot2 = at(position - 1);
+    Slot slot2 = at(position + 1);
     return getLong(slot1.value, slot2.value);
 }
 
