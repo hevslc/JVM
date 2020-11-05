@@ -2,7 +2,6 @@
 
 Interpreter::Interpreter(ClassFile* classFile) : 
     classFile(classFile), instructions(classFile){
-    //instructions.execInstr(0); //teste    
 }
 
 void Interpreter::execute(){
@@ -14,10 +13,15 @@ void Interpreter::execute(){
         }
     }
     
-    AttributeInfo* code = (*mthMain->attributes)[0];
-    instructions.frames.push(Frame(code->getCode()));
+    if (mthMain != nullptr) {
+        instructions.frames.push(Frame(mthMain));
 
-    //teste
-    std::cout << std::showbase;
-    std::cout << std::hex << (int)instructions.frames.top().bytecode[0] << std::endl;
+        while(!instructions.frames.empty()) {
+            Frame top = instructions.frames.top();
+            instructions.execInstr(top.bytecode[top.PC]);
+        }
+    }
+    else {
+        std::cout << "The class specified must have a main method" << std::endl;
+    }
 }
