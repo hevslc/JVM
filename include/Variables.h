@@ -10,6 +10,8 @@ class Variables : public std::vector<Slot>
 public:
     Variables(){};
 
+    Variables(u1 size): std::vector<Slot>(size){};
+
     /*!
      \brief Pega o valor do slot, passa para float e retira do vetor.
    */
