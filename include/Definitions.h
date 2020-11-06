@@ -227,6 +227,7 @@ public:
 	u4	 	size;
 	void*	values;
 	Array(type atype, u4 size) : atype(atype), size(size) {};
+	Array(u4 size) : size(size) {};
 
 };
 
