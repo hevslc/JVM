@@ -67,6 +67,10 @@ u1* Code::getCode(){
 	return code;
 }
 
+u1 Code::getMaxLocals() {
+	return maxLocals;
+}
+
 Exceptions::Exceptions(u2 idx, std::ifstream& f, std::string name){
 	generalInfo(idx, f, name);
 	numberOfExceptions = r2(f);
