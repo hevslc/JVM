@@ -211,7 +211,7 @@ Instructions::Instructions(ClassFile* classFile){
 
 void Instructions::execInstr(u1 opcode){
     instrFunction f = instrs[opcode];
-    if (f != nullptr) {
+    if (f != nullptr && opcode < instrs.size()) {
         (this->*f)();
     } else {
         addToPC(1);
