@@ -266,30 +266,60 @@ void Instructions::_iconst_5(){
 }
 
 void Instructions::_lconst_0(){
+    frames.top().operands.pushLong(0);
+
+    //long teste = frames.top().operands.popLong();
+    //std::cout << teste << std::endl;
     addToPC(1);
 }
 
 void Instructions::_lconst_1(){
+    frames.top().operands.pushLong(1);
+    //long teste = frames.top().operands.popLong();
+    //std::cout << "_lconst_1: " << teste << std::endl;
     addToPC(1);
 }
 
 void Instructions::_fconst_0(){
+    float var = 0.0;
+    u4 byte = reinterpret_cast<u4&>(var);
+    frames.top().operands.push(Slot(SlotType::FLOAT, byte));
+    //float teste = frames.top().operands.popFloat();
+    //std::cout << teste << std::endl;
     addToPC(1);
 }
 
 void Instructions::_fconst_1(){
+    float var = 1.0;
+    u4 byte = reinterpret_cast<u4&>(var);
+    frames.top().operands.push(Slot(SlotType::FLOAT, byte));
     addToPC(1);
 }
 
 void Instructions::_fconst_2(){
+    float var = 2.0;
+    u4 byte = reinterpret_cast<u4&>(var);
+    frames.top().operands.push(Slot(SlotType::FLOAT, byte)); 
     addToPC(1);
 }
 
 void Instructions::_dconst_0(){
+    double var = 0;
+
+    frames.top().operands.pushDouble(var);
+
+    //double teste = frames.top().operands.popDouble();
+    //std::cout << teste << std::endl;
     addToPC(1);
 }
 
 void Instructions::_dconst_1(){
+    double var = 1;
+
+    frames.top().operands.pushDouble(var);
+
+    //double teste = frames.top().operands.popDouble();
+    //std::cout << "_dconst_1: " << teste << std::endl;
     addToPC(1);
 }
 
