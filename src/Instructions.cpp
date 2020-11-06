@@ -231,30 +231,37 @@ void Instructions::_aconst_null(){
 }
 
 void Instructions::_iconst_m1(){
+    frames.top().operands.push(Slot(SlotType::INT, -1));
     addToPC(1);
 }
 
 void Instructions::_iconst_0(){
+    frames.top().operands.push(Slot(SlotType::INT, 0));
     addToPC(1);
 }
 
 void Instructions::_iconst_1(){
+    frames.top().operands.push(Slot(SlotType::INT, 1));
     addToPC(1);
 }
 
 void Instructions::_iconst_2(){
+    frames.top().operands.push(Slot(SlotType::INT, 2));
     addToPC(1);
 }
 
 void Instructions::_iconst_3(){
+    frames.top().operands.push(Slot(SlotType::INT, 3));
     addToPC(1);
 }
 
 void Instructions::_iconst_4(){
+    frames.top().operands.push(Slot(SlotType::INT, 4));
     addToPC(1);
 }
 
 void Instructions::_iconst_5(){
+    frames.top().operands.push(Slot(SlotType::INT, 5));
     addToPC(1);
 }
 
@@ -990,6 +997,7 @@ void Instructions::_new(){
 }
 
 void Instructions::_newarray(){
+
     addToPC(1);
 }
 
