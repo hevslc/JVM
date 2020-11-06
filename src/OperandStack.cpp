@@ -25,8 +25,10 @@ long Operands::popLong(){
 	}
 	Slot slot1 = top();
 	pop();
+	//std::cout << "slot1: " << slot1.value << std::endl;
 	Slot slot2 = top();
 	pop();
+	//std::cout << "slot2: " << slot2.value << std::endl;
 
 	return getLong(slot1.value, slot2.value);
 }
@@ -50,15 +52,22 @@ bool Operands::popBool(){
 void Operands::pushLong(long l){
 	u8 v = reinterpret_cast<u8&>(l);
 	u4 high = u4(v >> 32);
-	u4 low = u4((v & 0X0000FFFF) << 32);
-	push(Slot(SlotType::LONG, low));
+	u4 low = u4((v & 0X0000FFFF));
+	//std::cout << "v: " << v << std::endl;
+	//std::cout << "high: " << high << std::endl;
+	//std::cout << "low: " << low << std::endl;
+	push(Slot(SlotType::LONG, low));	
 	push(Slot(SlotType::LONG, high));
+	
 }
 
 void Operands::pushDouble(double d){
 	u8 v = reinterpret_cast<u8&>(d);
 	u4 high = u4(v >> 32);
-	u4 low = u4((v & 0X0000FFFF) << 32);
+	u4 low = u4((v & 0X0000FFFF));
+	//std::cout << "v: " << v << std::endl;
+	//std::cout << "high: " << high << std::endl;
+	//std::cout << "low: " << low << std::endl;
 	push(Slot(SlotType::DOUBLE, low));
 	push(Slot(SlotType::DOUBLE, high));
 }
