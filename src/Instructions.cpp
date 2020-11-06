@@ -1048,9 +1048,7 @@ void Instructions::_anewarray(){
     case CONSTANT_Class:
         array.atype = Array::type::T_CLASS;
         break;
-    case CONSTANT_Methodref :
-        array.atype = Array::type::T_ARRAY;
-        break;
+    // case array. tipo array?
     case CONSTANT_InterfaceMethodref :
         array.atype = Array::type::T_INTERFACE;
         break;    
@@ -1093,7 +1091,38 @@ void Instructions::_wide(){
 }
 
 void Instructions::_multianewarray(){
-    addToPC(1);
+    Frame f = frames.top();
+    u2 idx = getIndex(f.bytecode[f.PC+1], f.bytecode[f.PC+2]);
+    int dim = getInt(f.bytecode[f.PC+3] | 0x0000);
+    Array::type mtxtype;
+
+    Cpinfo cp = f.classFile->constantPool[idx-1];
+    switch (cp.tag){
+    case CONSTANT_Class:
+        mtxtype = Array::type::T_CLASS;
+        //std::cout << f.classFile->constantPool.getUtf8Class(idx-1) << std::endl;
+        break;
+    // case array. tipo array?
+    case CONSTANT_InterfaceMethodref :
+        mtxtype = Array::type::T_INTERFACE;
+        //std::cout << f.classFile->constantPool.getNNameAndType(cp.FieldMethInter.nameTypeIndex-1) << std::endl;
+        break;    
+    default:
+        std::cout << "Tipo do array inválido" << std::endl;
+        break;
+    }
+
+    u4 totalcount = 0;
+    for(int d=0; d<dim; d++){
+        totalcount += f.operands.popInt();
+    }
+    Array mtx = Array(mtxtype, totalcount);
+    mtx.values = new void* [mtx.size];
+    heap.push_back(&mtx);
+    frames.top().operands.push(Slot(SlotType::REFERENCE, heap.size()-1));
+    addToPC(4);      
+    //std::cout << idx << std::endl;  
+    //std::cout << dim << std::endl;
 }
 
 void Instructions::_ifnull(){
