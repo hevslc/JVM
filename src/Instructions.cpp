@@ -460,18 +460,26 @@ void Instructions::_saload(){
 }
 
 void Instructions::_istore() {
+    //std::cout << "istore: "  << std::endl;
     Frame top = frames.top();
     u2 idx = top.bytecode[top.PC + 1];
+    //top.operands.push(Slot(SlotType::INT, 5));
     u4 value = top.operands.popInt();
     top.variables[idx].value = value;
+   // std::cout << "Variables: " << top.variables[idx].value << std::endl;
     addToPC(2);
 }
 
 void Instructions::_lstore() {
+    std::cout << "lstore: "  << std::endl;
     Frame top = frames.top();
+    long num = 65;
+    top.operands.push(Slot(SlotType::LONG, num));
     u2 idx = top.bytecode[top.PC + 1];
     u4 value = top.operands.popLong();
+    std::cout << "Variables: " << top.variables[idx].value << std::endl;
     top.variables[idx].value = value;
+
     addToPC(2);
 }
 
@@ -508,7 +516,6 @@ void Instructions::_istore_0() {
 
 
 void Instructions::_istore_1(){
-
     Frame top = frames.top();
     //top.operands.push(Slot(SlotType::INT, 5));
     int value = top.operands.popInt();
