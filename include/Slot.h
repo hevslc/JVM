@@ -27,11 +27,7 @@ class Slot
 {
 public:
     Slot() {}
-    Slot(SlotType, u4);
-    u4 getHighd(double d);
-    u4 getLowd(double d);
-    u4 getHighd(long d);
-    u4 getLowd(long d);    
+    Slot(SlotType, u4);  
 
     SlotType type;
     u4 value;

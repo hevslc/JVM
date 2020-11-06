@@ -34,6 +34,10 @@ public:
    */
 	bool popBool();
 
+	void pushLong(long l);
+
+	void pushDouble(double d);
+
 
 };
 
