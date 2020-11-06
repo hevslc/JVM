@@ -294,6 +294,10 @@ void Instructions::_dconst_1(){
 }
 
 void Instructions::_bipush(){
+    Frame f = frames.top();
+    int byte = getInt(f.bytecode[f.PC+1]);
+    f.operands.push(Slot(SlotType::INT,byte));
+    //std::cout << byte << std::endl;
     addToPC(2);
 }
 
@@ -327,6 +331,7 @@ void Instructions::_ldc2_w() {
 }
 
 void Instructions::_iload(){
+
     addToPC(1);
 }
 
