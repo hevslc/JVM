@@ -287,7 +287,7 @@ void Instructions::_dconst_1(){
 }
 
 void Instructions::_bipush(){
-    addToPC(1);
+    addToPC(2);
 }
 
 void Instructions::_sipush(){
