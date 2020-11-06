@@ -28,3 +28,7 @@ bool getBool(u4 bytes){
 	return reinterpret_cast<bool&>(bytes);
 
 }
+
+u2 getIndex(u1 byte1, u1 byte2) {
+	return ((u2)byte1 << 8) | byte2;
+}
