@@ -294,6 +294,7 @@ void Instructions::_dconst_1(){
 }
 
 void Instructions::_bipush(){
+    std::cout << "BIPUSH" << std::endl;
     addToPC(2);
 }
 
@@ -458,39 +459,77 @@ void Instructions::_saload(){
     addToPC(1);
 }
 
-void Instructions::_istore(){
+void Instructions::_istore() {
+    Frame top = frames.top();
+    u2 idx = top.bytecode[top.PC + 1];
+    u4 value = top.operands.popInt();
+    top.variables[idx].value = value;
+    addToPC(2);
+}
+
+void Instructions::_lstore() {
+    Frame top = frames.top();
+    u2 idx = top.bytecode[top.PC + 1];
+    u4 value = top.operands.popLong();
+    top.variables[idx].value = value;
+    addToPC(2);
+}
+
+void Instructions::_fstore() {
+    Frame top = frames.top();
+    u2 idx = top.bytecode[top.PC + 1];
+    u4 value = top.operands.popFloat();
+    top.variables[idx].value = value;
+    addToPC(2);
+}
+
+void Instructions::_dstore() {
+    Frame top = frames.top();
+    u2 idx = top.bytecode[top.PC + 1];
+    u4 value = top.operands.popDouble();
+    top.variables[idx].value = value;
+    addToPC(2);
+}
+
+void Instructions::_astore() {
+    Frame top = frames.top();
+    u2 idx = top.bytecode[top.PC + 1];
+    u4 value = top.operands.popInt();
+    top.variables[idx].value = value;
     addToPC(1);
 }
 
-void Instructions::_lstore(){
+void Instructions::_istore_0() {
+    Frame top = frames.top();
+    u4 value = top.operands.popInt();
+    top.variables[0].value = value;
     addToPC(1);
 }
 
-void Instructions::_fstore(){
-    addToPC(1);
-}
-
-void Instructions::_dstore(){
-    addToPC(1);
-}
-
-void Instructions::_astore(){
-    addToPC(1);
-}
-
-void Instructions::_istore_0(){
-    addToPC(1);
-}
 
 void Instructions::_istore_1(){
+
+    Frame top = frames.top();
+    //top.operands.push(Slot(SlotType::INT, 5));
+    int value = top.operands.popInt();
+    //std::cout << "istore_1: " << value << std::endl;
+    top.variables[1].value = value;
+    //std::cout << "Variables: " << top.variables[1].value << std::endl;
+
     addToPC(1);
 }
 
 void Instructions::_istore_2(){
+    Frame top = frames.top();
+    u4 value = top.operands.popInt();
+    top.variables[2].value = value;
     addToPC(1);
 }
 
 void Instructions::_istore_3(){
+    Frame top = frames.top();
+    u4 value = top.operands.popInt();
+    top.variables[3].value = value;
     addToPC(1);
 }
 

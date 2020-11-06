@@ -21,6 +21,9 @@ long Operands::popLong(){
 	return getLong(slot1.value, slot2.value);
 }
 int Operands::popInt(){
+	if(empty()){
+		std::cout << "Vazio!" << std::endl;
+	}
 	Slot slot = top();
 	pop();	
 	return getInt(slot.value);
