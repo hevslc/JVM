@@ -4,6 +4,8 @@
 #include "Definitions.h"
 #include "OperandStack.h"
 #include "MethodInfo.h"
+#include "Variables.h"
+#include "ClassFile.h"
 
 /**
  * @brief Define um frame
@@ -13,11 +15,12 @@
 class Frame{
 public:
     Operands        operands;     /*!< Pilha de operandos */
-    //Variables       variables;  /*!< Vetor de variáveis locais */
+    Variables       variables;  /*!< Vetor de variáveis locais */
     u4              PC=0;         /*!< Contador de Programa PC */
     u4              returnResult; /*!< valor de retorno de uma método (instrução) */
     u1*             bytecode;     /*!< bytes da instrução */
     MethodInfo*     method;
+    ClassFile*      classFile;
 
     Frame() {}
     //! Construtor
@@ -27,7 +30,7 @@ public:
     */ 
     Frame(u1* bytecode) : bytecode(bytecode) {};
 
-    Frame(MethodInfo* method);
+    Frame(ClassFile* classFile, MethodInfo* method);
 
     
 };

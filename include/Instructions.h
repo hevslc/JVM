@@ -4,6 +4,8 @@
 #include "Definitions.h"
 #include "ClassFile.h"
 #include "Frame.h"
+#include "Utils.h"
+#include "CpInfo.h"
 
 class Instructions;
 typedef void (Instructions::*instrFunction)(); /*!< Ponteiro para um método de Instructions */

@@ -14,7 +14,7 @@ void Interpreter::execute(){
     }
     
     if (mthMain != nullptr) {
-        instructions.frames.push(Frame(mthMain));
+        instructions.frames.push(Frame(classFile, mthMain));
 
         while(!instructions.frames.empty()) {
             Frame top = instructions.frames.top();

@@ -302,8 +302,21 @@ void Instructions::_ldc_w(){
     addToPC(1);
 }
 
-void Instructions::_ldc2_w(){
-    addToPC(1);
+void Instructions::_ldc2_w() {
+    Frame top = frames.top();
+    u2 idx = getIndex(top.bytecode[top.PC+1], top.bytecode[top.PC+2]);
+    Cpinfo value = top.classFile->constantPool[idx-1];
+    switch(value.tag) {
+        case CONSTANT_Double:
+            top.operands.push(Slot(SlotType::DOUBLE, value.Double.lowBytes));
+            top.operands.push(Slot(SlotType::DOUBLE, value.Double.highBytes));
+        break;
+        case CONSTANT_Long:
+            top.operands.push(Slot(SlotType::LONG, value.Long.lowBytes));
+            top.operands.push(Slot(SlotType::LONG, value.Long.highBytes));
+        break;
+    }
+    addToPC(3);
 }
 
 void Instructions::_iload(){

@@ -54,4 +54,6 @@
     */
 	bool getBool(u4 bytes);
 
+    u2 getIndex(u1 byte1, u1 byte2);
+
 	#endif // UTILS_H_
