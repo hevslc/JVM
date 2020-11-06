@@ -12,6 +12,12 @@ void Interpreter::execute(){
             break;
         }
     }
+    
+    //Teste 
+    //u1 var = 0xb;
+    //instructions.frames.push(Frame(classFile, mthMain));
+    //instructions.execInstr(var);
+
 
     if (mthMain != nullptr) {
         instructions.frames.push(Frame(classFile, mthMain));
