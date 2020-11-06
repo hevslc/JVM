@@ -1001,7 +1001,8 @@ void Instructions::_newarray(){
     u4 atype = f.bytecode[f.PC+1] | 0x0000 ;
     u4 count = f.operands.popInt();
 
-    Array array = Array(Array::type(atype), count);
+    Array array = Array(Array::type(atype), count, 1);
+    array.dimensions.push_back(1);
     switch (array.atype){
     case Array::type::T_BOOLEAN :
         // std::array<bool,reinterpret_cast<int&>(array.size)>
@@ -1044,6 +1045,7 @@ void Instructions::_anewarray(){
     u4 count = f.operands.popInt();
 
     Array array = Array(count);
+    array.dimensions.push_back(1);
     switch (cp.tag){
     case CONSTANT_Class:
         array.atype = Array::type::T_CLASS;
@@ -1056,7 +1058,7 @@ void Instructions::_anewarray(){
         std::cout << "Tipo do array inválido" << std::endl;
         break;
     }
-    array.values = new void* [array.size];
+    array.values = new int* [array.size];
     heap.push_back(&array);
     frames.top().operands.push(Slot(SlotType::REFERENCE, heap.size()-1));
     addToPC(3);  
@@ -1112,17 +1114,23 @@ void Instructions::_multianewarray(){
         break;
     }
 
-    u4 totalcount = 0;
+    Array mtx = Array(mtxtype, dim);
     for(int d=0; d<dim; d++){
-        totalcount += f.operands.popInt();
+        mtx.dimensions.push_back(f.operands.popInt());
+        mtx.size *= mtx.dimensions.back();
     }
-    Array mtx = Array(mtxtype, totalcount);
-    mtx.values = new void* [mtx.size];
+    mtx.values = new int* [mtx.size];
     heap.push_back(&mtx);
     frames.top().operands.push(Slot(SlotType::REFERENCE, heap.size()-1));
     addToPC(4);      
     //std::cout << idx << std::endl;  
     //std::cout << dim << std::endl;
+
+    /* modelo de uso
+    auto vals = reinterpret_cast<int*>(mtx.values);
+    int idxs[] = {1, 1};
+    std::cout << vals[mtx.offset(idxs)] << std::endl;
+    */
 }
 
 void Instructions::_ifnull(){
@@ -1142,4 +1150,14 @@ void Instructions::_jsr_w(){
 }
 
 
-
+int Array::offset(int* idxs){
+    int offset=0;
+    for(int d=1; d<=dim; d++){
+        int p=1;
+        for(int j=d+1; j<=dim; j++){
+            p *= dimensions[j-1];
+        }
+        offset += p*idxs[d-1];
+    }
+    return offset;
+}
