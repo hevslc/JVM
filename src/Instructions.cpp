@@ -294,10 +294,7 @@ void Instructions::_dconst_1(){
 }
 
 void Instructions::_bipush(){
-    Frame f = frames.top();
-    int byte = getInt(f.bytecode[f.PC+1]);
-    f.operands.push(Slot(SlotType::INT,byte));
-    //std::cout << byte << std::endl;
+    std::cout << "BIPUSH" << std::endl;
     addToPC(2);
 }
 
@@ -331,7 +328,6 @@ void Instructions::_ldc2_w() {
 }
 
 void Instructions::_iload(){
-
     addToPC(1);
 }
 
@@ -463,39 +459,84 @@ void Instructions::_saload(){
     addToPC(1);
 }
 
-void Instructions::_istore(){
+void Instructions::_istore() {
+    //std::cout << "istore: "  << std::endl;
+    Frame top = frames.top();
+    u2 idx = top.bytecode[top.PC + 1];
+    //top.operands.push(Slot(SlotType::INT, 5));
+    u4 value = top.operands.popInt();
+    top.variables[idx].value = value;
+   // std::cout << "Variables: " << top.variables[idx].value << std::endl;
+    addToPC(2);
+}
+
+void Instructions::_lstore() {
+    std::cout << "lstore: "  << std::endl;
+    Frame top = frames.top();
+    long num = 65;
+    top.operands.push(Slot(SlotType::LONG, num));
+    u2 idx = top.bytecode[top.PC + 1];
+    u4 value = top.operands.popLong();
+    std::cout << "Variables: " << top.variables[idx].value << std::endl;
+    top.variables[idx].value = value;
+
+    addToPC(2);
+}
+
+void Instructions::_fstore() {
+    Frame top = frames.top();
+    u2 idx = top.bytecode[top.PC + 1];
+    u4 value = top.operands.popFloat();
+    top.variables[idx].value = value;
+    addToPC(2);
+}
+
+void Instructions::_dstore() {
+    Frame top = frames.top();
+    u2 idx = top.bytecode[top.PC + 1];
+    u4 value = top.operands.popDouble();
+    top.variables[idx].value = value;
+    addToPC(2);
+}
+
+void Instructions::_astore() {
+    Frame top = frames.top();
+    u2 idx = top.bytecode[top.PC + 1];
+    u4 value = top.operands.popInt();
+    top.variables[idx].value = value;
     addToPC(1);
 }
 
-void Instructions::_lstore(){
+void Instructions::_istore_0() {
+    Frame top = frames.top();
+    u4 value = top.operands.popInt();
+    top.variables[0].value = value;
     addToPC(1);
 }
 
-void Instructions::_fstore(){
-    addToPC(1);
-}
-
-void Instructions::_dstore(){
-    addToPC(1);
-}
-
-void Instructions::_astore(){
-    addToPC(1);
-}
-
-void Instructions::_istore_0(){
-    addToPC(1);
-}
 
 void Instructions::_istore_1(){
+    Frame top = frames.top();
+    //top.operands.push(Slot(SlotType::INT, 5));
+    int value = top.operands.popInt();
+    //std::cout << "istore_1: " << value << std::endl;
+    top.variables[1].value = value;
+    //std::cout << "Variables: " << top.variables[1].value << std::endl;
+
     addToPC(1);
 }
 
 void Instructions::_istore_2(){
+    Frame top = frames.top();
+    u4 value = top.operands.popInt();
+    top.variables[2].value = value;
     addToPC(1);
 }
 
 void Instructions::_istore_3(){
+    Frame top = frames.top();
+    u4 value = top.operands.popInt();
+    top.variables[3].value = value;
     addToPC(1);
 }
 
@@ -1006,8 +1047,7 @@ void Instructions::_newarray(){
     u4 atype = f.bytecode[f.PC+1] | 0x0000 ;
     u4 count = f.operands.popInt();
 
-    Array array = Array(Array::type(atype), count, 1);
-    array.dimensions.push_back(1);
+    Array array = Array(Array::type(atype), count);
     switch (array.atype){
     case Array::type::T_BOOLEAN :
         // std::array<bool,reinterpret_cast<int&>(array.size)>
@@ -1050,7 +1090,6 @@ void Instructions::_anewarray(){
     u4 count = f.operands.popInt();
 
     Array array = Array(count);
-    array.dimensions.push_back(1);
     switch (cp.tag){
     case CONSTANT_Class:
         array.atype = Array::type::T_CLASS;
@@ -1063,7 +1102,7 @@ void Instructions::_anewarray(){
         std::cout << "Tipo do array inválido" << std::endl;
         break;
     }
-    array.values = new int* [array.size];
+    array.values = new void* [array.size];
     heap.push_back(&array);
     frames.top().operands.push(Slot(SlotType::REFERENCE, heap.size()-1));
     addToPC(3);  
@@ -1119,23 +1158,17 @@ void Instructions::_multianewarray(){
         break;
     }
 
-    Array mtx = Array(mtxtype, dim);
+    u4 totalcount = 0;
     for(int d=0; d<dim; d++){
-        mtx.dimensions.push_back(f.operands.popInt());
-        mtx.size *= mtx.dimensions.back();
+        totalcount += f.operands.popInt();
     }
-    mtx.values = new int* [mtx.size];
+    Array mtx = Array(mtxtype, totalcount);
+    mtx.values = new void* [mtx.size];
     heap.push_back(&mtx);
     frames.top().operands.push(Slot(SlotType::REFERENCE, heap.size()-1));
     addToPC(4);      
     //std::cout << idx << std::endl;  
     //std::cout << dim << std::endl;
-
-    /* modelo de uso
-    auto vals = reinterpret_cast<int*>(mtx.values);
-    int idxs[] = {1, 1};
-    std::cout << vals[mtx.offset(idxs)] << std::endl;
-    */
 }
 
 void Instructions::_ifnull(){
@@ -1155,14 +1188,4 @@ void Instructions::_jsr_w(){
 }
 
 
-int Array::offset(int* idxs){
-    int offset=0;
-    for(int d=1; d<=dim; d++){
-        int p=1;
-        for(int j=d+1; j<=dim; j++){
-            p *= dimensions[j-1];
-        }
-        offset += p*idxs[d-1];
-    }
-    return offset;
-}
+
