@@ -12,7 +12,7 @@ void Interpreter::execute(){
             break;
         }
     }
-    
+
     if (mthMain != nullptr) {
         instructions.frames.push(Frame(classFile, mthMain));
 
