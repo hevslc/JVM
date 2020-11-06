@@ -997,12 +997,85 @@ void Instructions::_new(){
 }
 
 void Instructions::_newarray(){
+    Frame f = frames.top();
+    u4 atype = f.bytecode[f.PC+1] | 0x0000 ;
+    u4 count = f.operands.popInt();
 
-    addToPC(1);
+    Array array = Array(Array::type(atype), count);
+    switch (array.atype){
+    case Array::type::T_BOOLEAN :
+        array.values = new bool[array.size];
+        break;
+    case Array::type::T_BYTE :
+        array.values = new u1[array.size];
+        break;
+    case Array::type::T_CHAR :
+        array.values = new char[array.size];
+        break;
+    case Array::type::T_DOUBLE :
+        array.values = new double[array.size];
+        break;
+    case Array::type::T_FLOAT :
+        array.values = new float[array.size];
+        break;
+    case Array::type::T_INT :
+        array.values = new int[array.size];
+        break;
+    case Array::type::T_LONG :
+        array.values = new long[array.size];
+        break;
+    case Array::type::T_SHORT :
+        array.values = new short[array.size];
+        break;    
+    default:
+        std::cout << "Tipo do array inválido" << std::endl;
+        break;
+    }
+    heap.push_back(&array);
+    frames.top().operands.push(Slot(SlotType::REFERENCE, heap.size()-1));
+    addToPC(2);
 }
 
 void Instructions::_anewarray(){
-    addToPC(1);
+    Frame f = frames.top();
+    u2 idx = getIndex(f.bytecode[f.PC+1], f.bytecode[f.PC+2]);
+    u4 atype = f.bytecode[f.PC+1] | 0x0000 ;
+    u4 count = f.operands.popInt();
+
+    Array array = Array(Array::type(atype), count);
+    switch (array.atype){
+    case Array::type::T_BOOLEAN :
+        array.values = new bool[array.size];
+        break;
+    case Array::type::T_BYTE :
+        array.values = new u1[array.size];
+        break;
+    case Array::type::T_CHAR :
+        array.values = new char[array.size];
+        break;
+    case Array::type::T_DOUBLE :
+        array.values = new double[array.size];
+        break;
+    case Array::type::T_FLOAT :
+        array.values = new float[array.size];
+        break;
+    case Array::type::T_INT :
+        array.values = new int[array.size];
+        break;
+    case Array::type::T_LONG :
+        array.values = new long[array.size];
+        break;
+    case Array::type::T_SHORT :
+        array.values = new short[array.size];
+        break;    
+    default:
+        std::cout << "Tipo do array inválido" << std::endl;
+        break;
+    }
+    heap.push_back(&array);
+    frames.top().operands.push(Slot(SlotType::REFERENCE, heap.size()-1));
+    addToPC(3);
+    std::cout << array.atype << std::endl;    
 }
 
 void Instructions::_arraylength(){

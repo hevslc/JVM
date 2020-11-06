@@ -20,7 +20,12 @@ public:
     std::stack<Frame>           frames;  /*!< Pilha de frames */
     std::vector<ClassFile*>     classes; /*!< Vetor de classes */
     std::vector<instrFunction>  instrs;  /*!< vetor de ponteiros para os métodos das instruções */
-    
+    //! heap
+    /*! O heap é a área de dados de tempo de execução a partir da qual a memória 
+            para todas as instâncias de classe e matrizes é alocada.
+    */ 
+    std::vector<void*>          heap;  
+
     Instructions() {};
     //! Construtor
     /*!
