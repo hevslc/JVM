@@ -1,9 +1,0 @@
-<map id="FieldInfo" name="FieldInfo">
-<area shape="rect" id="node1" title="Estrutura de um field na JVM." alt="" coords="215,373,292,465"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,182,80,259"/>
-<area shape="rect" id="node3" href="$class_acess_flags.xhtml" title="Flags de acesso Delega para si o processamento das flags de acesso." alt="" coords="131,167,251,274"/>
-<area shape="rect" id="node4" title=" " alt="" coords="101,5,281,97"/>
-<area shape="rect" id="node5" title=" " alt="" coords="287,182,345,259"/>
-<area shape="rect" id="node6" href="$class_attributes.xhtml" title="Vetor (tabela) dos atributos. Cada entrada é do tipo AttributeInfo." alt="" coords="369,160,532,281"/>
-<area shape="rect" id="node7" title=" " alt="" coords="343,13,558,90"/>
-</map>

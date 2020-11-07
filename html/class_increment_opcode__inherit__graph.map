@@ -1,4 +1,0 @@
-<map id="IncrementOpcode" name="IncrementOpcode">
-<area shape="rect" id="node1" title="Opcode de incremento." alt="" coords="5,248,168,340"/>
-<area shape="rect" id="node2" href="$class_opcode.xhtml" title="Classe base para Opcodes. Ainda não está pronta para ser uma classe completa para instruções,..." alt="" coords="29,5,145,200"/>
-</map>

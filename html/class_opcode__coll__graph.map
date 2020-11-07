@@ -1,9 +1,0 @@
-<map id="Opcode" name="Opcode">
-<area shape="rect" id="node1" title="Classe base para Opcodes. Ainda não está pronta para ser uma classe completa para instruções,..." alt="" coords="162,433,278,555"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,205,80,283"/>
-<area shape="rect" id="node3" title=" " alt="" coords="105,205,172,283"/>
-<area shape="rect" id="node4" title=" " alt="" coords="196,205,255,283"/>
-<area shape="rect" id="node5" title=" " alt="" coords="279,205,329,283"/>
-<area shape="rect" id="node6" href="$class_constant_pool.xhtml" title="Vetor (tabela) das constantes. Cada entrada é do tipo Cpinfo." alt="" coords="354,132,526,356"/>
-<area shape="rect" id="node7" title=" " alt="" coords="359,5,521,83"/>
-</map>
