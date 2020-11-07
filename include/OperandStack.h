@@ -33,6 +33,16 @@ public:
      \brief Pega o valor do slot, passa para bool e retira da pilha.
    */
 	bool popBool();
+	
+	/*!
+     \brief Insere um Long na pilha ocupando duas posições.
+   */
+	void pushLong(long l);
+
+	/*!
+     \brief Insere um double na pilha ocupando duas posições.
+   */
+	void pushDouble(double d);
 
 
 };

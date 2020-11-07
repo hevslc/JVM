@@ -30,3 +30,19 @@ bool Operands::popBool(){
 	pop();
 	return getBool(slot.value);
 }
+
+void Operands::pushLong(long l){
+	u8 v = reinterpret_cast<u8&>(l);
+	u4 high = u4(v >> 32);
+	u4 low = u4((v & 0X0000FFFF) << 32);
+	push(Slot(SlotType::LONG, low));
+	push(Slot(SlotType::LONG, high));
+}
+
+void Operands::pushDouble(double d){
+	u8 v = reinterpret_cast<u8&>(d);
+	u4 high = u4(v >> 32);
+	u4 low = u4((v & 0X0000FFFF) << 32);
+	push(Slot(SlotType::DOUBLE, low));
+	push(Slot(SlotType::DOUBLE, high));
+}
