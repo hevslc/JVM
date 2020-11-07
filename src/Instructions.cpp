@@ -297,7 +297,6 @@ void Instructions::_bipush(){
     Frame f = frames.top();
     int byte = getInt(f.bytecode[f.PC+1]);
     f.operands.push(Slot(SlotType::INT,byte));
-    //std::cout << byte << std::endl;
     addToPC(2);
 }
 
