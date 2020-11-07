@@ -585,6 +585,10 @@ void Instructions::_lstore_3(){
 }
 
 void Instructions::_fstore_0(){
+    Frame f = frames.top();
+    float value = f.operands.popFloat();
+    u4 uf = reinterpret_cast<u4&>(value);
+    frames.top().variables.at(0) = Slot(SlotType::FLOAT, uf);    
     addToPC(1);
 }
 
