@@ -340,9 +340,8 @@ void Instructions::_ldc_w(){
 }
 
 void Instructions::_ldc2_w() {
-    Frame top = frames.top();
-    u2 idx = getIndex(top.bytecode[top.PC+1], top.bytecode[top.PC+2]);
-    Cpinfo value = top.classFile->constantPool[idx-1];
+    u2 idx = getIndex(frames.top().bytecode[frames.top().PC+1], frames.top().bytecode[frames.top().PC+2]);
+    Cpinfo value = frames.top().classFile->constantPool[idx-1];
     switch(value.tag) {
         case CONSTANT_Double:
             frames.top().operands.push(Slot(SlotType::DOUBLE, value.Double.lowBytes));
@@ -553,27 +552,34 @@ void Instructions::_saload(){
 }
 
 void Instructions::_istore(){
-    Frame f = frames.top();
-    u1 idx = f.bytecode[f.PC+1];
-    int value = f.operands.popInt();
+    int value = frames.top().operands.popInt();
+    u1 idx = frames.top().bytecode[frames.top().PC+1];
     u4 uv = reinterpret_cast<u4&>(value);
     frames.top().variables[idx] = Slot(SlotType::INT, uv);
     addToPC(2); 
 }
 
 void Instructions::_lstore(){
-    Frame f = frames.top();
-    long value = f.operands.popLong();
-    u1 idx = f.bytecode[f.PC+1];
-    frames.top().variables.putLong(value, idx);
+    long value = frames.top().operands.popLong();
+    u1 idx = frames.top().bytecode[frames.top().PC+1];
+    u8 uv = reinterpret_cast<u8&>(value);
+    frames.top().variables.putLong(uv, idx);
     addToPC(2);
 }
 
 void Instructions::_fstore(){
+    float value = frames.top().operands.popFloat();
+    u1 idx = frames.top().bytecode[frames.top().PC+1];
+    u4 uv = reinterpret_cast<u4&>(value);
+    frames.top().variables[idx] = Slot(SlotType::FLOAT, uv);
     addToPC(1);
 }
 
 void Instructions::_dstore(){
+    double value = frames.top().operands.popDouble();
+    u1 idx = frames.top().bytecode[frames.top().PC+1];
+    u8 uv = reinterpret_cast<u8&>(value);
+    frames.top().variables.putDouble(uv, idx);
     addToPC(1);
 }
 
@@ -610,66 +616,86 @@ void Instructions::_istore_3(){
 }
 
 void Instructions::_lstore_0(){
-    Frame f = frames.top();
-    long value = f.operands.popLong();
-    frames.top().variables.putLong(value, 0);
+    long value = frames.top().operands.popLong();
+    u8 uv = reinterpret_cast<u8&>(value);
+    frames.top().variables.putLong(uv, 0);
     addToPC(1);
 }
 
 void Instructions::_lstore_1(){
-    Frame f = frames.top();
-    long value = f.operands.popLong();
-    frames.top().variables.putLong(value, 1);    
+    long value = frames.top().operands.popLong();
+    u8 uv = reinterpret_cast<u8&>(value);
+    frames.top().variables.putLong(uv, 1);
     addToPC(1);
 }
 
 void Instructions::_lstore_2(){
-    Frame f = frames.top();
-    long value = f.operands.popLong();
-    frames.top().variables.putLong(value, 2);    
+    long value = frames.top().operands.popLong();
+    u8 uv = reinterpret_cast<u8&>(value);
+    frames.top().variables.putLong(uv, 2); 
     addToPC(1);
 }
 
 void Instructions::_lstore_3(){
-    Frame f = frames.top();
-    long value = f.operands.popLong();
-    frames.top().variables.putLong(value, 3);    
+    long value = frames.top().operands.popLong();
+    u8 uv = reinterpret_cast<u8&>(value);
+    frames.top().variables.putLong(uv, 3);  
     addToPC(1);
 }
 
 void Instructions::_fstore_0(){
-    Frame f = frames.top();
-    float value = f.operands.popFloat();
-    u4 uf = reinterpret_cast<u4&>(value);
-    frames.top().variables.at(0) = Slot(SlotType::FLOAT, uf);    
+    float value = frames.top().operands.popFloat();
+    u4 uv = reinterpret_cast<u4&>(value);
+    frames.top().variables[0] = Slot(SlotType::FLOAT, uv);    
     addToPC(1);
 }
 
 void Instructions::_fstore_1(){
+    float value = frames.top().operands.popFloat();
+    u4 uv = reinterpret_cast<u4&>(value);
+    frames.top().variables[1] = Slot(SlotType::FLOAT, uv);  
     addToPC(1);
 }
 
 void Instructions::_fstore_2(){
+    float value = frames.top().operands.popFloat();
+    u4 uv = reinterpret_cast<u4&>(value);
+    frames.top().variables[2] = Slot(SlotType::FLOAT, uv);  
     addToPC(1);
 }
 
 void Instructions::_fstore_3(){
+    float value = frames.top().operands.popFloat();
+    u4 uv = reinterpret_cast<u4&>(value);
+    frames.top().variables[3] = Slot(SlotType::FLOAT, uv);  
     addToPC(1);
 }
 
 void Instructions::_dstore_0(){
+    double value = frames.top().operands.popDouble();
+    u8 uv = reinterpret_cast<u8&>(value);
+    frames.top().variables.putDouble(uv, 0); 
     addToPC(1);
 }
 
 void Instructions::_dstore_1(){
+    double value = frames.top().operands.popDouble();
+    u8 uv = reinterpret_cast<u8&>(value);
+    frames.top().variables.putDouble(uv, 1);  
     addToPC(1);
 }
 
 void Instructions::_dstore_2(){
+    double value = frames.top().operands.popDouble();
+    u8 uv = reinterpret_cast<u8&>(value);
+    frames.top().variables.putDouble(uv, 2);   
     addToPC(1);
 }
 
 void Instructions::_dstore_3(){
+    double value = frames.top().operands.popDouble();
+    u8 uv = reinterpret_cast<u8&>(value);
+    frames.top().variables.putDouble(uv, 3); 
     addToPC(1);
 }
 
