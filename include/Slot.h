@@ -14,6 +14,7 @@ enum class SlotType
     INT,
     FLOAT,
     LONG,
+    STRING_REF,
     REFERENCE,
     RETURN_ADDRESS,
     DOUBLE

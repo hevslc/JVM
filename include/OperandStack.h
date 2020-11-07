@@ -44,6 +44,7 @@ public:
    */
 	void pushDouble(double d);
 
+	char* popString();
 
 };
 

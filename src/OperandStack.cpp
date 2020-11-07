@@ -46,3 +46,11 @@ void Operands::pushDouble(double d){
 	push(Slot(SlotType::DOUBLE, low));
 	push(Slot(SlotType::DOUBLE, high));
 }
+
+char* Operands::popString() {
+	Slot slot1 = top();
+	pop();
+	Slot slot2 = top();
+	pop();
+	return u8ToCharPointer(slot1.value, slot2.value);
+}

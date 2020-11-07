@@ -32,3 +32,11 @@ bool getBool(u4 bytes){
 u2 getIndex(u1 byte1, u1 byte2) {
 	return ((u2)byte1 << 8) | byte2;
 }
+
+u8 charPointerToU8(u1* str) {
+	return reinterpret_cast<u8>(str);
+}
+
+char* u8ToCharPointer(u4 bytes1, u4 bytes2) {
+	return reinterpret_cast<char*>(((u8)bytes1 << 32) | (u8)bytes2);
+}
