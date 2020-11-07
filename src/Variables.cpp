@@ -47,3 +47,10 @@ void Variables::putDouble(double d, u1 position){
 	at(position) = Slot(SlotType::DOUBLE, high);
 	at(position+1) = Slot(SlotType::DOUBLE, low);
 }
+
+void Variables::putU8(SlotType type, u8 value, u1 position) {
+    u4 high = u4(value >> 32);
+    u4 low = u4(value & 0XFFFFFFFF);
+    at(position) = Slot(type, high);
+    at(position + 1) = Slot(type, low);
+}

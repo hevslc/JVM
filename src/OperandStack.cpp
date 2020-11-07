@@ -47,6 +47,11 @@ void Operands::pushDouble(double d){
 	push(Slot(SlotType::DOUBLE, high));
 }
 
+void Operands::pushU8(SlotType type, u8 value) {
+	push(Slot(type, (u4)(value & 0xFFFFFFFF)));
+	push(Slot(type, (u4)(value >> 32)));
+}
+
 char* Operands::popString() {
 	Slot slot1 = top();
 	pop();

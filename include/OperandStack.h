@@ -45,6 +45,7 @@ public:
 	void pushDouble(double d);
 
 	char* popString();
+	void pushU8(SlotType, u8);
 
 };
 
