@@ -32,6 +32,14 @@ public:
      \brief Pega o valor do slot, passa para booleano e retira do vetor.
    */
     bool asBool(int position);
+   /*!
+     \brief Coloca um valor long no vetor, ocupando duas posições.
+   */
+    void putLong(long l, u1 position);
+    /*!
+     \brief Coloca um valor double no vetor, ocupando duas posições.
+   */
+    void putDouble(double d, u1 position);
 };
 
 #endif

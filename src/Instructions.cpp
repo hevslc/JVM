@@ -494,7 +494,11 @@ void Instructions::_istore(){
 }
 
 void Instructions::_lstore(){
-    addToPC(1);
+    Frame f = frames.top();
+    long value = f.operands.popLong();
+    u1 idx = f.bytecode[f.PC+1];
+    frames.top().variables.putLong(value, idx);
+    addToPC(2);
 }
 
 void Instructions::_fstore(){
@@ -538,18 +542,30 @@ void Instructions::_istore_3(){
 }
 
 void Instructions::_lstore_0(){
+    Frame f = frames.top();
+    long value = f.operands.popLong();
+    frames.top().variables.putLong(value, 0);
     addToPC(1);
 }
 
 void Instructions::_lstore_1(){
+    Frame f = frames.top();
+    long value = f.operands.popLong();
+    frames.top().variables.putLong(value, 1);    
     addToPC(1);
 }
 
 void Instructions::_lstore_2(){
+    Frame f = frames.top();
+    long value = f.operands.popLong();
+    frames.top().variables.putLong(value, 2);    
     addToPC(1);
 }
 
 void Instructions::_lstore_3(){
+    Frame f = frames.top();
+    long value = f.operands.popLong();
+    frames.top().variables.putLong(value, 3);    
     addToPC(1);
 }
 
