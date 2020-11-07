@@ -37,6 +37,6 @@ u8 charPointerToU8(u1* str) {
 	return reinterpret_cast<u8>(str);
 }
 
-char* u8ToCharPointer(u4 bytes1, u4 bytes2) {
-	return reinterpret_cast<char*>(((u8)bytes1 << 32) | (u8)bytes2);
+char* u8ToCharPointer(u4 highBytes, u4 lowBytes) {
+	return reinterpret_cast<char*>(highlowBytes(highBytes, lowBytes));
 }

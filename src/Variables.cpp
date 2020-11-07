@@ -35,7 +35,7 @@ bool Variables::asBool(int position)
 void Variables::putLong(long l, u1 position){
 	u8 v = reinterpret_cast<u8&>(l);
 	u4 high = u4(v >> 32);
-	u4 low = u4(v & 0X0000FFFF);
+	u4 low = u4(v & 0XFFFFFFFF);
 	at(position) = Slot(SlotType::LONG, high);
 	at(position+1) = Slot(SlotType::LONG, low);
 }
@@ -43,7 +43,7 @@ void Variables::putLong(long l, u1 position){
 void Variables::putDouble(double d, u1 position){
 	u8 v = reinterpret_cast<u8&>(d);
 	u4 high = u4(v >> 32);
-	u4 low = u4(v & 0X0000FFFF);
+	u4 low = u4(v & 0XFFFFFFFF);
 	at(position) = Slot(SlotType::DOUBLE, high);
 	at(position+1) = Slot(SlotType::DOUBLE, low);
 }

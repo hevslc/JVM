@@ -345,8 +345,7 @@ void Instructions::_ldc(){
         case CONSTANT_String:
             Cpinfo entry2 = frames.top().classFile->constantPool[entry.String.stringIndex-1];
             u8 strPointerBytes = charPointerToU8(entry2.Utf8.bytes);
-            frames.top().operands.push(Slot(SlotType::STRING_REF, (u4)(strPointerBytes & 0xFFFFFFFF)));
-            frames.top().operands.push(Slot(SlotType::STRING_REF, (u4)(strPointerBytes >> 32)));
+            frames.top().operands.pushU8(SlotType::STRING_REF, strPointerBytes);
             //std::cout << frames.top().operands.popString() << std::endl;
         break;
     }
