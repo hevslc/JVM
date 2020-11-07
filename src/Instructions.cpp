@@ -227,6 +227,7 @@ void Instructions::_nop(){
 }
 
 void Instructions::_aconst_null(){
+    frames.top().operands.push(Slot(SlotType::REFERENCE, NULL));
     addToPC(1);
 }
 
