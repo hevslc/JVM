@@ -55,9 +55,7 @@ void Operands::pushU8(SlotType type, u8 value) {
 }
 
 char* Operands::popString() {
-	Slot slot1 = top();
+	Slot slot = top();
 	pop();
-	Slot slot2 = top();
-	pop();
-	return u8ToCharPointer(slot1.value, slot2.value);
+	return slot.ref.str;
 }

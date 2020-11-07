@@ -14,10 +14,10 @@ enum class SlotType
     INT,
     FLOAT,
     LONG,
-    STRING_REF,
     REFERENCE,
     RETURN_ADDRESS,
-    DOUBLE
+    DOUBLE,
+    STRING_REF
 };
 
 /**
@@ -36,6 +36,11 @@ public:
 
     SlotType type;
     u4 value;
+
+    union {
+        char* str;
+        void* object;
+    } ref;
 };
 
 #endif
