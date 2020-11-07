@@ -953,27 +953,70 @@ void Instructions::_ifle(){
 }
 
 void Instructions::_if_icmpeq(){
-    addToPC(1);
+    Frame f = frames.top();
+    u1 branchbyte1 = f.bytecode[f.PC+1];
+    u1 branchbyte2 = f.bytecode[f.PC+2];
+    u2 br = (branchbyte1 << 8) | branchbyte2;
+    int v2 = f.operands.popInt();
+    int v1 = f.operands.popInt();
+    if(v1 == v2) addToPC(br);
+    else         addToPC(3);
 }
 
 void Instructions::_if_icmpne(){
-    addToPC(1);
+    Frame f = frames.top();
+    u1 branchbyte1 = f.bytecode[f.PC+1];
+    u1 branchbyte2 = f.bytecode[f.PC+2];
+    u2 br = (branchbyte1 << 8) | branchbyte2;
+    int v2 = f.operands.popInt();
+    int v1 = f.operands.popInt();
+    if(v1 != v2) addToPC(br);
+    else         addToPC(3);
 }
 
 void Instructions::_if_icmplt(){
-    addToPC(1);
+    Frame f = frames.top();
+    u1 branchbyte1 = f.bytecode[f.PC+1];
+    u1 branchbyte2 = f.bytecode[f.PC+2];
+    u2 br = (branchbyte1 << 8) | branchbyte2;
+    int v2 = f.operands.popInt();
+    int v1 = f.operands.popInt();
+    if(v1 < v2) addToPC(br);
+    else         addToPC(3);
 }
 
 void Instructions::_if_icmpge(){
-    addToPC(1);
+    Frame f = frames.top();
+    u1 branchbyte1 = f.bytecode[f.PC+1];
+    u1 branchbyte2 = f.bytecode[f.PC+2];
+    u2 br = (branchbyte1 << 8) | branchbyte2;
+    int v2 = f.operands.popInt();
+    int v1 = f.operands.popInt();
+    if(v1 >= v2) addToPC(br);
+    else         addToPC(3);
 }
 
 void Instructions::_if_icmpgt(){
-    addToPC(1);
+    Frame f = frames.top();
+    u1 branchbyte1 = f.bytecode[f.PC+1];
+    u1 branchbyte2 = f.bytecode[f.PC+2];
+    u2 br = (u2(branchbyte1) << 8) | u2(branchbyte2);
+    int v2 = f.operands.popInt();
+    int v1 = f.operands.popInt();
+    //std::cout << int(br) << std::endl;
+    if(v1 > v2) addToPC(br);
+    else         addToPC(3);
 }
 
 void Instructions::_if_icmple(){
-    addToPC(1);
+    Frame f = frames.top();
+    u1 branchbyte1 = f.bytecode[f.PC+1];
+    u1 branchbyte2 = f.bytecode[f.PC+2];
+    u2 br = (branchbyte1 << 8) | branchbyte2;
+    int v2 = f.operands.popInt();
+    int v1 = f.operands.popInt();
+    if(v1 <= v2) addToPC(br);
+    else         addToPC(3);
 }
 
 void Instructions::_if_acmpeq(){
