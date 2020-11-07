@@ -40,6 +40,8 @@ public:
      \brief Coloca um valor double no vetor, ocupando duas posições.
    */
     void putDouble(double d, u1 position);
+
+    void putU8(SlotType type, u8 value, u1 position);
 };
 
 #endif
