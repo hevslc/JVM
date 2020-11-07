@@ -44,6 +44,6 @@ void Variables::putDouble(double d, u1 position){
 	u8 v = reinterpret_cast<u8&>(d);
 	u4 high = u4(v >> 32);
 	u4 low = u4(v & 0X0000FFFF);
-	at(position) = Slot(SlotType::LONG, high);
-	at(position+1) = Slot(SlotType::LONG, low);
+	at(position) = Slot(SlotType::DOUBLE, high);
+	at(position+1) = Slot(SlotType::DOUBLE, low);
 }
