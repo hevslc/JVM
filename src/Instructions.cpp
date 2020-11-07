@@ -1189,7 +1189,17 @@ void Instructions::_putfield(){
 }
 
 void Instructions::_invokevirtual(){
-    addToPC(3);
+    Frame f = frames.top();
+    u1 idx = f.bytecode[f.PC+1];
+    ConstantPool cpt = f.classFile->constantPool;
+    std::string name = cpt.getNNameAndType(idx);
+    std::string descriptor = cpt.getDescriptor(idx);
+    
+    std::cout << (name + descriptor) << std::endl;
+    if((name + descriptor) == "java/io/PrintStream.println")
+        println();
+    else initGenericMethod(frames, name, descriptor);
+    addToPC(1);
 }
 
 void Instructions::_invokeSpecial(){
@@ -1197,6 +1207,12 @@ void Instructions::_invokeSpecial(){
 }
 
 void Instructions::_invokestatic(){
+    Frame f = frames.top();
+    u1 idx = f.bytecode[f.PC+1];
+    ConstantPool cpt = f.classFile->constantPool;
+    std::string name = cpt.getNNameAndType(idx);
+    std::string descriptor = cpt.getDescriptor(idx);
+    initGenericMethod(frames, name, descriptor);
     addToPC(1);
 }
 
@@ -1378,4 +1394,73 @@ int Array::offset(int* idxs){
         offset += p*idxs[d-1];
     }
     return offset;
+}
+
+
+void Instructions::initGenericMethod(std::stack<Frame>& frames, std::string name, std::string descriptor){
+	Frame f = frames.top();
+    MethodInfo* mthinfo;
+    for(auto mth : frames.top().classFile->methods){
+        if(!(mth->name + mth->descriptor).compare(name+descriptor)){
+            mthinfo = mth;
+            break;
+        }
+    }
+	Frame newframe(f.classFile, mthinfo);
+    int qtd = getNumberArgs(descriptor);
+    for(u1 q=0; q<qtd; q++){
+        newframe.variables[q] = f.operands.top();
+        frames.top().operands.pop();
+    }
+    frames.push(newframe);	
+}
+
+int Instructions::getNumberArgs(std::string descriptor){
+	int qtd = 0;
+	std::size_t p = std::string::npos;
+
+	std::size_t refpos = descriptor.find_first_of("L");
+	if(refpos != p){
+		qtd++;
+		std::size_t ppos = descriptor.find_first_of(";");
+		descriptor.erase(refpos, ppos-refpos);
+	}
+	std::size_t c = descriptor.find_first_of("BCDFIJSZ");
+	for(;c != p;++qtd) c = descriptor.find_first_of("BCDFIJSZ", c+1);
+
+	if(descriptor.find_first_of("[") != p ) qtd++;
+	return qtd;
+}
+
+void Instructions::println(){
+    SlotType type = frames.top().operands.top().type;
+    switch (type){
+    case SlotType::BOOL:
+        std::cout << frames.top().operands.popBool() << std::endl;
+        break;
+    case SlotType::BYTE:
+        std::cout << frames.top().operands.top().value << std::endl;
+        frames.top().operands.pop();
+        break;
+    case SlotType::CHAR:
+        char c = reinterpret_cast<char&>(frames.top().operands.top().value);
+        std::cout << c << std::endl;
+        break;
+    case SlotType::INT:
+        std::cout << frames.top().operands.popInt() << std::endl;
+        break;
+    case SlotType::FLOAT:
+        std::cout << frames.top().operands.popFloat() << std::endl;
+        break;
+    case SlotType::LONG:
+        std::cout << frames.top().operands.popLong() << std::endl;
+        break;
+    case SlotType::DOUBLE:
+        std::cout << frames.top().operands.popDouble() << std::endl;
+        break;
+    default:
+        std::cout << "Tipo invalido para impressão" << std::endl;
+        break;
+    }
+
 }

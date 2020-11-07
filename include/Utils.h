@@ -79,4 +79,5 @@
      */
     char* u8ToCharPointer(u4, u4);
 
+    
 	#endif // UTILS_H_
