@@ -227,7 +227,10 @@ void Instructions::_nop(){
 }
 
 void Instructions::_aconst_null(){
-    frames.top().operands.push(Slot(SlotType::REFERENCE, NULL));
+    Slot slot(SlotType::REFERENCE, 0);
+    slot.ref.str = nullptr;
+    slot.ref.object = nullptr;
+    frames.top().operands.push(slot);
     addToPC(1);
 }
 
@@ -345,9 +348,10 @@ void Instructions::_ldc(){
         break;
         case CONSTANT_String:
             Cpinfo entry2 = frames.top().classFile->constantPool[entry.String.stringIndex-1];
-            u8 strPointerBytes = charPointerToU8(entry2.Utf8.bytes);
-            frames.top().operands.pushU8(SlotType::STRING_REF, strPointerBytes);
-            //std::cout << frames.top().operands.popString() << std::endl;
+            Slot slot(SlotType::STRING_REF, entry.String.stringIndex);
+            slot.ref.str = (char*)entry2.Utf8.bytes;
+            frames.top().operands.push(slot);
+            std::cout << frames.top().operands.popString() << std::endl;
         break;
     }
     addToPC(2);
