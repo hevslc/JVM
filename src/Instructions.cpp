@@ -345,12 +345,12 @@ void Instructions::_ldc2_w() {
     Cpinfo value = top.classFile->constantPool[idx-1];
     switch(value.tag) {
         case CONSTANT_Double:
-            top.operands.push(Slot(SlotType::DOUBLE, value.Double.lowBytes));
-            top.operands.push(Slot(SlotType::DOUBLE, value.Double.highBytes));
+            frames.top().operands.push(Slot(SlotType::DOUBLE, value.Double.lowBytes));
+            frames.top().operands.push(Slot(SlotType::DOUBLE, value.Double.highBytes));
         break;
         case CONSTANT_Long:
-            top.operands.push(Slot(SlotType::LONG, value.Long.lowBytes));
-            top.operands.push(Slot(SlotType::LONG, value.Long.highBytes));
+            frames.top().operands.push(Slot(SlotType::LONG, value.Long.lowBytes));
+            frames.top().operands.push(Slot(SlotType::LONG, value.Long.highBytes));
         break;
     }
     addToPC(3);
@@ -364,15 +364,28 @@ void Instructions::_iload(){
 }
 
 void Instructions::_lload(){
-    addToPC(1);
+    Frame f = frames.top();
+    int idx = getInt(f.bytecode[f.PC+1]);
+    long l = f.variables.asLong(idx);
+    frames.top().operands.pushLong(l);
+    addToPC(2);
 }
 
 void Instructions::_fload(){
-    addToPC(1);
+    Frame f = frames.top();
+    int idx = getInt(f.bytecode[f.PC+1]);
+    float value = f.variables.asFloat(idx);
+    u4 uf = reinterpret_cast<u4&>(value);
+    frames.top().operands.push(Slot(SlotType::FLOAT, uf));
+    addToPC(2);
 }
 
 void Instructions::_dload(){
-    addToPC(1);
+    Frame f = frames.top();
+    int idx = getInt(f.bytecode[f.PC+1]);
+    double value = f.variables.asDouble(idx);
+    frames.top().operands.pushDouble(value);
+    addToPC(2);
 }
 
 void Instructions::_aload(){
@@ -386,7 +399,7 @@ void Instructions::_iload_0(){
 }
 
 void Instructions::_iload_1(){
-        Frame f = frames.top();
+    Frame f = frames.top();
     frames.top().operands.push(f.variables.at(1));
     addToPC(1);
 }
@@ -404,50 +417,90 @@ void Instructions::_iload_3(){
 }
 
 void Instructions::_lload_0(){
+    Frame f = frames.top();
+    long value = f.variables.asLong(0);
+    frames.top().operands.pushLong(value);
     addToPC(1);
 }
 
 void Instructions::_lload_1(){
+    Frame f = frames.top();
+    long value = f.variables.asLong(1);
+    frames.top().operands.pushLong(value);
     addToPC(1);
 }
 
 void Instructions::_lload_2(){
+    Frame f = frames.top();
+    long value = f.variables.asLong(2);
+    frames.top().operands.pushLong(value);
     addToPC(1);
 }
 
 void Instructions::_lload_3(){
+    Frame f = frames.top();
+    long value = f.variables.asLong(3);
+    frames.top().operands.pushLong(value);
     addToPC(1);
 }
 
 void Instructions::_fload_0(){
+    Frame f = frames.top();
+    float value = f.variables.asFloat(0);
+    u4 uf = reinterpret_cast<u4&>(value);
+    frames.top().operands.push(Slot(SlotType::FLOAT, uf));
     addToPC(1);
 }
 
 void Instructions::_fload_1(){
+    Frame f = frames.top();
+    float value = f.variables.asFloat(1);
+    u4 uf = reinterpret_cast<u4&>(value);
+    frames.top().operands.push(Slot(SlotType::FLOAT, uf));
     addToPC(1);
 }
 
 void Instructions::_fload_2(){
+    Frame f = frames.top();
+    float value = f.variables.asFloat(2);
+    u4 uf = reinterpret_cast<u4&>(value);
+    frames.top().operands.push(Slot(SlotType::FLOAT, uf));
     addToPC(1);
 }
 
 void Instructions::_fload_3(){
+    Frame f = frames.top();
+    float value = f.variables.asFloat(3);
+    u4 uf = reinterpret_cast<u4&>(value);
+    frames.top().operands.push(Slot(SlotType::FLOAT, uf));
     addToPC(1);
 }
 
 void Instructions::_dload_0(){
+    Frame f = frames.top();
+    double value = f.variables.asDouble(0);
+    frames.top().operands.pushDouble(value);    
     addToPC(1);
 }
 
 void Instructions::_dload_1(){
+    Frame f = frames.top();
+    double value = f.variables.asDouble(1);
+    frames.top().operands.pushDouble(value);    
     addToPC(1);
 }
 
 void Instructions::_dload_2(){
+    Frame f = frames.top();
+    double value = f.variables.asDouble(2);
+    frames.top().operands.pushDouble(value);    
     addToPC(1);
 }
 
 void Instructions::_dload_3(){
+    Frame f = frames.top();
+    double value = f.variables.asDouble(3);
+    frames.top().operands.pushDouble(value);    
     addToPC(1);
 }
 
