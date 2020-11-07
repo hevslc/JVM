@@ -332,11 +332,11 @@ void Instructions::_sipush(){
 }
 
 void Instructions::_ldc(){
-    addToPC(1);
+    addToPC(2);
 }
 
 void Instructions::_ldc_w(){
-    addToPC(1);
+    addToPC(3);
 }
 
 void Instructions::_ldc2_w() {
@@ -357,8 +357,10 @@ void Instructions::_ldc2_w() {
 }
 
 void Instructions::_iload(){
-
-    addToPC(1);
+    Frame f = frames.top();
+    u1 idx = f.bytecode[f.PC+1];
+    frames.top().operands.push(f.variables.at(idx));
+    addToPC(2);
 }
 
 void Instructions::_lload(){
@@ -378,18 +380,26 @@ void Instructions::_aload(){
 }
 
 void Instructions::_iload_0(){
+    Frame f = frames.top();
+    frames.top().operands.push(f.variables.at(0));
     addToPC(1);
 }
 
 void Instructions::_iload_1(){
+        Frame f = frames.top();
+    frames.top().operands.push(f.variables.at(1));
     addToPC(1);
 }
 
 void Instructions::_iload_2(){
+    Frame f = frames.top();
+    frames.top().operands.push(f.variables.at(2));
     addToPC(1);
 }
 
 void Instructions::_iload_3(){
+    Frame f = frames.top();
+    frames.top().operands.push(f.variables.at(3));
     addToPC(1);
 }
 
@@ -490,7 +500,12 @@ void Instructions::_saload(){
 }
 
 void Instructions::_istore(){
-    addToPC(1);
+    Frame f = frames.top();
+    u1 idx = f.bytecode[f.PC+1];
+    int value = f.operands.popInt();
+    u4 uv = reinterpret_cast<u4&>(value);
+    frames.top().variables[idx] = Slot(SlotType::INT, uv);
+    addToPC(2); 
 }
 
 void Instructions::_lstore(){
@@ -1014,7 +1029,7 @@ void Instructions::_return(){
 }
 
 void Instructions::_getstatic(){
-    addToPC(1);
+    addToPC(3);
 }
 
 void Instructions::_putstatic(){
@@ -1030,7 +1045,7 @@ void Instructions::_putfield(){
 }
 
 void Instructions::_invokevirtual(){
-    addToPC(1);
+    addToPC(3);
 }
 
 void Instructions::_invokeSpecial(){
