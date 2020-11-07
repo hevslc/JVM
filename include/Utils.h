@@ -2,6 +2,7 @@
 #define UTILS_H
 
 #include "Definitions.h"
+#include <string.h>
 
 	/*!
     \brief Junta os bytes mais significativos com os bytes menos significatos.
@@ -54,6 +55,28 @@
     */
 	bool getBool(u4 bytes);
 
+    /**
+     * @brief Junta os dois bytes como um único índice.
+     * 
+     * @param byte1 Primeiro byte.
+     * @param byte2 Segundo byte.
+     * @return u2 O índice criado.
+     */
     u2 getIndex(u1 byte1, u1 byte2);
+
+    /**
+     * @brief Transforma um ponteiro de bytes em um u8.
+     * Transforma a posição apontada.
+     * 
+     * @return u8 O valor do ponteiro em bytes.
+     */
+    u8 charPointerToU8(u1*);
+
+    /**
+     * @brief Pega um conjunto de 8 bytes e o transforma em ponteiro.
+     * 
+     * @return char* O ponteiro criado.
+     */
+    char* u8ToCharPointer(u4, u4);
 
 	#endif // UTILS_H_

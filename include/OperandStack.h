@@ -34,6 +34,7 @@ public:
    */
 	bool popBool();
 
+	char* popString();
 
 };
 

@@ -302,7 +302,24 @@ void Instructions::_sipush(){
 }
 
 void Instructions::_ldc(){
-    addToPC(1);
+    u1 idx = frames.top().bytecode[frames.top().PC+1];
+    Cpinfo entry = frames.top().classFile->constantPool[idx-1];
+    switch(entry.tag) {
+        case CONSTANT_Integer:
+            frames.top().operands.push(Slot(SlotType::INT, entry.Integer.bytes));
+        break;
+        case CONSTANT_Float:
+            frames.top().operands.push(Slot(SlotType::FLOAT, entry.Float.bytes));
+        break;
+        case CONSTANT_String:
+            Cpinfo entry2 = frames.top().classFile->constantPool[entry.String.stringIndex-1];
+            u8 strPointerBytes = charPointerToU8(entry2.Utf8.bytes);
+            frames.top().operands.push(Slot(SlotType::STRING_REF, (u4)(strPointerBytes & 0xFFFFFFFF)));
+            frames.top().operands.push(Slot(SlotType::STRING_REF, (u4)(strPointerBytes >> 32)));
+            //std::cout << frames.top().operands.popString() << std::endl;
+        break;
+    }
+    addToPC(2);
 }
 
 void Instructions::_ldc_w(){

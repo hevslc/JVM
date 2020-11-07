@@ -30,3 +30,11 @@ bool Operands::popBool(){
 	pop();
 	return getBool(slot.value);
 }
+
+char* Operands::popString() {
+	Slot slot1 = top();
+	pop();
+	Slot slot2 = top();
+	pop();
+	return u8ToCharPointer(slot1.value, slot2.value);
+}
