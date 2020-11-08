@@ -34,7 +34,7 @@ bool Operands::popBool(){
 void Operands::pushLong(long l){
 	u8 v = reinterpret_cast<u8&>(l);
 	u4 high = u4(v >> 32);
-	u4 low = u4(v & 0X0000FFFF);
+	u4 low = u4(v & 0XFFFFFFFF);
 	push(Slot(SlotType::LONG, low));
 	push(Slot(SlotType::LONG, high));
 }
@@ -42,15 +42,20 @@ void Operands::pushLong(long l){
 void Operands::pushDouble(double d){
 	u8 v = reinterpret_cast<u8&>(d);
 	u4 high = u4(v >> 32);
-	u4 low = u4(v & 0X0000FFFF);
+	u4 low = u4(v & 0XFFFFFFFF);
 	push(Slot(SlotType::DOUBLE, low));
 	push(Slot(SlotType::DOUBLE, high));
 }
 
+void Operands::pushU8(SlotType type, u8 value) {
+	u4 high = (u4)(value >> 32);
+	u4 low = (u4)(value & 0xFFFFFFFF);
+	push(Slot(type, low));
+	push(Slot(type, high));
+}
+
 char* Operands::popString() {
-	Slot slot1 = top();
+	Slot slot = top();
 	pop();
-	Slot slot2 = top();
-	pop();
-	return u8ToCharPointer(slot1.value, slot2.value);
+	return slot.ref.str;
 }

@@ -227,6 +227,10 @@ void Instructions::_nop(){
 }
 
 void Instructions::_aconst_null(){
+    Slot slot(SlotType::REFERENCE, 0);
+    slot.ref.str = nullptr;
+    slot.ref.object = nullptr;
+    frames.top().operands.push(slot);
     addToPC(1);
 }
 
@@ -344,10 +348,10 @@ void Instructions::_ldc(){
         break;
         case CONSTANT_String:
             Cpinfo entry2 = frames.top().classFile->constantPool[entry.String.stringIndex-1];
-            u8 strPointerBytes = charPointerToU8(entry2.Utf8.bytes);
-            frames.top().operands.push(Slot(SlotType::STRING_REF, (u4)(strPointerBytes & 0xFFFFFFFF)));
-            frames.top().operands.push(Slot(SlotType::STRING_REF, (u4)(strPointerBytes >> 32)));
-            //std::cout << frames.top().operands.popString() << std::endl;
+            Slot slot(SlotType::STRING_REF, entry.String.stringIndex);
+            slot.ref.str = (char*)entry2.Utf8.bytes;
+            frames.top().operands.push(slot);
+            std::cout << frames.top().operands.popString() << std::endl;
         break;
     }
     addToPC(2);
@@ -1179,8 +1183,11 @@ void Instructions::_getstatic(){
     u2 idx = getIndex(idx1, idx2);
     u2 idxclass = f.classFile->constantPool[idx].FieldMethInter.classIndex;
     std::string classname = f.classFile->constantPool.getUtf8Class(idxclass);
-    
-
+    char s[classname.size()];
+    Slot slot(SlotType::STRING_REF, 0);
+    strcpy(s, classname.c_str());
+    slot.ref.str = s;
+    frames.top().operands.push(slot);
     addToPC(3);
 }
 
