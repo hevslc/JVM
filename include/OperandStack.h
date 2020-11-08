@@ -61,7 +61,17 @@ public:
 	/*!
      \brief Insere um Long na pilha ocupando duas posições.
    */
+	void pushInt(int i);
+
+	/*!
+     \brief Insere um Long na pilha ocupando duas posições.
+   */
 	void pushLong(long l);
+
+	/*!
+     \brief Insere um double na pilha ocupando duas posições.
+   */
+	void pushFloat(float f);
 
 	/*!
      \brief Insere um double na pilha ocupando duas posições.

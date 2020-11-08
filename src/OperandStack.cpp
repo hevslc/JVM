@@ -49,12 +49,22 @@ char Operands::popChar() {
 	return getChar(slot.value);
 }
 
+void Operands::pushInt(int i){
+	u4 v = reinterpret_cast<u4&>(i);
+	push(Slot(SlotType::INT, v));
+}
+
 void Operands::pushLong(long l){
 	u8 v = reinterpret_cast<u8&>(l);
 	u4 high = u4(v >> 32);
 	u4 low = u4(v & 0XFFFFFFFF);
 	push(Slot(SlotType::LONG, low));
 	push(Slot(SlotType::LONG, high));
+}
+
+void Operands::pushFloat(float f){
+	u4 v = reinterpret_cast<u4&>(f);
+	push(Slot(SlotType::FLOAT, v));
 }
 
 void Operands::pushDouble(double d){

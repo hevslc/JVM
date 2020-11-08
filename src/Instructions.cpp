@@ -986,6 +986,10 @@ void Instructions::_swap(){
 }
 
 void Instructions::_iadd(){
+    u4 value2 = frames.top().operands.popInt();
+    u4 value1 = frames.top().operands.popInt();
+    u4 result = value1 + value2;
+    frames.top().operands.pushInt(result);
     addToPC(1);
 }
 
@@ -997,90 +1001,170 @@ void Instructions::_ladd(){
 }
 
 void Instructions::_fadd(){
+    float value1 = frames.top().operands.popFloat();
+    float value2 = frames.top().operands.popFloat();
+    float result = value1 + value2;
+    frames.top().operands.pushFloat(result);
     addToPC(1);
 }
 
 void Instructions::_dadd(){
+    double value2 = frames.top().operands.popDouble();
+    double value1 = frames.top().operands.popDouble();
+    double result = value1 + value2;
+    frames.top().operands.pushDouble(result);
     addToPC(1);
 }
 
 void Instructions::_isub(){
+    u4 value2 = frames.top().operands.popInt();
+    u4 value1 = frames.top().operands.popInt();
+    u4 result = value1 + (-value2);
+    frames.top().operands.pushInt(result);
     addToPC(1);
 }
 
 void Instructions::_lsub(){
+    long value1 = frames.top().operands.popLong();
+    long value2 = frames.top().operands.popLong();
+    long result = value2 - value1;
+    frames.top().operands.pushLong(result);
     addToPC(1);
 }
 
 void Instructions::_fsub(){
+    float value1 = frames.top().operands.popFloat();
+    float value2 = frames.top().operands.popFloat();
+    float result = value2 - value1;
+    frames.top().operands.pushFloat(result);
     addToPC(1);
 }
 
 void Instructions::_dsub(){
+    double value2 = frames.top().operands.popDouble();
+    double value1 = frames.top().operands.popDouble();
+    double result = value1 - value2;
+    frames.top().operands.pushDouble(result);
     addToPC(1);
 }
 
 void Instructions::_imul(){
+    u4 value2 = frames.top().operands.popInt();
+    u4 value1 = frames.top().operands.popInt();
+    u4 result = value1 * value2;
+    frames.top().operands.pushInt(result);
     addToPC(1);
 }
 
 void Instructions::_lmul(){
+    long value1 = frames.top().operands.popLong();
+    long value2 = frames.top().operands.popLong();
+    long result = value1 * value2;
+    frames.top().operands.pushLong(result);
     addToPC(1);
 }
 
 void Instructions::_fmul(){
+    float value1 = frames.top().operands.popFloat();
+    float value2 = frames.top().operands.popFloat();
+    float result = value1 * value2;
+    frames.top().operands.pushFloat(result);
     addToPC(1);
 }
 
 void Instructions::_dmul(){
+    double value2 = frames.top().operands.popDouble();
+    double value1 = frames.top().operands.popDouble();
+    double result = value1 * value2;
+    frames.top().operands.pushDouble(result);
     addToPC(1);
 }
 
 void Instructions::_idiv(){
+    u4 value2 = frames.top().operands.popInt();
+    u4 value1 = frames.top().operands.popInt();
+    u4 result = u4(value1 / value2);
+    frames.top().operands.pushInt(result);
     addToPC(1);
 }
 
 void Instructions::_ldiv(){
+    long value2 = frames.top().operands.popLong();
+    long value1 = frames.top().operands.popLong();
+    long result = value1 / value2;
+    frames.top().operands.pushLong(result);
     addToPC(1);
 }
 
 void Instructions::_fdiv(){
+    float value1 = frames.top().operands.popFloat();
+    float value2 = frames.top().operands.popFloat();
+    float result = value2 / value1;
+    frames.top().operands.pushFloat(result);
     addToPC(1);
 }
 
 void Instructions::_ddiv(){
+    double value2 = frames.top().operands.popDouble();
+    double value1 = frames.top().operands.popDouble();
+    double result = value1 / value2;
+    frames.top().operands.pushDouble(result);
     addToPC(1);
 }
 
 void Instructions::_irem(){
+    u4 value2 = frames.top().operands.popInt();
+    u4 value1 = frames.top().operands.popInt();
+    u4 result = int(value1 - (value2 * int(value1 / value2)));
+    frames.top().operands.pushInt(result);
     addToPC(1);
 }
 
 void Instructions::_lrem(){
+    long value2 = frames.top().operands.popLong();
+    long value1 = frames.top().operands.popLong();
+    long result = value1 - (value2 * (value1 / value2));
+    frames.top().operands.pushLong(result);
     addToPC(1);
 }
 
 void Instructions::_frem(){
+    float value2 = frames.top().operands.popFloat();
+    float value1 = frames.top().operands.popFloat();
+    float result = value1 - (value2 * int(value1 / value2));
+    frames.top().operands.pushFloat(result);
     addToPC(1);
 }
 
 void Instructions::_drem(){
+    double value2 = frames.top().operands.popDouble();
+    double value1 = frames.top().operands.popDouble();
+    double result = value1 - (value2 * int(value1 / value2));
+    frames.top().operands.pushDouble(result);
     addToPC(1);
 }
 
 void Instructions::_ineg(){
+    u4 value = int(-frames.top().operands.popInt());
+    frames.top().operands.pushInt(value);
     addToPC(1);
 }
 
 void Instructions::_lneg(){
+    long value = -frames.top().operands.popLong();
+    frames.top().operands.pushLong(value);
     addToPC(1);
 }
 
 void Instructions::_fneg(){
+    float value = -frames.top().operands.popFloat();
+    frames.top().operands.pushFloat(value);
     addToPC(1);
 }
 
 void Instructions::_dneg(){
+    double value = -frames.top().operands.popDouble();
+    frames.top().operands.pushDouble(value);
     addToPC(1);
 }
 
