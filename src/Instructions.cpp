@@ -411,7 +411,9 @@ void Instructions::_dload(){
 }
 
 void Instructions::_aload(){
-    addToPC(1);
+    u1 idx = frames.top().bytecode[frames.top().PC+1];
+    frames.top().operands.push(frames.top().variables[idx]);
+    addToPC(2);
 }
 
 void Instructions::_iload_0(){
@@ -527,18 +529,22 @@ void Instructions::_dload_3(){
 }
 
 void Instructions::_aload_0(){
+    frames.top().operands.push(frames.top().variables[0]);
     addToPC(1);
 }
 
 void Instructions::_aload_1(){
+    frames.top().operands.push(frames.top().variables[1]);
     addToPC(1);
 }
 
 void Instructions::_aload_2(){
+    frames.top().operands.push(frames.top().variables[2]);
     addToPC(1);
 }
 
 void Instructions::_aload_3(){
+    frames.top().operands.push(frames.top().variables[3]);
     addToPC(1);
 }
 
@@ -1354,40 +1360,41 @@ void Instructions::_newarray(){
     u4 atype = f.bytecode[f.PC+1] | 0x0000 ;
     u4 count = f.operands.popInt();
 
-    Array array = Array(Array::type(atype), count, 1);
-    array.dimensions.push_back(1);
-    switch (array.atype){
+    Array *array = new Array(Array::type(atype), count, 1);
+    array->dimensions.push_back(1);
+    switch (array->atype){
     case Array::type::T_BOOLEAN :
-        // std::array<bool,reinterpret_cast<int&>(array.size)>
-        array.values = new bool[array.size];
+        // std::array<bool,reinterpret_cast<int&>(array->size)>
+        array->values = new bool[array->size];
         break;
     case Array::type::T_BYTE :
-        array.values = new u1[array.size];
+        array->values = new u1[array->size];
         break;
     case Array::type::T_CHAR :
-        array.values = new char[array.size];
+        array->values = new char[array->size];
         break;
     case Array::type::T_DOUBLE :
-        array.values = new double[array.size];
+        array->values = new double[array->size];
         break;
     case Array::type::T_FLOAT :
-        array.values = new float[array.size];
+        array->values = new float[array->size];
         break;
     case Array::type::T_INT :
-        array.values = new int[array.size];
+        array->values = new int[array->size];
         break;
     case Array::type::T_LONG :
-        array.values = new long[array.size];
+        array->values = new long[array->size];
         break;
     case Array::type::T_SHORT :
-        array.values = new short[array.size];
+        array->values = new short[array->size];
         break;    
     default:
         std::cout << "Tipo do array inválido" << std::endl;
         break;
     }
-    heap.push_back(&array);
-    frames.top().operands.push(Slot(SlotType::REFERENCE, heap.size()-1));
+    heap.push_back(array);
+    frames.top().operands.push(Slot(SlotType::REFERENCE, 0));
+    frames.top().operands.top().ref.object = array;
     addToPC(2);
 }
 
@@ -1397,23 +1404,24 @@ void Instructions::_anewarray(){
     Cpinfo cp = f.classFile->constantPool[idx-1];
     u4 count = f.operands.popInt();
 
-    Array array = Array(count);
-    array.dimensions.push_back(1);
+    Array *array = new Array(count);
+    array->dimensions.push_back(1);
     switch (cp.tag){
     case CONSTANT_Class:
-        array.atype = Array::type::T_CLASS;
+        array->atype = Array::type::T_CLASS;
         break;
-    // case array. tipo array?
+    // case array-> tipo array?
     case CONSTANT_InterfaceMethodref :
-        array.atype = Array::type::T_INTERFACE;
+        array->atype = Array::type::T_INTERFACE;
         break;    
     default:
         std::cout << "Tipo do array inválido" << std::endl;
         break;
     }
-    array.values = new int* [array.size];
-    heap.push_back(&array);
-    frames.top().operands.push(Slot(SlotType::REFERENCE, heap.size()-1));
+    array->values = new void* [array->size];
+    heap.push_back(array);
+    frames.top().operands.push(Slot(SlotType::REFERENCE, 0));
+    frames.top().operands.top().ref.object = array;
     addToPC(3);  
 }
 
@@ -1469,14 +1477,16 @@ void Instructions::_multianewarray(){
         break;
     }
 
-    Array mtx = Array(mtxtype, dim);
+    Array *mtx = new Array(mtxtype, dim);
     for(int d=0; d<dim; d++){
-        mtx.dimensions.push_back(f.operands.popInt());
-        mtx.size *= mtx.dimensions.back();
+        mtx->dimensions.push_back(f.operands.popInt());
+        mtx->size *= mtx->dimensions.back();
     }
-    mtx.values = new int* [mtx.size];
-    heap.push_back(&mtx);
-    frames.top().operands.push(Slot(SlotType::REFERENCE, heap.size()-1));
+    mtx->values = new void* [mtx->size];
+    heap.push_back(mtx);
+   
+    frames.top().operands.push(Slot(SlotType::REFERENCE, 0));
+    frames.top().operands.top().ref.object = mtx;
     addToPC(4);      
     //std::cout << idx << std::endl;  
     //std::cout << dim << std::endl;
