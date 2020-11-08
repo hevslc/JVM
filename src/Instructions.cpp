@@ -351,7 +351,7 @@ void Instructions::_ldc(){
             Slot slot(SlotType::STRING_REF, entry.String.stringIndex);
             slot.ref.str = (char*)entry2.Utf8.bytes;
             frames.top().operands.push(slot);
-            std::cout << frames.top().operands.popString() << std::endl;
+            //std::cout << frames.top().operands.popString() << std::endl;
         break;
     }
     addToPC(2);
@@ -1018,10 +1018,28 @@ void Instructions::_lcmp(){
 }
 
 void Instructions::_fcmpl(){
+    float value2 = frames.top().operands.popFloat();
+    float value1 = frames.top().operands.popFloat();
+    int result = 0; // 0 significa igualdade
+    if (value1 > value2) {
+        result = 1;
+    } else if (value1 < value2) {
+        result = -1;
+    }
+    frames.top().operands.push(Slot(SlotType::INT, reinterpret_cast<u4&>(result)));
     addToPC(1);
 }
 
 void Instructions::_fcmpg(){
+    float value2 = frames.top().operands.popFloat();
+    float value1 = frames.top().operands.popFloat();
+    int result = 0; // 0 significa igualdade
+    if (value1 > value2) {
+        result = 1;
+    } else if (value1 < value2) {
+        result = -1;
+    }
+    frames.top().operands.push(Slot(SlotType::INT, reinterpret_cast<u4&>(result)));
     addToPC(1);
 }
 
