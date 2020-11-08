@@ -574,18 +574,17 @@ void Instructions::_saload(){
 }
 
 void Instructions::_istore(){
-    int value = frames.top().operands.popInt();
     u1 idx = frames.top().bytecode[frames.top().PC+1];
-    u4 uv = reinterpret_cast<u4&>(value);
-    frames.top().variables[idx] = Slot(SlotType::INT, uv);
+    std::cout << "istore " << frames.top().operands.top().value << std::endl;
+    frames.top().variables[idx] = frames.top().operands.top();
+    frames.top().operands.pop();
     addToPC(2); 
 }
 
 void Instructions::_lstore(){
     long value = frames.top().operands.popLong();
     u1 idx = frames.top().bytecode[frames.top().PC+1];
-    u8 uv = reinterpret_cast<u8&>(value);
-    frames.top().variables.putLong(uv, idx);
+    frames.top().variables.putLong(value, idx);
     addToPC(2);
 }
 
@@ -600,8 +599,7 @@ void Instructions::_fstore(){
 void Instructions::_dstore(){
     double value = frames.top().operands.popDouble();
     u1 idx = frames.top().bytecode[frames.top().PC+1];
-    u8 uv = reinterpret_cast<u8&>(value);
-    frames.top().variables.putDouble(uv, idx);
+    frames.top().variables.putDouble(value, idx);
     addToPC(1);
 }
 
@@ -639,29 +637,25 @@ void Instructions::_istore_3(){
 
 void Instructions::_lstore_0(){
     long value = frames.top().operands.popLong();
-    u8 uv = reinterpret_cast<u8&>(value);
-    frames.top().variables.putLong(uv, 0);
+    frames.top().variables.putLong(value, 0);
     addToPC(1);
 }
 
 void Instructions::_lstore_1(){
     long value = frames.top().operands.popLong();
-    u8 uv = reinterpret_cast<u8&>(value);
-    frames.top().variables.putLong(uv, 1);
+    frames.top().variables.putLong(value, 1);
     addToPC(1);
 }
 
 void Instructions::_lstore_2(){
     long value = frames.top().operands.popLong();
-    u8 uv = reinterpret_cast<u8&>(value);
-    frames.top().variables.putLong(uv, 2); 
+    frames.top().variables.putLong(value, 2); 
     addToPC(1);
 }
 
 void Instructions::_lstore_3(){
     long value = frames.top().operands.popLong();
-    u8 uv = reinterpret_cast<u8&>(value);
-    frames.top().variables.putLong(uv, 3);  
+    frames.top().variables.putLong(value, 3);  
     addToPC(1);
 }
 
@@ -695,29 +689,25 @@ void Instructions::_fstore_3(){
 
 void Instructions::_dstore_0(){
     double value = frames.top().operands.popDouble();
-    u8 uv = reinterpret_cast<u8&>(value);
-    frames.top().variables.putDouble(uv, 0); 
+    frames.top().variables.putDouble(value, 0); 
     addToPC(1);
 }
 
 void Instructions::_dstore_1(){
     double value = frames.top().operands.popDouble();
-    u8 uv = reinterpret_cast<u8&>(value);
-    frames.top().variables.putDouble(uv, 1);  
+    frames.top().variables.putDouble(value, 1);  
     addToPC(1);
 }
 
 void Instructions::_dstore_2(){
     double value = frames.top().operands.popDouble();
-    u8 uv = reinterpret_cast<u8&>(value);
-    frames.top().variables.putDouble(uv, 2);   
+    frames.top().variables.putDouble(value, 2);   
     addToPC(1);
 }
 
 void Instructions::_dstore_3(){
     double value = frames.top().operands.popDouble();
-    u8 uv = reinterpret_cast<u8&>(value);
-    frames.top().variables.putDouble(uv, 3); 
+    frames.top().variables.putDouble(value, 3); 
     addToPC(1);
 }
 
@@ -961,7 +951,7 @@ void Instructions::_lxor(){
 void Instructions::_iinc(){
     Frame f = frames.top();
     int idx = getInt(f.bytecode[f.PC+1]);
-    int8_t const_ = f.bytecode[f.PC+1];
+    int8_t const_ = f.bytecode[f.PC+2];
     int value = f.variables.asInt(idx);
     frames.top().variables[idx].value = value + (int)const_;
     addToPC(3);
@@ -1122,9 +1112,8 @@ void Instructions::_if_icmpgt(){
     u2 br = getIndex(branchbyte1, branchbyte2);
     int v2 = f.operands.popInt();
     int v1 = f.operands.popInt();
-    //std::cout << int(br) << std::endl;
     if(v1 > v2) addToPC(br);
-    else         addToPC(3);
+    else        addToPC(3);
 }
 
 void Instructions::_if_icmple(){
