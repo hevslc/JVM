@@ -575,7 +575,6 @@ void Instructions::_saload(){
 
 void Instructions::_istore(){
     u1 idx = frames.top().bytecode[frames.top().PC+1];
-    std::cout << "istore " << frames.top().operands.top().value << std::endl;
     frames.top().variables[idx] = frames.top().operands.top();
     frames.top().operands.pop();
     addToPC(2); 
