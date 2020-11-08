@@ -3,6 +3,7 @@
 
 #include "Definitions.h"
 #include <string.h>
+#include <assert.h>
 
 	/*!
     \brief Junta os bytes mais significativos com os bytes menos significatos.
