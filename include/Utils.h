@@ -113,5 +113,7 @@
      */
     char* u8ToCharPointer(u4, u4);
 
+    int getIntSwicth(u1 byte1, u1 byte2, u1 byte3, u1 byte4);
+
     
 	#endif // UTILS_H_
