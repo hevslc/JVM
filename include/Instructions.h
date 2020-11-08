@@ -77,7 +77,7 @@ public:
     /**
      * @brief Realiza escrita de valor no terminal, chamando println do java.
      */
-    void println();
+    void print(bool newline);
 
     void _nop();
     void _aconst_null();

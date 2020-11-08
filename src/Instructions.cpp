@@ -1214,8 +1214,8 @@ void Instructions::_invokevirtual(){
     std::string name = cpt.getNNameAndType(cpmthd.FieldMethInter.nameTypeIndex-1);
     std::string descriptor = cpt.getDescriptor(cpmthd.FieldMethInter.nameTypeIndex-1);
     
-    if((name) == "println")
-        println();
+    if(name == "println") print(true);
+    else if(name == "print") print(false);
     else initGenericMethod(frames, name, descriptor);
     addToPC(3);
 }
@@ -1452,41 +1452,41 @@ int Instructions::getNumberArgs(std::string descriptor){
 	return qtd;
 }
 
-void Instructions::println(){
+void Instructions::print(bool newline){
     SlotType type = frames.top().operands.top().type;
     switch(type){
         case SlotType::BOOL:
-            std::cout << frames.top().operands.popBool() << std::endl;
+            std::cout << frames.top().operands.popBool();
             break;
         case SlotType::BYTE:
-            std::cout << frames.top().operands.top().value << std::endl;
+            std::cout << frames.top().operands.top().value;
             frames.top().operands.pop();
             break;
         case SlotType::CHAR:
         {
             char c = reinterpret_cast<char&>(frames.top().operands.top().value);
             frames.top().operands.pop();
-            std::cout << (char)c << std::endl;
+            std::cout << (char)c;
             break;
         }
         case SlotType::INT:
-            std::cout << frames.top().operands.popInt() << std::endl;
+            std::cout << frames.top().operands.popInt();
             break;
         case SlotType::FLOAT:
-            std::cout << frames.top().operands.popFloat() << std::endl;
+            std::cout << frames.top().operands.popFloat();
             break;
         case SlotType::LONG:
-            std::cout << frames.top().operands.popLong() << std::endl;
+            std::cout << (long)frames.top().operands.popLong();
             break;
         case SlotType::DOUBLE:
-            std::cout << frames.top().operands.popDouble() << std::endl;
+            std::cout << frames.top().operands.popDouble();
             break;
         case SlotType::STRING_REF:
-            std::cout << frames.top().operands.popString() << std::endl;
+            std::cout << frames.top().operands.popString();
             break;
         default:
-            std::cout << "Tipo invalido para impressão" << std::endl;
+            std::cout << "Tipo invalido para impressão";
             break;
     }
-
+    if(newline) std::cout <<  std::endl;
 }
