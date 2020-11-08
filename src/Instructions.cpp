@@ -1152,8 +1152,7 @@ void Instructions::_goto(){
     u1 branchbyte2 = f.bytecode[f.PC+2];
     u2 ubr = getIndex(branchbyte1, branchbyte2);
     int br = static_cast<int16_t>(ubr) + static_cast<int16_t>(f.PC);
-    std::cout << br << std::endl;
-    addToPC(reinterpret_cast<u4&>(br));
+    frames.top().PC =  reinterpret_cast<u4&>(br);
 }
 
 void Instructions::_jsr(){
