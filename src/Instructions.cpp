@@ -988,14 +988,23 @@ void Instructions::_f2d(){
 }
 
 void Instructions::_d2i(){
+    double value = frames.top().operands.popDouble();
+    int result = int(value);
+    frames.top().operands.push(Slot(SlotType::INT, reinterpret_cast<u4&>(result)));
     addToPC(1);
 }
 
 void Instructions::_d2l(){
+    double value = frames.top().operands.popDouble();
+    long result = long(value);
+    frames.top().operands.pushLong(result);
     addToPC(1);
 }
 
 void Instructions::_d2f(){
+    double value = frames.top().operands.popDouble();
+    float result = float(value);
+    frames.top().operands.push(Slot(SlotType::FLOAT, reinterpret_cast<u4&>(result)));
     addToPC(1);
 }
 
