@@ -1070,28 +1070,70 @@ void Instructions::_dcmpg(){
     addToPC(1);
 }
 
+int Instructions::loadOffsetS2() {
+    u1 branchByte1 = frames.top().bytecode[frames.top().PC + 1];
+    u1 branchByte2 = frames.top().bytecode[frames.top().PC + 2];
+    return getBranchOffset(branchByte1, branchByte2);
+}
+
 void Instructions::_ifeq(){
-    addToPC(1);
+    int offset = loadOffsetS2();
+    int value = frames.top().operands.popInt();
+    if (value == 0) {
+        addToPC(offset);
+    } else {
+        addToPC(3);
+    }
 }
 
 void Instructions::_ifne(){
-    addToPC(1);
+    int offset = loadOffsetS2();
+    int value = frames.top().operands.popInt();
+    if (value != 0) {
+        addToPC(offset);
+    } else {
+        addToPC(3);
+    }
 }
 
 void Instructions::_iflt(){
-    addToPC(1);
+    int offset = loadOffsetS2();
+    int value = frames.top().operands.popInt();
+    if (value < 0) {
+        addToPC(offset);
+    } else {
+        addToPC(3);
+    }
 }
 
 void Instructions::_ifge(){
-    addToPC(1);
+    int offset = loadOffsetS2();
+    int value = frames.top().operands.popInt();
+    if (value >= 0) {
+        addToPC(offset);
+    } else {
+        addToPC(3);
+    }
 }
 
 void Instructions::_ifgt(){
-    addToPC(1);
+    int offset = loadOffsetS2();
+    int value = frames.top().operands.popInt();
+    if (value > 0) {
+        addToPC(offset);
+    } else {
+        addToPC(3);
+    }
 }
 
 void Instructions::_ifle(){
-    addToPC(1);
+    int offset = loadOffsetS2();
+    int value = frames.top().operands.popInt();
+    if (value <= 0) {
+        addToPC(offset);
+    } else {
+        addToPC(3);
+    }
 }
 
 void Instructions::_if_icmpeq(){
