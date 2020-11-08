@@ -584,8 +584,7 @@ void Instructions::_istore(){
 void Instructions::_lstore(){
     long value = frames.top().operands.popLong();
     u1 idx = frames.top().bytecode[frames.top().PC+1];
-    u8 uv = reinterpret_cast<u8&>(value);
-    frames.top().variables.putLong(uv, idx);
+    frames.top().variables.putLong(value, idx);
     addToPC(2);
 }
 
@@ -600,8 +599,7 @@ void Instructions::_fstore(){
 void Instructions::_dstore(){
     double value = frames.top().operands.popDouble();
     u1 idx = frames.top().bytecode[frames.top().PC+1];
-    u8 uv = reinterpret_cast<u8&>(value);
-    frames.top().variables.putDouble(uv, idx);
+    frames.top().variables.putDouble(value, idx);
     addToPC(1);
 }
 
@@ -639,29 +637,25 @@ void Instructions::_istore_3(){
 
 void Instructions::_lstore_0(){
     long value = frames.top().operands.popLong();
-    u8 uv = reinterpret_cast<u8&>(value);
-    frames.top().variables.putLong(uv, 0);
+    frames.top().variables.putLong(value, 0);
     addToPC(1);
 }
 
 void Instructions::_lstore_1(){
     long value = frames.top().operands.popLong();
-    u8 uv = reinterpret_cast<u8&>(value);
-    frames.top().variables.putLong(uv, 1);
+    frames.top().variables.putLong(value, 1);
     addToPC(1);
 }
 
 void Instructions::_lstore_2(){
     long value = frames.top().operands.popLong();
-    u8 uv = reinterpret_cast<u8&>(value);
-    frames.top().variables.putLong(uv, 2); 
+    frames.top().variables.putLong(value, 2); 
     addToPC(1);
 }
 
 void Instructions::_lstore_3(){
     long value = frames.top().operands.popLong();
-    u8 uv = reinterpret_cast<u8&>(value);
-    frames.top().variables.putLong(uv, 3);  
+    frames.top().variables.putLong(value, 3);  
     addToPC(1);
 }
 
@@ -695,29 +689,25 @@ void Instructions::_fstore_3(){
 
 void Instructions::_dstore_0(){
     double value = frames.top().operands.popDouble();
-    u8 uv = reinterpret_cast<u8&>(value);
-    frames.top().variables.putDouble(uv, 0); 
+    frames.top().variables.putDouble(value, 0); 
     addToPC(1);
 }
 
 void Instructions::_dstore_1(){
     double value = frames.top().operands.popDouble();
-    u8 uv = reinterpret_cast<u8&>(value);
-    frames.top().variables.putDouble(uv, 1);  
+    frames.top().variables.putDouble(value, 1);
     addToPC(1);
 }
 
 void Instructions::_dstore_2(){
     double value = frames.top().operands.popDouble();
-    u8 uv = reinterpret_cast<u8&>(value);
-    frames.top().variables.putDouble(uv, 2);   
+    frames.top().variables.putDouble(value, 2);   
     addToPC(1);
 }
 
 void Instructions::_dstore_3(){
     double value = frames.top().operands.popDouble();
-    u8 uv = reinterpret_cast<u8&>(value);
-    frames.top().variables.putDouble(uv, 3); 
+    frames.top().variables.putDouble(value, 3); 
     addToPC(1);
 }
 
@@ -818,6 +808,14 @@ void Instructions::_fadd(){
 }
 
 void Instructions::_dadd(){
+    double value2 = frames.top().operands.popDouble();
+    double value1 = frames.top().operands.popDouble();
+    double result = value1 + value2;
+
+    frames.top().operands.pushDouble(result);
+
+    // std::cout << std::to_string(result) << " = " << std::to_string(frames.top().operands.popDouble()) << std::endl;
+
     addToPC(1);
 }
 
@@ -834,6 +832,14 @@ void Instructions::_fsub(){
 }
 
 void Instructions::_dsub(){
+    double value2 = frames.top().operands.popDouble();
+    double value1 = frames.top().operands.popDouble();
+    double result = value1 - value2;
+
+    frames.top().operands.pushDouble(result);
+
+    // std::cout << std::to_string(result) << " = " << std::to_string(frames.top().operands.popDouble()) << std::endl;
+
     addToPC(1);
 }
 
@@ -850,6 +856,14 @@ void Instructions::_fmul(){
 }
 
 void Instructions::_dmul(){
+    double value2 = frames.top().operands.popDouble();
+    double value1 = frames.top().operands.popDouble();
+    double result = value1 * value2;
+
+    frames.top().operands.pushDouble(result);
+
+    // std::cout << std::to_string(result) << " = " << std::to_string(frames.top().operands.popDouble()) << std::endl;
+
     addToPC(1);
 }
 
@@ -866,6 +880,14 @@ void Instructions::_fdiv(){
 }
 
 void Instructions::_ddiv(){
+    double value2 = frames.top().operands.popDouble();
+    double value1 = frames.top().operands.popDouble();
+    double result = value1 / value2;
+
+    frames.top().operands.pushDouble(result);
+
+    // std::cout << std::to_string(result) << " = " << std::to_string(frames.top().operands.popDouble()) << std::endl;
+
     addToPC(1);
 }
 
@@ -882,6 +904,14 @@ void Instructions::_frem(){
 }
 
 void Instructions::_drem(){
+    double value2 = frames.top().operands.popDouble();
+    double value1 = frames.top().operands.popDouble();
+    double result = value1 - (value2 * int(value1 / value2));
+
+    frames.top().operands.pushDouble(result);
+
+    // std::cout << std::to_string(result) << " = " << std::to_string(frames.top().operands.popDouble()) << std::endl;
+
     addToPC(1);
 }
 
@@ -898,6 +928,11 @@ void Instructions::_fneg(){
 }
 
 void Instructions::_dneg(){
+    double value = -frames.top().operands.popDouble();
+    frames.top().operands.pushDouble(value);
+
+    // std::cout << std::to_string(value) << " = " << std::to_string(frames.top().operands.popDouble()) << std::endl;
+
     addToPC(1);
 }
 
