@@ -702,8 +702,7 @@ void Instructions::_dstore_0(){
 
 void Instructions::_dstore_1(){
     double value = frames.top().operands.popDouble();
-    u8 uv = reinterpret_cast<u8&>(value);
-    frames.top().variables.putDouble(uv, 1);  
+    frames.top().variables.putDouble(value, 1);  
     addToPC(1);
 }
 
@@ -716,8 +715,7 @@ void Instructions::_dstore_2(){
 
 void Instructions::_dstore_3(){
     double value = frames.top().operands.popDouble();
-    u8 uv = reinterpret_cast<u8&>(value);
-    frames.top().variables.putDouble(uv, 3); 
+    frames.top().variables.putDouble(value, 3); 
     addToPC(1);
 }
 
@@ -1018,18 +1016,54 @@ void Instructions::_lcmp(){
 }
 
 void Instructions::_fcmpl(){
+    float value2 = frames.top().operands.popFloat();
+    float value1 = frames.top().operands.popFloat();
+    int result = 0; // 0 significa igualdade
+    if (value1 > value2) {
+        result = 1;
+    } else if (value1 < value2) {
+        result = -1;
+    }
+    frames.top().operands.push(Slot(SlotType::INT, reinterpret_cast<u4&>(result)));
     addToPC(1);
 }
 
 void Instructions::_fcmpg(){
+    float value2 = frames.top().operands.popFloat();
+    float value1 = frames.top().operands.popFloat();
+    int result = 0; // 0 significa igualdade
+    if (value1 > value2) {
+        result = 1;
+    } else if (value1 < value2) {
+        result = -1;
+    }
+    frames.top().operands.push(Slot(SlotType::INT, reinterpret_cast<u4&>(result)));
     addToPC(1);
 }
 
 void Instructions::_dcmpl(){
+    double value2 = frames.top().operands.popDouble();
+    double value1 = frames.top().operands.popDouble();
+    int result = 0;
+    if (value1 > value2) {
+        result = 1;
+    } else if (value1 < value2) {
+        result = -1;
+    }
+    frames.top().operands.push(Slot(SlotType::INT, reinterpret_cast<u4&>(result)));
     addToPC(1);
 }
 
 void Instructions::_dcmpg(){
+    double value2 = frames.top().operands.popDouble();
+    double value1 = frames.top().operands.popDouble();
+    int result = 0;
+    if (value1 > value2) {
+        result = 1;
+    } else if (value1 < value2) {
+        result = -1;
+    }
+    frames.top().operands.push(Slot(SlotType::INT, reinterpret_cast<u4&>(result)));
     addToPC(1);
 }
 
