@@ -842,6 +842,30 @@ void Instructions::_dup2_x2(){
 }
 
 void Instructions::_swap(){
+    //frames.top().operands.push(Slot(SlotType::INT, 10));
+    //frames.top().operands.push(Slot(SlotType::INT, 20));
+
+    //Função
+    Slot slot1 = frames.top().operands.top();
+    frames.top().operands.pop();
+    //std::cout << "slot1: " << slot1.value << std::endl;
+
+    Slot slot2 = frames.top().operands.top();
+    frames.top().operands.pop();
+    //std::cout << "slot2: " << slot2.value << std::endl;
+
+    frames.top().operands.push(slot1);
+    frames.top().operands.push(slot2);
+   
+    //slot1 = frames.top().operands.top();
+    //frames.top().operands.pop();
+    //slot2 = frames.top().operands.top();
+    //frames.top().operands.pop();
+    //Teste
+    //std::cout << "----------SWAP--------"<< std::endl;
+    //std::cout << "slot1: " << slot1.value << std::endl;
+    //std::cout << "slot2: " << slot2.value << std::endl;
+    
     addToPC(1);
 }
 
