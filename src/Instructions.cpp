@@ -565,6 +565,12 @@ void Instructions::_daload(){
 }
 
 void Instructions::_aaload(){
+    int idx[1] = {frames.top().operands.popInt()};
+    Array *array = static_cast<Array*>(frames.top().operands.top().ref.object);
+    frames.top().operands.pop();
+    frames.top().operands.push(Slot(SlotType::REFERENCE, 0));
+    void ** values = static_cast<void**>(array->values);
+    frames.top().operands.top().ref.object = values[array->offset(idx)];
     addToPC(1);
 }
 
@@ -1509,7 +1515,7 @@ void Instructions::_multianewarray(){
 
     Cpinfo cp = f.classFile->constantPool[idx-1];
     switch (cp.tag){
-    case CONSTANT_Class:
+    case CONSTANT_Class: 
         mtxtype = Array::type::T_CLASS;
         //std::cout << f.classFile->constantPool.getUtf8Class(idx-1) << std::endl;
         break;
@@ -1528,14 +1534,23 @@ void Instructions::_multianewarray(){
         mtx->dimensions.push_back(f.operands.popInt());
         mtx->size *= mtx->dimensions.back();
     }
-    mtx->values = new void* [mtx->size];
+    
+    std::string type = f.classFile->constantPool.getUtf8Class(idx-1);
+    if(type.find("String") != std::string::npos){
+        //std::string *s;
+        //s->resize(mtx->size);
+        mtx->values = new char[mtx->size];
+    }        
+    else mtx->values = new void* [mtx->size];
+    //void ** teste = new void* [mtx->size];
+
     heap.push_back(mtx);
    
     frames.top().operands.push(Slot(SlotType::REFERENCE, 0));
     frames.top().operands.top().ref.object = mtx;
     addToPC(4);      
-    //std::cout << idx << std::endl;  
-    //std::cout << dim << std::endl;
+    //std::cout << mtx << std::endl;  
+    //std::cout << mtx->dim << std::endl;
 
     /* modelo de uso
     auto vals = reinterpret_cast<int*>(mtx.values);
