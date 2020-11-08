@@ -772,8 +772,8 @@ void Instructions::_sastore(){
 void Instructions::_pop(){
     Slot slot;
     frames.top().operands.pop();
-    assert(slot.type != SlotType::LONG);
-    assert(slot.type != SlotType::DOUBLE);
+    //assert(slot.type != SlotType::LONG);
+    //assert(slot.type != SlotType::DOUBLE);
     addToPC(1);
 }
 
@@ -816,6 +816,9 @@ void Instructions::_iadd(){
 }
 
 void Instructions::_ladd(){
+    long l1 = frames.top().operands.popLong();
+    long l2 = frames.top().operands.popLong();
+    frames.top().operands.pushLong(l1+l2);
     addToPC(1);
 }
 
