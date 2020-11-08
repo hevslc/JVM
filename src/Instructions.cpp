@@ -959,7 +959,12 @@ void Instructions::_lxor(){
 }
 
 void Instructions::_iinc(){
-    addToPC(1);
+    Frame f = frames.top();
+    int idx = getInt(f.bytecode[f.PC+1]);
+    int8_t const_ = f.bytecode[f.PC+1];
+    int value = f.variables.asInt(idx);
+    frames.top().variables[idx].value = value + (int)const_;
+    addToPC(3);
 }
 
 void Instructions::_i2l(){
@@ -1142,7 +1147,13 @@ void Instructions::_if_acmpne(){
 }
 
 void Instructions::_goto(){
-    addToPC(1);
+    Frame f = frames.top();
+    u1 branchbyte1 = f.bytecode[f.PC+1];
+    u1 branchbyte2 = f.bytecode[f.PC+2];
+    u2 ubr = getIndex(branchbyte1, branchbyte2);
+    int br = static_cast<int16_t>(ubr) + static_cast<int16_t>(f.PC);
+    std::cout << br << std::endl;
+    addToPC(reinterpret_cast<u4&>(br));
 }
 
 void Instructions::_jsr(){
