@@ -271,7 +271,7 @@ void Instructions::_iconst_5(){
 
 void Instructions::_lconst_0(){
     frames.top().operands.pushLong(0);
-
+    
     //long teste = frames.top().operands.popLong();
     //std::cout << teste << std::endl;
     addToPC(1);
@@ -351,7 +351,7 @@ void Instructions::_ldc(){
             Slot slot(SlotType::STRING_REF, entry.String.stringIndex);
             slot.ref.str = (char*)entry2.Utf8.bytes;
             frames.top().operands.push(slot);
-            std::cout << frames.top().operands.popString() << std::endl;
+            //std::cout << frames.top().operands.popString() << std::endl;
         break;
     }
     addToPC(2);
@@ -1205,16 +1205,19 @@ void Instructions::_putfield(){
 
 void Instructions::_invokevirtual(){
     Frame f = frames.top();
-    u1 idx = f.bytecode[f.PC+1];
-    ConstantPool cpt = f.classFile->constantPool;
-    std::string name = cpt.getNNameAndType(idx);
-    std::string descriptor = cpt.getDescriptor(idx);
+    u1 idx1 = f.bytecode[f.PC+1];
+    u1 idx2 = f.bytecode[f.PC+2];
+    u2 idx = getIndex(idx1, idx2);
     
-    std::cout << (name + descriptor) << std::endl;
-    if((name + descriptor) == "java/io/PrintStream.println")
+    ConstantPool cpt = f.classFile->constantPool;
+    Cpinfo cpmthd = cpt[idx-1];
+    std::string name = cpt.getNNameAndType(cpmthd.FieldMethInter.nameTypeIndex-1);
+    std::string descriptor = cpt.getDescriptor(cpmthd.FieldMethInter.nameTypeIndex-1);
+    
+    if((name) == "println")
         println();
     else initGenericMethod(frames, name, descriptor);
-    addToPC(1);
+    addToPC(3);
 }
 
 void Instructions::_invokeSpecial(){
@@ -1223,12 +1226,14 @@ void Instructions::_invokeSpecial(){
 
 void Instructions::_invokestatic(){
     Frame f = frames.top();
-    u1 idx = f.bytecode[f.PC+1];
+    u1 idx1 = f.bytecode[f.PC+1];
+    u1 idx2 = f.bytecode[f.PC+2];
+    u2 idx = getIndex(idx1, idx2);
     ConstantPool cpt = f.classFile->constantPool;
     std::string name = cpt.getNNameAndType(idx);
     std::string descriptor = cpt.getDescriptor(idx);
     initGenericMethod(frames, name, descriptor);
-    addToPC(1);
+    addToPC(3);
 }
 
 /*void Instructions::_invokeinterface(){
@@ -1475,6 +1480,9 @@ void Instructions::println(){
             break;
         case SlotType::DOUBLE:
             std::cout << frames.top().operands.popDouble() << std::endl;
+            break;
+        case SlotType::STRING_REF:
+            std::cout << frames.top().operands.popString() << std::endl;
             break;
         default:
             std::cout << "Tipo invalido para impressão" << std::endl;
