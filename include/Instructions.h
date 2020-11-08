@@ -79,6 +79,14 @@ public:
      */
     void print(bool newline);
 
+    /**
+     * @brief Carrega um offset de 2 bytes.
+     * Considera que o primeiro byte do offset está logo depois de PC.
+     * 
+     * @return int O offset carregado.
+     */
+    int loadOffsetS2();
+
     void _nop();
     void _aconst_null();
     void _iconst_m1();
