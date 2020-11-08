@@ -31,6 +31,24 @@ bool Operands::popBool(){
 	return getBool(slot.value);
 }
 
+short Operands::popShort() {
+	Slot slot = top();
+	pop();
+	return getShort(slot.value);
+}
+
+int8_t Operands::popByte() {
+	Slot slot = top();
+	pop();
+	return getByte(slot.value);
+}
+
+char Operands::popChar() {
+	Slot slot = top();
+	pop();
+	return getChar(slot.value);
+}
+
 void Operands::pushLong(long l){
 	u8 v = reinterpret_cast<u8&>(l);
 	u4 high = u4(v >> 32);
