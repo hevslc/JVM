@@ -333,7 +333,13 @@ void Instructions::_bipush(){
 }
 
 void Instructions::_sipush(){
-    addToPC(1);
+    u1 byte1 = frames.top().bytecode[frames.top().PC + 1];
+    u1 byte2 = frames.top().bytecode[frames.top().PC + 2];
+    u2 v1 = ((u2)byte1 << 8) | byte2;
+    int16_t v2 = reinterpret_cast<int16_t&>(v1);
+    int value = int(v2);
+    frames.top().operands.push(Slot(SlotType::INT, reinterpret_cast<u4&>(value)));
+    addToPC(3);
 }
 
 void Instructions::_ldc(){
@@ -1110,14 +1116,23 @@ void Instructions::_iinc(){
 }
 
 void Instructions::_i2l(){
+    int value = frames.top().operands.popInt();
+    long result = long(value);
+    frames.top().operands.pushLong(result);
     addToPC(1);
 }
 
 void Instructions::_i2f(){
+    int value = frames.top().operands.popInt();
+    float result = float(value);
+    frames.top().operands.push(Slot(SlotType::FLOAT, reinterpret_cast<u4&>(result)));
     addToPC(1);
 }
 
 void Instructions::_i2d(){
+    int value = frames.top().operands.popInt();
+    double result = double(value);
+    frames.top().operands.pushDouble(result);
     addToPC(1);
 }
 
@@ -1134,14 +1149,23 @@ void Instructions::_l2d(){
 }
 
 void Instructions::_f2i(){
+    float value = frames.top().operands.popFloat();
+    int result = int(value);
+    frames.top().operands.push(Slot(SlotType::INT, reinterpret_cast<u4&>(result)));
     addToPC(1);
 }
 
 void Instructions::_f2l(){
+    float value = frames.top().operands.popFloat();
+    long result = long(value);
+    frames.top().operands.pushLong(result);
     addToPC(1);
 }
 
 void Instructions::_f2d(){
+    float value = frames.top().operands.popFloat();
+    double result = double(value);
+    frames.top().operands.pushDouble(result);
     addToPC(1);
 }
 
@@ -1167,14 +1191,20 @@ void Instructions::_d2f(){
 }
 
 void Instructions::_i2b(){
+    int value = frames.top().operands.popInt();
+    frames.top().operands.push(Slot(SlotType::BYTE, reinterpret_cast<u4&>(value)));
     addToPC(1);
 }
 
 void Instructions::_i2c(){
+    int value = frames.top().operands.popInt();
+    frames.top().operands.push(Slot(SlotType::CHAR, reinterpret_cast<u4&>(value)));
     addToPC(1);
 }
 
 void Instructions::_i2s(){
+    int value = frames.top().operands.popInt();
+    frames.top().operands.push(Slot(SlotType::SHORT, reinterpret_cast<u4&>(value)));
     addToPC(1);
 }
 
@@ -1714,14 +1744,13 @@ void Instructions::print(bool newline){
             std::cout << frames.top().operands.popBool();
             break;
         case SlotType::BYTE:
-            std::cout << frames.top().operands.top().value;
+            std::cout << std::to_string(frames.top().operands.popByte());
             frames.top().operands.pop();
             break;
         case SlotType::CHAR:
         {
-            char c = reinterpret_cast<char&>(frames.top().operands.top().value);
-            frames.top().operands.pop();
-            std::cout << (char)c;
+            char value = frames.top().operands.popChar();
+            std::cout << value;
             break;
         }
         case SlotType::INT:
@@ -1738,6 +1767,9 @@ void Instructions::print(bool newline){
             break;
         case SlotType::STRING_REF:
             std::cout << frames.top().operands.popString();
+            break;
+        case SlotType::SHORT:
+            std::cout << frames.top().operands.popShort();
             break;
         default:
             std::cout << "Tipo invalido para impressão";
