@@ -569,8 +569,16 @@ void Instructions::_aaload(){
     Array *array = static_cast<Array*>(frames.top().operands.top().ref.object);
     frames.top().operands.pop();
     frames.top().operands.push(Slot(SlotType::REFERENCE, 0));
-    void ** values = static_cast<void**>(array->values);
-    frames.top().operands.top().ref.object = values[array->offset(idx)];
+    if(array->atype == Array::type::T_ARRAYCHAR){
+        char * values = static_cast<char*>(array->values);
+        char * str = new char[array->size];
+        for(int i=0; i<array->dimensions[1]; i++) str[i] = values[i];
+        frames.top().operands.top().ref.str = str;
+    }
+    else{
+        void* values = static_cast<void*>(array->values);
+        //frames.top().operands.top().ref.object = values[array->offset(idx)];
+    }
     addToPC(1);
 }
 
@@ -790,10 +798,16 @@ void Instructions::_dastore(){
 }
 
 void Instructions::_aastore(){
-    // u1 idx = frames.top().bytecode[frames.top().PC+1];
-    // frames.top().variables[idx] = frames.top().operands.top();
-    // frames.top().operands.pop();
-    // addToPC(1);
+    Slot slot = frames.top().operands.top();
+    frames.top().operands.pop();
+    int idx = frames.top().operands.popInt();
+    Array *array = static_cast<Array*>(frames.top().operands.top().ref.object);
+    frames.top().operands.pop();
+    if(array->atype == Array::type::T_ARRAYCHAR){
+        //array->values[0];
+    }
+    
+    addToPC(1);
 }
 
 void Instructions::_bastore(){
@@ -1537,16 +1551,14 @@ void Instructions::_multianewarray(){
     
     std::string type = f.classFile->constantPool.getUtf8Class(idx-1);
     if(type.find("String") != std::string::npos){
-        //std::string *s;
-        //s->resize(mtx->size);
         mtx->values = new char[mtx->size];
+        frames.top().operands.push(Slot(SlotType::STRING_REF, 0));
     }        
-    else mtx->values = new void* [mtx->size];
-    //void ** teste = new void* [mtx->size];
-
+    else{ 
+        mtx->values = new void*[mtx->size];
+        frames.top().operands.push(Slot(SlotType::REFERENCE, 0));
+    }   
     heap.push_back(mtx);
-   
-    frames.top().operands.push(Slot(SlotType::REFERENCE, 0));
     frames.top().operands.top().ref.object = mtx;
     addToPC(4);      
     //std::cout << mtx << std::endl;  
