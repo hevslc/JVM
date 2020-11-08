@@ -1,4 +1,5 @@
 #include "Instructions.h"
+#include <assert.h>
 
 
 Instructions::Instructions(ClassFile* classFile){
