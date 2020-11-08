@@ -1057,7 +1057,7 @@ void Instructions::_if_icmpeq(){
     Frame f = frames.top();
     u1 branchbyte1 = f.bytecode[f.PC+1];
     u1 branchbyte2 = f.bytecode[f.PC+2];
-    u2 br = (branchbyte1 << 8) | branchbyte2;
+    u2 br = getIndex(branchbyte1, branchbyte2);
     int v2 = f.operands.popInt();
     int v1 = f.operands.popInt();
     if(v1 == v2) addToPC(br);
@@ -1068,7 +1068,7 @@ void Instructions::_if_icmpne(){
     Frame f = frames.top();
     u1 branchbyte1 = f.bytecode[f.PC+1];
     u1 branchbyte2 = f.bytecode[f.PC+2];
-    u2 br = (branchbyte1 << 8) | branchbyte2;
+    u2 br = getIndex(branchbyte1, branchbyte2);
     int v2 = f.operands.popInt();
     int v1 = f.operands.popInt();
     if(v1 != v2) addToPC(br);
@@ -1079,7 +1079,7 @@ void Instructions::_if_icmplt(){
     Frame f = frames.top();
     u1 branchbyte1 = f.bytecode[f.PC+1];
     u1 branchbyte2 = f.bytecode[f.PC+2];
-    u2 br = (branchbyte1 << 8) | branchbyte2;
+    u2 br = getIndex(branchbyte1, branchbyte2);
     int v2 = f.operands.popInt();
     int v1 = f.operands.popInt();
     if(v1 < v2) addToPC(br);
@@ -1090,7 +1090,7 @@ void Instructions::_if_icmpge(){
     Frame f = frames.top();
     u1 branchbyte1 = f.bytecode[f.PC+1];
     u1 branchbyte2 = f.bytecode[f.PC+2];
-    u2 br = (branchbyte1 << 8) | branchbyte2;
+    u2 br = getIndex(branchbyte1, branchbyte2);
     int v2 = f.operands.popInt();
     int v1 = f.operands.popInt();
     if(v1 >= v2) addToPC(br);
@@ -1101,7 +1101,7 @@ void Instructions::_if_icmpgt(){
     Frame f = frames.top();
     u1 branchbyte1 = f.bytecode[f.PC+1];
     u1 branchbyte2 = f.bytecode[f.PC+2];
-    u2 br = (u2(branchbyte1) << 8) | u2(branchbyte2);
+    u2 br = getIndex(branchbyte1, branchbyte2);
     int v2 = f.operands.popInt();
     int v1 = f.operands.popInt();
     //std::cout << int(br) << std::endl;
@@ -1113,7 +1113,7 @@ void Instructions::_if_icmple(){
     Frame f = frames.top();
     u1 branchbyte1 = f.bytecode[f.PC+1];
     u1 branchbyte2 = f.bytecode[f.PC+2];
-    u2 br = (branchbyte1 << 8) | branchbyte2;
+    u2 br = getIndex(branchbyte1, branchbyte2);
     int v2 = f.operands.popInt();
     int v1 = f.operands.popInt();
     if(v1 <= v2) addToPC(br);
@@ -1173,6 +1173,14 @@ void Instructions::_return(){
 }
 
 void Instructions::_getstatic(){
+    Frame f = frames.top();
+    u1 idx1 = f.bytecode[f.PC+1];
+    u1 idx2 = f.bytecode[f.PC+2];
+    u2 idx = getIndex(idx1, idx2);
+    u2 idxclass = f.classFile->constantPool[idx].FieldMethInter.classIndex;
+    std::string classname = f.classFile->constantPool.getUtf8Class(idxclass);
+    
+
     addToPC(3);
 }
 
@@ -1434,33 +1442,36 @@ int Instructions::getNumberArgs(std::string descriptor){
 
 void Instructions::println(){
     SlotType type = frames.top().operands.top().type;
-    switch (type){
-    case SlotType::BOOL:
-        std::cout << frames.top().operands.popBool() << std::endl;
-        break;
-    case SlotType::BYTE:
-        std::cout << frames.top().operands.top().value << std::endl;
-        frames.top().operands.pop();
-        break;
-    case SlotType::CHAR:
-        char c = reinterpret_cast<char&>(frames.top().operands.top().value);
-        std::cout << c << std::endl;
-        break;
-    case SlotType::INT:
-        std::cout << frames.top().operands.popInt() << std::endl;
-        break;
-    case SlotType::FLOAT:
-        std::cout << frames.top().operands.popFloat() << std::endl;
-        break;
-    case SlotType::LONG:
-        std::cout << frames.top().operands.popLong() << std::endl;
-        break;
-    case SlotType::DOUBLE:
-        std::cout << frames.top().operands.popDouble() << std::endl;
-        break;
-    default:
-        std::cout << "Tipo invalido para impressão" << std::endl;
-        break;
+    switch(type){
+        case SlotType::BOOL:
+            std::cout << frames.top().operands.popBool() << std::endl;
+            break;
+        case SlotType::BYTE:
+            std::cout << frames.top().operands.top().value << std::endl;
+            frames.top().operands.pop();
+            break;
+        case SlotType::CHAR:
+        {
+            char c = reinterpret_cast<char&>(frames.top().operands.top().value);
+            frames.top().operands.pop();
+            std::cout << (char)c << std::endl;
+            break;
+        }
+        case SlotType::INT:
+            std::cout << frames.top().operands.popInt() << std::endl;
+            break;
+        case SlotType::FLOAT:
+            std::cout << frames.top().operands.popFloat() << std::endl;
+            break;
+        case SlotType::LONG:
+            std::cout << frames.top().operands.popLong() << std::endl;
+            break;
+        case SlotType::DOUBLE:
+            std::cout << frames.top().operands.popDouble() << std::endl;
+            break;
+        default:
+            std::cout << "Tipo invalido para impressão" << std::endl;
+            break;
     }
 
 }
