@@ -820,6 +820,8 @@ void Instructions::_pop(){
 }
 
 void Instructions::_pop2(){
+    frames.top().operands.pop();
+    frames.top().operands.pop();
     addToPC(1);
 }
 
