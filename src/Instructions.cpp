@@ -824,26 +824,136 @@ void Instructions::_pop2(){
 }
 
 void Instructions::_dup(){
+    Slot value = frames.top().operands.top();
+    frames.top().operands.pop();
+
+    frames.top().operands.push(value);
+    frames.top().operands.push(value);
+
     addToPC(1);
 }
 
 void Instructions::_dup_x1(){
+    Slot value1 = frames.top().operands.top();
+    frames.top().operands.pop();
+    Slot value2 = frames.top().operands.top();
+    frames.top().operands.pop();
+
+    frames.top().operands.push(value1);
+    frames.top().operands.push(value2);
+    frames.top().operands.push(value1);
+
     addToPC(1);
 }
 
 void Instructions::_dup_x2(){
+    Slot value1 = frames.top().operands.top();
+    frames.top().operands.pop();
+    Slot value2 = frames.top().operands.top();
+    frames.top().operands.pop();
+    if ((value2.type != SlotType::LONG && value2.type != SlotType::DOUBLE)) {
+        Slot value3 = frames.top().operands.top();
+        frames.top().operands.pop();
+
+        frames.top().operands.push(value1);
+        frames.top().operands.push(value3);
+        frames.top().operands.push(value2);
+        frames.top().operands.push(value1);
+    }
+    else {
+        frames.top().operands.push(value1);
+        frames.top().operands.push(value2);
+        frames.top().operands.push(value1);
+    }
     addToPC(1);
 }
 
 void Instructions::_dup2(){
+    Slot value1 = frames.top().operands.top();
+    frames.top().operands.pop();
+    if (value1.type != SlotType::LONG && value1.type != SlotType::DOUBLE) {
+        Slot value2 = frames.top().operands.top();
+        frames.top().operands.pop();
+
+        frames.top().operands.push(value2);
+        frames.top().operands.push(value1);
+        frames.top().operands.push(value2);        
+        frames.top().operands.push(value1);
+    }
+
+    else {
+        frames.top().operands.push(value1);
+        frames.top().operands.push(value1);
+    }
     addToPC(1);
 }
 
 void Instructions::_dup2_x1(){
+    Slot value1 = frames.top().operands.top();
+    frames.top().operands.pop();
+    Slot value2 = frames.top().operands.top();
+    frames.top().operands.pop();
+    if (value1.type != SlotType::LONG && value1.type != SlotType::DOUBLE) {
+        Slot value3 = frames.top().operands.top();
+        frames.top().operands.pop();
+
+        frames.top().operands.push(value2);
+        frames.top().operands.push(value1);
+        frames.top().operands.push(value3);
+        frames.top().operands.push(value2);
+        frames.top().operands.push(value1);
+    }
+    else {
+        frames.top().operands.push(value1);
+        frames.top().operands.push(value2);
+        frames.top().operands.push(value1);
+    }
     addToPC(1);
 }
 
 void Instructions::_dup2_x2(){
+    Slot value1 = frames.top().operands.top();
+    frames.top().operands.pop();
+    Slot value2 = frames.top().operands.top();
+    frames.top().operands.pop();
+    Slot value3 = frames.top().operands.top();
+    frames.top().operands.pop();
+    // Forma 3
+    if (value3.type == SlotType::LONG && value3.type == SlotType::DOUBLE) {
+        frames.top().operands.push(value2);
+        frames.top().operands.push(value1);
+        frames.top().operands.push(value3);
+        frames.top().operands.push(value2);
+        frames.top().operands.push(value1);
+    }
+    // Forma 2 ou Forma 4
+    else if (value1.type == SlotType::LONG && value1.type == SlotType::DOUBLE) {
+        // Forma 4
+        if (value2.type == SlotType::LONG && value2.type == SlotType::DOUBLE) {
+            frames.top().operands.push(value1);
+            frames.top().operands.push(value2);
+            frames.top().operands.push(value1);
+        }
+        // Forma 2
+        else {
+            frames.top().operands.push(value1);
+            frames.top().operands.push(value3);
+            frames.top().operands.push(value2);
+            frames.top().operands.push(value1);
+        }
+    }
+    // Forma 1
+    else {
+        Slot value4 = frames.top().operands.top();
+        frames.top().operands.pop();
+
+        frames.top().operands.push(value2);
+        frames.top().operands.push(value1);
+        frames.top().operands.push(value4);
+        frames.top().operands.push(value3);
+        frames.top().operands.push(value2);
+        frames.top().operands.push(value1);
+    }
     addToPC(1);
 }
 
