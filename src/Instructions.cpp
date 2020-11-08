@@ -770,10 +770,16 @@ void Instructions::_sastore(){
 }
 
 void Instructions::_pop(){
+    Slot slot;
+    frames.top().operands.pop();
+    assert(slot.type != SlotType::LONG);
+    assert(slot.type != SlotType::DOUBLE);
     addToPC(1);
 }
 
 void Instructions::_pop2(){
+    frames.top().operands.pop();
+    frames.top().operands.pop();
     addToPC(1);
 }
 
