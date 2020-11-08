@@ -761,8 +761,8 @@ void Instructions::_sastore(){
 void Instructions::_pop(){
     Slot slot;
     frames.top().operands.pop();
-    //assert(slot.type != SlotType::LONG);
-    //assert(slot.type != SlotType::DOUBLE);
+    assert(slot.type != SlotType::LONG);
+    assert(slot.type != SlotType::DOUBLE);
     addToPC(1);
 }
 
@@ -1098,10 +1098,11 @@ void Instructions::_if_icmpeq(){
     Frame f = frames.top();
     u1 branchbyte1 = f.bytecode[f.PC+1];
     u1 branchbyte2 = f.bytecode[f.PC+2];
-    u2 br = getIndex(branchbyte1, branchbyte2);
+    u4 ubr = getIndex(branchbyte1, branchbyte2);
+    int br = reinterpret_cast<int16_t&>(ubr) + f.PC;
     int v2 = f.operands.popInt();
     int v1 = f.operands.popInt();
-    if(v1 == v2) addToPC(br);
+    if(v1 == v2) frames.top().PC = reinterpret_cast<u4&>(br);
     else         addToPC(3);
 }
 
@@ -1109,10 +1110,11 @@ void Instructions::_if_icmpne(){
     Frame f = frames.top();
     u1 branchbyte1 = f.bytecode[f.PC+1];
     u1 branchbyte2 = f.bytecode[f.PC+2];
-    u2 br = getIndex(branchbyte1, branchbyte2);
+    u4 ubr = getIndex(branchbyte1, branchbyte2);
+    int br = reinterpret_cast<int16_t&>(ubr) + f.PC;
     int v2 = f.operands.popInt();
     int v1 = f.operands.popInt();
-    if(v1 != v2) addToPC(br);
+    if(v1 != v2) frames.top().PC = reinterpret_cast<u4&>(br);
     else         addToPC(3);
 }
 
@@ -1120,10 +1122,11 @@ void Instructions::_if_icmplt(){
     Frame f = frames.top();
     u1 branchbyte1 = f.bytecode[f.PC+1];
     u1 branchbyte2 = f.bytecode[f.PC+2];
-    u2 br = getIndex(branchbyte1, branchbyte2);
+    u4 ubr = getIndex(branchbyte1, branchbyte2);
+    int br = reinterpret_cast<int16_t&>(ubr) + f.PC;
     int v2 = f.operands.popInt();
     int v1 = f.operands.popInt();
-    if(v1 < v2) addToPC(br);
+    if(v1 < v2) frames.top().PC = reinterpret_cast<u4&>(br);
     else         addToPC(3);
 }
 
@@ -1131,10 +1134,11 @@ void Instructions::_if_icmpge(){
     Frame f = frames.top();
     u1 branchbyte1 = f.bytecode[f.PC+1];
     u1 branchbyte2 = f.bytecode[f.PC+2];
-    u2 br = getIndex(branchbyte1, branchbyte2);
+    u4 ubr = getIndex(branchbyte1, branchbyte2);
+    int br = reinterpret_cast<int16_t&>(ubr) + f.PC;
     int v2 = f.operands.popInt();
     int v1 = f.operands.popInt();
-    if(v1 >= v2) addToPC(br);
+    if(v1 >= v2) frames.top().PC = reinterpret_cast<u4&>(br);
     else         addToPC(3);
 }
 
@@ -1142,10 +1146,11 @@ void Instructions::_if_icmpgt(){
     Frame f = frames.top();
     u1 branchbyte1 = f.bytecode[f.PC+1];
     u1 branchbyte2 = f.bytecode[f.PC+2];
-    u2 br = getIndex(branchbyte1, branchbyte2);
+    u4 ubr = getIndex(branchbyte1, branchbyte2);
+    int br = reinterpret_cast<int16_t&>(ubr) + f.PC;
     int v2 = f.operands.popInt();
     int v1 = f.operands.popInt();
-    if(v1 > v2) addToPC(br);
+    if(v1 > v2) frames.top().PC = reinterpret_cast<u4&>(br);
     else        addToPC(3);
 }
 
@@ -1153,10 +1158,11 @@ void Instructions::_if_icmple(){
     Frame f = frames.top();
     u1 branchbyte1 = f.bytecode[f.PC+1];
     u1 branchbyte2 = f.bytecode[f.PC+2];
-    u2 br = getIndex(branchbyte1, branchbyte2);
+    u4 ubr = getIndex(branchbyte1, branchbyte2);
+    int br = reinterpret_cast<int16_t&>(ubr) + f.PC;
     int v2 = f.operands.popInt();
     int v1 = f.operands.popInt();
-    if(v1 <= v2) addToPC(br);
+    if(v1 <= v2) frames.top().PC = reinterpret_cast<u4&>(br);
     else         addToPC(3);
 }
 
@@ -1172,9 +1178,9 @@ void Instructions::_goto(){
     Frame f = frames.top();
     u1 branchbyte1 = f.bytecode[f.PC+1];
     u1 branchbyte2 = f.bytecode[f.PC+2];
-    u2 ubr = getIndex(branchbyte1, branchbyte2);
-    int br = static_cast<int16_t>(ubr) + static_cast<int16_t>(f.PC);
-    frames.top().PC =  reinterpret_cast<u4&>(br);
+    u4 ubr = getIndex(branchbyte1, branchbyte2);
+    int br = reinterpret_cast<int16_t&>(ubr) + f.PC;
+    frames.top().PC = reinterpret_cast<u4&>(br);
 }
 
 void Instructions::_jsr(){
