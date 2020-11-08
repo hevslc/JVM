@@ -796,6 +796,14 @@ void Instructions::_swap(){
 }
 
 void Instructions::_iadd(){
+    u4 value2 = frames.top().operands.popInt();
+    u4 value1 = frames.top().operands.popInt();
+    u4 result = value1 + value2;
+
+    frames.top().operands.push();
+
+    // std::cout << std::to_string(result) << " = " << std::to_string(frames.top().operands.popDouble()) << std::endl;
+
     addToPC(1);
 }
 
