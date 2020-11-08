@@ -2,7 +2,7 @@
 #include <assert.h>
 
 
-Instructions::Instructions(ClassFile* classFile){
+Instructions::Instructions(ClassFile* classFile):iswide(false){
     classes.push_back(classFile);
     instrs = {
         &Instructions::_nop,
@@ -1433,6 +1433,8 @@ void Instructions::_monitorexit(){
 }
 
 void Instructions::_wide(){
+    Frame f = frames.top();
+    iswide = true;
     addToPC(1);
 }
 

@@ -78,6 +78,11 @@ public:
      * @brief Realiza escrita de valor no terminal, chamando println do java.
      */
     void print(bool newline);
+   
+   /**
+     * Guarda um true se a última instrução foi um wide ou guarda um false caso contrário.
+     */
+    bool iswide;
 
     /**
      * @brief Carrega um offset de 2 bytes.
