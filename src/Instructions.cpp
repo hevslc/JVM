@@ -1207,8 +1207,8 @@ void Instructions::_iand(){
 
 void Instructions::_land(){
     Frame f = frames.top();
-    long value2 = f.operands.popInt();
-    long value1 = f.operands.popInt();
+    long value2 = f.operands.popLong();
+    long value1 = f.operands.popLong();
 
     long result = value1 & value2;
     f.operands.push(Slot(SlotType::LONG, result));
@@ -1227,8 +1227,8 @@ void Instructions::_ior(){
 
 void Instructions::_lor(){
     Frame f = frames.top();
-    long value2 = f.operands.popInt();
-    long value1 = f.operands.popInt();
+    long value2 = f.operands.popLong();
+    long value1 = f.operands.popLong();
 
     long result = value1 | value2;
     f.operands.push(Slot(SlotType::LONG, result));
@@ -1247,8 +1247,8 @@ void Instructions::_ixor(){
 
 void Instructions::_lxor(){
     Frame f = frames.top();
-    long value2 = f.operands.popInt();
-    long value1 = f.operands.popInt();
+    long value2 = f.operands.popLong();
+    long value1 = f.operands.popLong();
 
     long result = value1 ^ value2;
     f.operands.push(Slot(SlotType::LONG, result));
