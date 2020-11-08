@@ -3,6 +3,7 @@
 
 #include "Definitions.h"
 #include <string.h>
+#include <assert.h>
 
 	/*!
     \brief Junta os bytes mais significativos com os bytes menos significatos.
@@ -56,6 +57,30 @@
 	bool getBool(u4 bytes);
 
     /**
+     * @brief Converte u4 em short som sinal.
+     * 
+     * @param bytes Bytes a serem convertidos.
+     * @return short O valor convertido.
+     */
+    short getShort(u4 bytes);
+
+    /**
+     * @brief Converte u4 em byte com sinal.
+     * 
+     * @param bytes Bytes a serem convertidos.
+     * @return int8_t Byte com sinal convertido.
+     */
+    int8_t getByte(u4 bytes);
+
+    /**
+     * @brief Converte um u4 em char.
+     * 
+     * @param bytes Bytes a serem convertidos.
+     * @return char Char convertido.
+     */
+    char getChar(u4 bytes);
+
+    /**
      * @brief Junta os dois bytes como um único índice.
      * 
      * @param byte1 Primeiro byte.
@@ -63,6 +88,15 @@
      * @return u2 O índice criado.
      */
     u2 getIndex(u1 byte1, u1 byte2);
+
+    /**
+     * @brief Cria um offset com sinal a parir de dois bytes.
+     * 
+     * @param high Byte MSB.
+     * @param low Byte LSB.
+     * @return int16_t Offset resultante.
+     */
+    int16_t getBranchOffset(u1 high, u1 low);
 
     /**
      * @brief Transforma um ponteiro de bytes em um u8.
