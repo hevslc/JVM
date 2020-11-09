@@ -1661,7 +1661,7 @@ void Instructions::_tableswitch(){
         
         int32_t jumpValue;
         uint16_t auxPos = 0;
-
+        std::cout << "defaultvalue: " << defaultValue << std::endl;
         for (int32_t i = 0; i <= (highValue - lowValue); i++) {
             if (i+lowValue == index){
                 jumpValue = (f.bytecode[positionPC+1+auxPos] << 24) | (f.bytecode[positionPC+2+auxPos] << 16) |
@@ -1673,7 +1673,10 @@ void Instructions::_tableswitch(){
             auxPos += 4;
         }
     }
-    else {addToPC(defaultValue); std::cout << "defaultvalue: " << defaultValue << std::endl;}
+    else {
+        addToPC(defaultValue); 
+        std::cout << "defaultvalue: " << defaultValue << std::endl;
+    }
 
 }
 
