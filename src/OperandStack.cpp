@@ -46,7 +46,6 @@ void Operands::pushLong(long l){
 
 void Operands::pushFloat(float f){
 	u4 v = reinterpret_cast<u4&>(f);
-	// u4 low = u4(v & 0XFFFFFFFF);
 	push(Slot(SlotType::FLOAT, v));
 }
 
