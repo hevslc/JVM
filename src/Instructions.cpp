@@ -819,6 +819,14 @@ void Instructions::_ladd(){
 }
 
 void Instructions::_fadd(){
+    float value1 = frames.top().operands.popFloat();
+    float value2 = frames.top().operands.popFloat();
+    float result = value1 + value2;
+    
+    frames.top().operands.pushFloat(result);
+    
+    // std::cout << std::to_string(result) << " = " << std::to_string(frames.top().operands.popFloat()) << std::endl;
+
     addToPC(1);
 }
 
@@ -851,6 +859,14 @@ void Instructions::_lsub(){
 }
 
 void Instructions::_fsub(){
+    // float value1 = frames.top().operands.popFloat();
+    // float value2 = frames.top().operands.popFloat();
+    // float result = value1 - value2;
+    
+    // frames.top().operands.pushFloat(result);
+    
+    // std::cout << std::to_string(result) << " = " << std::to_string(frames.top().operands.popFloat()) << std::endl;
+
     addToPC(1);
 }
 
@@ -963,9 +979,9 @@ void Instructions::_drem(){
 }
 
 void Instructions::_ineg(){
-    // u4 value = u4(-frames.top().operands.popInt());
+    u4 value = int(-frames.top().operands.popInt());
 
-    // frames.top().operands.pushInt(value);
+    frames.top().operands.pushInt(value);
 
     // std::cout << std::to_string(value) << " = " << std::to_string(frames.top().operands.popInt()) << std::endl;
     addToPC(1);

@@ -47,6 +47,11 @@ public:
 	/*!
      \brief Insere um double na pilha ocupando duas posições.
    */
+	void pushFloat(float f);
+
+	/*!
+     \brief Insere um double na pilha ocupando duas posições.
+   */
 	void pushDouble(double d);
 
 	char* popString();
