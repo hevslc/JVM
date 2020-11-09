@@ -245,7 +245,6 @@ void Instructions::_iconst_m1(){
 }
 
 void Instructions::_iconst_0(){
-    std::cout << "veio" << std::endl;
     frames.top().operands.push(Slot(SlotType::INT, 0));
     addToPC(1);
 }
@@ -422,7 +421,9 @@ void Instructions::_dload(){
 }
 
 void Instructions::_aload(){
-    addToPC(1);
+    u1 idx = frames.top().bytecode[frames.top().PC+1];
+    frames.top().operands.push(frames.top().variables[idx]);
+    addToPC(2);
 }
 
 void Instructions::_iload_0(){
@@ -538,18 +539,22 @@ void Instructions::_dload_3(){
 }
 
 void Instructions::_aload_0(){
+    frames.top().operands.push(frames.top().variables[0]);
     addToPC(1);
 }
 
 void Instructions::_aload_1(){
+    frames.top().operands.push(frames.top().variables[1]);
     addToPC(1);
 }
 
 void Instructions::_aload_2(){
+    frames.top().operands.push(frames.top().variables[2]);
     addToPC(1);
 }
 
 void Instructions::_aload_3(){
+    frames.top().operands.push(frames.top().variables[3]);
     addToPC(1);
 }
 
@@ -570,6 +575,24 @@ void Instructions::_daload(){
 }
 
 void Instructions::_aaload(){
+    int idx = frames.top().operands.popInt();
+    Slot slot = frames.top().operands.top();
+    frames.top().operands.pop();
+
+    if(slot.type == SlotType::RETURN_ADDRESS){
+        u4 uidx = reinterpret_cast<u4&>(idx);
+        frames.top().operands.push(Slot(SlotType::REFERENCE, uidx)); //colocar indice da entrada ao inveé da entrada
+    }
+    else{
+        int idx2 = getInt(slot.value);
+        int idxs[2] = {idx, idx2};
+        Array *array = static_cast<Array*>(heap[0]);
+        int offset = array->offset(idxs);
+        u4 uoffset = reinterpret_cast<u4&>(offset);
+        frames.top().operands.push(Slot(SlotType::REFERENCE, uoffset));
+    }
+
+    //é colocado indice da entrada ao invés da entrada
     addToPC(1);
 }
 
@@ -786,11 +809,18 @@ void Instructions::_dastore(){
 }
 
 void Instructions::_aastore(){
-    u4 value = frames.top().operands.popInt(); //Value (Pop 4 bytes)
-    int idx = frames.top().operands.popInt(); //Index
-    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
-    ((u4*)array->values)[idx] = value;
+    Slot slot = frames.top().operands.top();
     frames.top().operands.pop();
+    int idxarray = frames.top().operands.popInt();
+    int idxstr = frames.top().operands.popInt();
+    
+    Array *array = static_cast<Array*>(heap[0]);
+    int idxs[2] = {idxarray, idxstr};
+    int sizestr = (int)strlen(slot.ref.str);
+    int off = array->offset(idxs);
+    for(auto i=off, j=0; i<(off + sizestr); i++, j++){
+        array->values[i].value = slot.ref.str[j];
+    }
     addToPC(1);
 }
 
@@ -1772,7 +1802,7 @@ void Instructions::_invokevirtual(){
     if(name == "println") print(true);
     else if(name == "print") print(false);
     else initGenericMethod(frames, name, descriptor);
-    addToPC(3);
+    if(name == "println" || name == "print") addToPC(3);
 }
 
 void Instructions::_invokeSpecial(){
@@ -1790,7 +1820,6 @@ void Instructions::_invokestatic(){
     std::string descriptor = cpt.getDescriptor(cpt[idx-1].FieldMethInter.nameTypeIndex-1);
     
     initGenericMethod(frames, name, descriptor);
-    addToPC(3);
 }
 
 /*void Instructions::_invokeinterface(){
@@ -1812,42 +1841,73 @@ void Instructions::_newarray(){
     u4 atype = f.bytecode[f.PC+1] | 0x0000 ;
     u4 count = f.operands.popInt();
 
-    Array* array = new Array(Array::type(atype), count, 1);
+    Array *array = new Array(Array::type(atype), count, 1);
     array->dimensions.push_back(1);
+    array->values = new Slot[array->size];
     switch (array->atype){
     case Array::type::T_BOOLEAN :
-        // std::array<bool,reinterpret_cast<int&>(array->size)>
-        array->values = new bool[array->size];
+        for(int i=0; i<array->size; i++){
+            Slot slot = Slot(SlotType::BOOL, 0);
+            slot.ref.object = new bool[array->size];
+            array->values[i] = slot;
+        }
         break;
     case Array::type::T_BYTE :
-        array->values = new u1[array->size];
+        for(int i=0; i<array->size; i++){
+            Slot slot = Slot(SlotType::BYTE, 0);
+            slot.ref.object = new u1[array->size];
+            array->values[i] = slot;
+        }
         break;
     case Array::type::T_CHAR :
-        array->values = new char[array->size];
+        for(int i=0; i<array->size; i++){
+            Slot slot = Slot(SlotType::CHAR, 0);
+            slot.ref.object = new char[array->size];
+            array->values[i] = slot;
+        }
         break;
     case Array::type::T_DOUBLE :
-        array->values = new double[array->size];
+        for(int i=0; i<array->size; i++){
+            Slot slot = Slot(SlotType::DOUBLE, 0);
+            slot.ref.object = new double[array->size];
+            array->values[i] = slot;
+        }
         break;
     case Array::type::T_FLOAT :
-        array->values = new float[array->size];
+        for(int i=0; i<array->size; i++){
+            Slot slot = Slot(SlotType::FLOAT, 0);
+            slot.ref.object = new float[array->size];
+            array->values[i] = slot;
+        }
         break;
     case Array::type::T_INT :
-        array->values = new int[array->size];
+        for(int i=0; i<array->size; i++){
+            Slot slot = Slot(SlotType::INT, 0);
+            slot.ref.object = new int[array->size];
+            array->values[i] = slot;
+        }
         break;
     case Array::type::T_LONG :
-        array->values = new long[array->size];
+        for(int i=0; i<array->size; i++){
+            Slot slot = Slot(SlotType::LONG, 0);
+            slot.ref.object = new long[array->size];
+            array->values[i] = slot;
+        }
         break;
     case Array::type::T_SHORT :
-        array->values = new short[array->size];
+        for(int i=0; i<array->size; i++){
+            Slot slot = Slot(SlotType::SHORT, 0);
+            slot.ref.object = new short[array->size];
+            array->values[i] = slot;
+        }
         break;    
     default:
         std::cout << "Tipo do array inválido" << std::endl;
         break;
     }
     heap.push_back(array);
-    Slot slot = Slot(SlotType::REFERENCE, heap.size()-1);
-    slot.ref.object = array;
-    frames.top().operands.push(slot);
+    frames.top().operands.push(Slot(SlotType::RETURN_ADDRESS, 0));
+    frames.top().operands.top().ref.object = array;
     addToPC(2);
 }
 
@@ -1857,23 +1917,29 @@ void Instructions::_anewarray(){
     Cpinfo cp = f.classFile->constantPool[idx-1];
     u4 count = f.operands.popInt();
 
-    Array array = Array(count);
-    array.dimensions.push_back(1);
+    Array *array = new Array(count);
+    array->dimensions.push_back(1);
     switch (cp.tag){
     case CONSTANT_Class:
-        array.atype = Array::type::T_CLASS;
+        array->atype = Array::type::T_CLASS;
         break;
-    // case array. tipo array?
+    // case array-> tipo array?
     case CONSTANT_InterfaceMethodref :
-        array.atype = Array::type::T_INTERFACE;
+        array->atype = Array::type::T_INTERFACE;
         break;    
     default:
         std::cout << "Tipo do array inválido" << std::endl;
         break;
     }
-    array.values = new int* [array.size];
-    heap.push_back(&array);
-    frames.top().operands.push(Slot(SlotType::REFERENCE, heap.size()-1));
+    array->values = new Slot[array->size];
+    if((array->atype == Array::type::T_CLASS) &
+        (frames.top().classFile->constantPool.getUtf8Class(cp.Class.nameIndex-1) == "String")){
+            for(int i=0; i<array->size; i++) array->values[i] = Slot(SlotType::CHAR, 0);
+        }
+    else for(int i=0; i<array->size; i++) array->values[i] = Slot(SlotType::REFERENCE,0);
+    heap.push_back(array);
+    frames.top().operands.push(Slot(SlotType::RETURN_ADDRESS, 0));
+    frames.top().operands.top().ref.object = array;
     addToPC(3);  
 }
 
@@ -1915,7 +1981,7 @@ void Instructions::_multianewarray(){
 
     Cpinfo cp = f.classFile->constantPool[idx-1];
     switch (cp.tag){
-    case CONSTANT_Class:
+    case CONSTANT_Class: 
         mtxtype = Array::type::T_CLASS;
         //std::cout << f.classFile->constantPool.getUtf8Class(idx-1) << std::endl;
         break;
@@ -1929,17 +1995,27 @@ void Instructions::_multianewarray(){
         break;
     }
 
-    Array mtx = Array(mtxtype, dim);
+    Array *mtx = new Array(mtxtype, dim);
     for(int d=0; d<dim; d++){
-        mtx.dimensions.push_back(f.operands.popInt());
-        mtx.size *= mtx.dimensions.back();
+        mtx->dimensions.push_back(f.operands.popInt());
+        mtx->size *= mtx->dimensions.back();
     }
-    mtx.values = new int* [mtx.size];
-    heap.push_back(&mtx);
-    frames.top().operands.push(Slot(SlotType::REFERENCE, heap.size()-1));
+
+    mtx->values = new Slot[mtx->size];
+    //if((mtxtype == Array::type::T_CLASS) &
+        //(frames.top().classFile->constantPool.getUtf8Class(cp.Class.nameIndex-1) == "String")){
+            //for(int i=0; i<mtx->size; i++) mtx->values[i] = Slot(SlotType::REFERENCE, 0);
+        //}
+    //else for(int i=0; i<mtx->size; i++) mtx->values[i] = Slot(SlotType::REFERENCE,0);
+    for(int i=0; i<mtx->size; i++) mtx->values[i] = Slot(SlotType::REFERENCE,0);
+
+    frames.top().operands.push(Slot(SlotType::RETURN_ADDRESS, 0));
+    frames.top().operands.top().ref.object = mtx;
+    heap.push_back(mtx);
+    
     addToPC(4);      
-    //std::cout << idx << std::endl;  
-    //std::cout << dim << std::endl;
+    //std::cout << mtx << std::endl;  
+    //std::cout << mtx->dim << std::endl;
 
     /* modelo de uso
     auto vals = reinterpret_cast<int*>(mtx.values);
@@ -1987,7 +2063,9 @@ void Instructions::initGenericMethod(std::stack<Frame>& frames, std::string name
             break;
         }
     }
+    
 	Frame newframe(f.classFile, mthinfo);
+    newframe.PC = 0;
     int qtd = getNumberArgs(descriptor);
     for(u1 q=0; q<qtd; q++){
         newframe.variables[q] = f.operands.top();
@@ -2051,9 +2129,15 @@ void Instructions::print(bool newline){
         case SlotType::STRING_REF:
             std::cout << frames.top().operands.popString();
             break;
-        case SlotType::SHORT:
-            std::cout << frames.top().operands.popShort();
+        case SlotType::REFERENCE:
+        {
+            int offset = frames.top().operands.popInt();
+            Array *array = static_cast<Array*>(heap[0]);
+            for(int i=offset; i<(offset+array->dimensions[1]); i++){
+                std::cout << (char)array->values[i].value;
+            }
             break;
+        }
         default:
             std::cout << "Tipo invalido para impressão";
             break;
