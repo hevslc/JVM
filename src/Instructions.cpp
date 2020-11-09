@@ -1663,7 +1663,7 @@ void Instructions::_tableswitch(){
         uint16_t auxPos = 0;
         std::cout << "defaultvalue: " << defaultValue << std::endl;
         for (int32_t i = 0; i <= (highValue - lowValue); i++) {
-            if (i+lowValue == index){
+            if ((i+lowValue )== index){
                 jumpValue = (f.bytecode[positionPC+1+auxPos] << 24) | (f.bytecode[positionPC+2+auxPos] << 16) |
                 (f.bytecode[positionPC+3+auxPos] << 8) | (f.bytecode[positionPC+4+auxPos]);
                 std::cout << "jumpValue: " << jumpValue << std::endl;
