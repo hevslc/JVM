@@ -244,7 +244,6 @@ void Instructions::_iconst_m1(){
 }
 
 void Instructions::_iconst_0(){
-    std::cout << "veio" << std::endl;
     frames.top().operands.push(Slot(SlotType::INT, 0));
     addToPC(1);
 }
