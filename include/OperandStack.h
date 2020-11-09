@@ -53,8 +53,12 @@ public:
      \brief Insere um double na pilha ocupando duas posições.
    */
 	void pushDouble(double d);
-
+	
+	/*!
+     \brief Retira e retorna a referencia de uma string da pilha.
+   */
 	char* popString();
+	
 	void pushU8(SlotType, u8);
 
 };

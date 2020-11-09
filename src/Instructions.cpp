@@ -604,6 +604,9 @@ void Instructions::_dstore(){
 }
 
 void Instructions::_astore(){
+    u1 idx = frames.top().bytecode[frames.top().PC+1];
+    frames.top().variables[idx] = frames.top().operands.top();
+    frames.top().operands.pop();
     addToPC(1);
 }
 
@@ -712,51 +715,94 @@ void Instructions::_dstore_3(){
 }
 
 void Instructions::_astore_0(){
+    frames.top().variables[0] = frames.top().operands.top();
+    frames.top().operands.pop();
     addToPC(1);
 }
 
 void Instructions::_astore_1(){
+    frames.top().variables[1] = frames.top().operands.top();
+    frames.top().operands.pop();
     addToPC(1);
 }
 
 void Instructions::_astore_2(){
+    frames.top().variables[2] = frames.top().operands.top();
+    frames.top().operands.pop();
     addToPC(1);
 }
 
 void Instructions::_astore_3(){
+    frames.top().variables[3] = frames.top().operands.top();
+    frames.top().operands.pop();
     addToPC(1);
 }
 
 void Instructions::_iastore(){
-    addToPC(1);
+    // Slot slot =  frames.top().operands.top();
+    // frames.top().operands.pop();
+    // int idx = frames.top().operands.popInt();
+    // frames.top().operands.pop();
+    // frames.top().variables[idx] = slot;
+    // frames.top().operands.pop();
+    // addToPC(1);
 }
 
 void Instructions::_lastore(){
-    addToPC(1);
+    // Slot slot =  frames.top().operands.top();
+    // frames.top().operands.pop();
+    // int idx = frames.top().operands.popInt();
+    // frames.top().operands.pop();
+    // frames.top().variables[idx] = slot;
+    // frames.top().operands.pop();
+    // addToPC(1);
 }
 
 void Instructions::_fastore(){
-    addToPC(1);
+    // Slot slot =  frames.top().operands.top();
+    // frames.top().operands.pop();
+    // int idx = frames.top().operands.popInt();
+    // frames.top().operands.pop();
+    // frames.top().variables[idx] = slot;
+    // frames.top().operands.pop();
+    // addToPC(1);
 }
 
 void Instructions::_dastore(){
-    addToPC(1);
+    // u1 idx = frames.top().bytecode[frames.top().PC+1];
+    // frames.top().variables[idx] = frames.top().operands.top();
+    // frames.top().operands.pop();
+    // frames.top().variables[idx+1] = frames.top().operands.top();
+    // frames.top().operands.pop();
+    // addToPC(1);
 }
 
 void Instructions::_aastore(){
-    addToPC(1);
+    // u1 idx = frames.top().bytecode[frames.top().PC+1];
+    // frames.top().variables[idx] = frames.top().operands.top();
+    // frames.top().operands.pop();
+    // addToPC(1);
 }
 
 void Instructions::_bastore(){
-    addToPC(1);
+    // u1 idx = frames.top().bytecode[frames.top().PC+1];
+    // frames.top().variables[idx] = frames.top().operands.top();
+    // frames.top().operands.pop();
+    // addToPC(1);
 }
 
 void Instructions::_castore(){
-    addToPC(1);
+    // u1 idx = frames.top().bytecode[frames.top().PC+1];
+    // frames.top().variables[idx] = frames.top().operands.top();
+    // frames.top().operands.pop();
+    // addToPC(1);
 }
 
 void Instructions::_sastore(){
-    addToPC(1);
+    // u1 idx = frames.top().bytecode[frames.top().PC+1];
+    // frames.top().variables[idx] = frames.top().operands.top();
+    // frames.top().operands.pop();
+    // addToPC(1);
 }
 
 void Instructions::_pop(){
@@ -796,6 +842,30 @@ void Instructions::_dup2_x2(){
 }
 
 void Instructions::_swap(){
+    //frames.top().operands.push(Slot(SlotType::INT, 10));
+    //frames.top().operands.push(Slot(SlotType::INT, 20));
+
+    //Função
+    Slot slot1 = frames.top().operands.top();
+    frames.top().operands.pop();
+    //std::cout << "slot1: " << slot1.value << std::endl;
+
+    Slot slot2 = frames.top().operands.top();
+    frames.top().operands.pop();
+    //std::cout << "slot2: " << slot2.value << std::endl;
+
+    frames.top().operands.push(slot1);
+    frames.top().operands.push(slot2);
+   
+    //slot1 = frames.top().operands.top();
+    //frames.top().operands.pop();
+    //slot2 = frames.top().operands.top();
+    //frames.top().operands.pop();
+    //Teste
+    //std::cout << "----------SWAP--------"<< std::endl;
+    //std::cout << "slot1: " << slot1.value << std::endl;
+    //std::cout << "slot2: " << slot2.value << std::endl;
+    
     addToPC(1);
 }
 
