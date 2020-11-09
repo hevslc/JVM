@@ -1,5 +1,6 @@
 #include "Instructions.h"
 #include <assert.h>
+#include <stdbool.h>
 
 
 Instructions::Instructions(ClassFile* classFile):iswide(false){
@@ -1666,7 +1667,6 @@ void Instructions::_ret(){
 }
 
 void Instructions::_tableswitch(){
-    std::cout << "tableswitch \n";
     Frame f = frames.top();
     int32_t index = f.operands.popInt();
     uint32_t positionPC = f.PC;
@@ -1690,28 +1690,26 @@ void Instructions::_tableswitch(){
         
         int32_t jumpValue;
         uint16_t auxPos = 0;
-        std::cout << "defaultvalue: " << defaultValue << std::endl;
+
         for (int32_t i = 0; i <= (highValue - lowValue); i++) {
-            if ((i+lowValue )== index){
+            if (i+lowValue == index){
                 jumpValue = (f.bytecode[positionPC+1+auxPos] << 24) | (f.bytecode[positionPC+2+auxPos] << 16) |
                 (f.bytecode[positionPC+3+auxPos] << 8) | (f.bytecode[positionPC+4+auxPos]);
-                std::cout << "jumpValue: " << jumpValue << std::endl;
+                
                 addToPC(jumpValue);
                 break;
             }
             auxPos += 4;
         }
     }
-    else {
-        addToPC(defaultValue); 
-        std::cout << "defaultvalue: " << defaultValue << std::endl;
-    }
+    else {addToPC(defaultValue);}
 
 }
 
 void Instructions::_lookupswitch(){
     Frame f = frames.top();
-    int32_t index = f.operands.popInt();
+    int32_t key = f.operands.popInt();
+    bool flag = false;
     uint32_t positionPC = f.PC;
     
     uint8_t paddingbytes = (3 - (positionPC % 4));
@@ -1721,11 +1719,29 @@ void Instructions::_lookupswitch(){
     (f.bytecode[positionPC+3] << 8) | (f.bytecode[positionPC+4]);
     positionPC += 4;
 
-    
+    uint32_t npairs = (f.bytecode[positionPC+1] << 24) | (f.bytecode[positionPC+2] << 16) |
+    (f.bytecode[positionPC+3] << 8) | (f.bytecode[positionPC+4]);
+    positionPC += 4;
 
+    int32_t intbytePair;
+    int32_t offsetbytePair;
+    for (uint16_t i = 0; i < npairs; i++) {
+        intbytePair = (f.bytecode[positionPC+1] << 24) | (f.bytecode[positionPC+2] << 16) |
+        (f.bytecode[positionPC+3] << 8) | (f.bytecode[positionPC+4]);
+        positionPC += 4;
 
-    addToPC(1);
-}
+        if (key == intbytePair) {
+            flag = true;
+            offsetbytePair = (f.bytecode[positionPC+1] << 24) | (f.bytecode[positionPC+2] << 16) |
+            (f.bytecode[positionPC+3] << 8) | (f.bytecode[positionPC+4]);
+            addToPC(offsetbytePair);
+            break;
+        }
+        positionPC += 4;
+    }
+
+    if (!flag) {addToPC(defaultValue);}
+ }
 
 void Instructions::_ireturn(){
     frames.pop();
@@ -2079,9 +2095,9 @@ int Instructions::getNumberArgs(std::string descriptor){
 		args.erase(refpos, ppos-refpos);
 	}
 	std::size_t c = args.find_first_of("BCFISZ");
-	for(;c != p;++qtd) c = args.find_first_of("BCFISZ", c+1);
+	for(;c != p;++qtd) c = args.find_first_of("BCDFIJSZ", c+1);
 
-    std::size_t c2 = args.find_first_of("DJ");
+    std::size_t c2 = args.find_first_of("BCDFIJSZ");
 	for(;c2 != p;qtd+=2) c2 = args.find_first_of("DJ", c2+1);
 
 	if(args.find_first_of("[") != p ) qtd++;

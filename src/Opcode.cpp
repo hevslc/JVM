@@ -255,7 +255,7 @@ std::string LookupswitchOpcode::getString()
         for (uint32_t i = 0; i < npairs; i++)
         {
             int32_t intbytePair = (code[pos + 1] << 24) | (code[pos + 2] << 16) | (code[pos + 3] << 8) | code[pos + 4];
-            uint32_t offsetbytePair = (code[pos + 5] << 24) | (code[pos + 6] << 16) | (code[pos + 7] << 8) | code[pos + 8];
+            int32_t offsetbytePair = (code[pos + 5] << 24) | (code[pos + 6] << 16) | (code[pos + 7] << 8) | code[pos + 8];
             out += "\n\t" + std::to_string(intbytePair) + ":   " + std::to_string(*position + offsetbytePair) + " (+" + std::to_string(offsetbytePair) + ")";
             pos += 8;
         };
