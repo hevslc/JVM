@@ -1632,7 +1632,44 @@ void Instructions::_ret(){
 }
 
 void Instructions::_tableswitch(){
-    addToPC(1);
+    
+    Frame f = frames.top();
+    int32_t index = f.operands.popInt();
+    uint32_t positionPC = f.PC;
+
+    uint8_t paddingbytes = (3 - (positionPC % 4));
+    positionPC += paddingbytes;
+    
+    int32_t defaultValue = (f.bytecode[positionPC+1] << 24) | (f.bytecode[positionPC+2] << 16) |
+    (f.bytecode[positionPC+3] << 8) | (f.bytecode[positionPC+4]);
+    positionPC += 4;
+
+    int32_t lowValue = (f.bytecode[positionPC+1] << 24) | (f.bytecode[positionPC+2] << 16) |
+    (f.bytecode[positionPC+3] << 8) | (f.bytecode[positionPC+4]);
+    positionPC += 4;
+
+    int32_t highValue = (f.bytecode[positionPC+1] << 24) | (f.bytecode[positionPC+2] << 16) |
+    (f.bytecode[positionPC+3] << 8) | (f.bytecode[positionPC+4]);
+    positionPC += 4;
+
+    if (index >= lowValue || index <= highValue) {
+        
+        int32_t jumpValue;
+        uint16_t auxPos = 0;
+
+        for (int32_t i = 0; i <= (highValue - lowValue); i++) {
+            if (i+lowValue == index){
+                jumpValue = (f.bytecode[positionPC+1+auxPos] << 24) | (f.bytecode[positionPC+2+auxPos] << 16) |
+                (f.bytecode[positionPC+3+auxPos] << 8) | (f.bytecode[positionPC+4+auxPos]);
+                
+                addToPC(jumpValue);
+                break;
+            }
+            auxPos += 4;
+        }
+    }
+    else {addToPC(defaultValue);}
+
 }
 
 void Instructions::_lookupswitch(){
