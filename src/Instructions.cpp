@@ -919,7 +919,7 @@ void Instructions::_lsub(){
 void Instructions::_fsub(){
     float value1 = frames.top().operands.popFloat();
     float value2 = frames.top().operands.popFloat();
-    float result = value1 - value2;
+    float result = value2 - value1;
     frames.top().operands.pushFloat(result);
     addToPC(1);
 }
