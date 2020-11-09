@@ -1187,18 +1187,40 @@ void Instructions::_lshl(){
 }
 
 void Instructions::_ishr(){
+    int value2 = 0x1f & frames.top().operands.popInt();
+    int value1 = frames.top().operands.popInt();
+    int result = value1 >> value2;
+    frames.top().operands.push(Slot(SlotType::INT, result));
     addToPC(1);
 }
 
 void Instructions::_lshr(){
+    int value2 = 0x3f & frames.top().operands.popInt();
+    long value1 = frames.top().operands.popLong();
+    long result = value1 >> value2;
+    frames.top().operands.pushLong(result);
     addToPC(1);
 }
 
 void Instructions::_iushr(){
+    int value2 = 0x1f & frames.top().operands.popInt();
+    int value1 = frames.top().operands.popInt();
+    int result = value1 >> value2;
+    if (value1 < 0) {
+        result = (value1 >> value2) + (2 << ~(value2));
+    }
+    frames.top().operands.push(Slot(SlotType::INT, result));
     addToPC(1);
 }
 
 void Instructions::_lushr(){
+    int value2 = 0x3f & frames.top().operands.popInt();
+    long value1 = frames.top().operands.popLong();
+    long result = value1 >> value2;
+    if (value1 < 0) {
+        result = (value1 >> value2) + (2L << ~(value2));
+    }
+    frames.top().operands.pushLong(result);
     addToPC(1);
 }
 
