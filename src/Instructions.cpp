@@ -237,40 +237,38 @@ void Instructions::_aconst_null(){
 }
 
 void Instructions::_iconst_m1(){
-    int m1 = -1;
-    u4 v = reinterpret_cast<u4&>(m1);
-    frames.top().operands.push(Slot(SlotType::INT, v));
+    frames.top().operands.pushInt(-1);
     //std::cout << getInt(frames.top().operands.top().value) << std::endl;
     addToPC(1);
 }
 
 void Instructions::_iconst_0(){
-    frames.top().operands.push(Slot(SlotType::INT, 0));
+    frames.top().operands.pushInt(0);
     addToPC(1);
 }
 
 void Instructions::_iconst_1(){
-    frames.top().operands.push(Slot(SlotType::INT, 1));
+    frames.top().operands.pushInt(1);
     addToPC(1);
 }
 
 void Instructions::_iconst_2(){
-    frames.top().operands.push(Slot(SlotType::INT, 2));
+    frames.top().operands.pushInt(2);
     addToPC(1);
 }
 
 void Instructions::_iconst_3(){
-    frames.top().operands.push(Slot(SlotType::INT, 3));
+    frames.top().operands.pushInt(3);
     addToPC(1);
 }
 
 void Instructions::_iconst_4(){
-    frames.top().operands.push(Slot(SlotType::INT, 4));
+    frames.top().operands.pushInt(4);
     addToPC(1);
 }
 
 void Instructions::_iconst_5(){
-    frames.top().operands.push(Slot(SlotType::INT, 5));
+    frames.top().operands.pushInt(5);
     addToPC(1);
 }
 
@@ -1697,12 +1695,13 @@ void Instructions::_tableswitch(){
                 (f.bytecode[positionPC+3+auxPos] << 8) | (f.bytecode[positionPC+4+auxPos]);
                 
                 addToPC(jumpValue);
+                std::cout << (int)frames.top().PC << std::endl;
                 break;
             }
             auxPos += 4;
         }
     }
-    else {addToPC(defaultValue);}
+    else {addToPC(defaultValue); std::cout << (int)frames.top().PC << std::endl;}
 
 }
 
@@ -1744,7 +1743,10 @@ void Instructions::_lookupswitch(){
  }
 
 void Instructions::_ireturn(){
+    int ret = frames.top().operands.popInt();
+    std::cout << ret << std::endl;
     frames.pop();
+    frames.top().operands.pushInt(ret);
 }
 
 void Instructions::_lreturn(){
