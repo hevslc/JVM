@@ -389,6 +389,7 @@ void Instructions::_ldc2_w() {
 }
 
 void Instructions::_iload(){
+    std::cout << frames.size() << std::endl;
     Frame f = frames.top();
     u1 idx = f.bytecode[f.PC+1];
     frames.top().operands.push(f.variables.at(idx));
@@ -1636,6 +1637,7 @@ void Instructions::_ret(){
 }
 
 void Instructions::_tableswitch(){
+    std::cout << "tableswitch \n";
     Frame f = frames.top();
     int32_t index = f.operands.popInt();
     uint32_t positionPC = f.PC;
@@ -1664,14 +1666,14 @@ void Instructions::_tableswitch(){
             if (i+lowValue == index){
                 jumpValue = (f.bytecode[positionPC+1+auxPos] << 24) | (f.bytecode[positionPC+2+auxPos] << 16) |
                 (f.bytecode[positionPC+3+auxPos] << 8) | (f.bytecode[positionPC+4+auxPos]);
-                
+                std::cout << "jumpValue: " << jumpValue << std::endl;
                 addToPC(jumpValue);
                 break;
             }
             auxPos += 4;
         }
     }
-    else {addToPC(defaultValue);}
+    else {addToPC(defaultValue); std::cout << "defaultvalue: " << defaultValue << std::endl;}
 
 }
 
@@ -1758,7 +1760,6 @@ void Instructions::_invokevirtual(){
     if(name == "println") print(true);
     else if(name == "print") print(false);
     else initGenericMethod(frames, name, descriptor);
-    addToPC(3);
 }
 
 void Instructions::_invokeSpecial(){
@@ -1776,7 +1777,6 @@ void Instructions::_invokestatic(){
     std::string descriptor = cpt.getDescriptor(cpt[idx-1].FieldMethInter.nameTypeIndex-1);
     
     initGenericMethod(frames, name, descriptor);
-    addToPC(3);
 }
 
 /*void Instructions::_invokeinterface(){
@@ -1973,7 +1973,9 @@ void Instructions::initGenericMethod(std::stack<Frame>& frames, std::string name
             break;
         }
     }
+    
 	Frame newframe(f.classFile, mthinfo);
+    newframe.PC = 0;
     int qtd = getNumberArgs(descriptor);
     for(u1 q=0; q<qtd; q++){
         newframe.variables[q] = f.operands.top();
@@ -1997,9 +1999,9 @@ int Instructions::getNumberArgs(std::string descriptor){
 		args.erase(refpos, ppos-refpos);
 	}
 	std::size_t c = args.find_first_of("BCFISZ");
-	for(;c != p;++qtd) c = args.find_first_of("BCDFIJSZ", c+1);
+	for(;c != p;++qtd) c = args.find_first_of("BCFISZ", c+1);
 
-    std::size_t c2 = args.find_first_of("BCDFIJSZ");
+    std::size_t c2 = args.find_first_of("DJ");
 	for(;c2 != p;qtd+=2) c2 = args.find_first_of("DJ", c2+1);
 
 	if(args.find_first_of("[") != p ) qtd++;
