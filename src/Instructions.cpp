@@ -236,7 +236,10 @@ void Instructions::_aconst_null(){
 }
 
 void Instructions::_iconst_m1(){
-    frames.top().operands.push(Slot(SlotType::INT, -1));
+    int m1 = -1;
+    u4 v = reinterpret_cast<u4&>(m1);
+    frames.top().operands.push(Slot(SlotType::INT, v));
+    //std::cout << getInt(frames.top().operands.top().value) << std::endl;
     addToPC(1);
 }
 
@@ -333,7 +336,13 @@ void Instructions::_bipush(){
 }
 
 void Instructions::_sipush(){
-    addToPC(1);
+    u1 byte1 = frames.top().bytecode[frames.top().PC + 1];
+    u1 byte2 = frames.top().bytecode[frames.top().PC + 2];
+    u2 v1 = ((u2)byte1 << 8) | byte2;
+    int16_t v2 = reinterpret_cast<int16_t&>(v1);
+    int value = int(v2);
+    frames.top().operands.push(Slot(SlotType::INT, reinterpret_cast<u4&>(value)));
+    addToPC(3);
 }
 
 void Instructions::_ldc(){
@@ -763,42 +772,39 @@ void Instructions::_astore_3(){
 }
 
 void Instructions::_iastore(){
-    // Slot slot =  frames.top().operands.top();
-    // frames.top().operands.pop();
-    // int idx = frames.top().operands.popInt();
-    // frames.top().operands.pop();
-    // frames.top().variables[idx] = slot;
-    // frames.top().operands.pop();
-    // addToPC(1);
+    int value =  frames.top().operands.popInt(); //Value
+    int idx = frames.top().operands.popInt(); //Index
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    ((u4*)array->values)[idx] = value;
+    frames.top().operands.pop();
+    addToPC(1);
 }
 
 void Instructions::_lastore(){
-    // Slot slot =  frames.top().operands.top();
-    // frames.top().operands.pop();
-    // int idx = frames.top().operands.popInt();
-    // frames.top().operands.pop();
-    // frames.top().variables[idx] = slot;
-    // frames.top().operands.pop();
-    // addToPC(1);
+    long value = frames.top().operands.popLong(); //Value
+    int idx = frames.top().operands.popInt(); //Index
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    ((u8*)array->values)[idx] = value;
+    frames.top().operands.pop();
+    addToPC(1);
 }
 
 void Instructions::_fastore(){
-    // Slot slot =  frames.top().operands.top();
-    // frames.top().operands.pop();
-    // int idx = frames.top().operands.popInt();
-    // frames.top().operands.pop();
-    // frames.top().variables[idx] = slot;
-    // frames.top().operands.pop();
-    // addToPC(1);
+    float value =  frames.top().operands.popFloat(); //Value
+    int idx = frames.top().operands.popInt(); //Index
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    ((u4*)array->values)[idx] = value;
+    frames.top().operands.pop();
+    addToPC(1);
 }
 
 void Instructions::_dastore(){
-    // u1 idx = frames.top().bytecode[frames.top().PC+1];
-    // frames.top().variables[idx] = frames.top().operands.top();
-    // frames.top().operands.pop();
-    // frames.top().variables[idx+1] = frames.top().operands.top();
-    // frames.top().operands.pop();
-    // addToPC(1);
+    double value = frames.top().operands.popDouble(); //Value
+    int idx = frames.top().operands.popInt(); //Index
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    ((u8*)array->values)[idx] = value;
+    frames.top().operands.pop();
+    addToPC(1);
 }
 
 void Instructions::_aastore(){
@@ -810,32 +816,39 @@ void Instructions::_aastore(){
     Array *array = static_cast<Array*>(heap[0]);
     int idxs[2] = {idxarray, idxstr};
     int sizestr = (int)strlen(slot.ref.str);
-    //std::cout << "off: " << array->offset(idxs) << std::endl;
-    for(auto i=array->offset(idxs); i<sizestr; i++){
+    int off = array->offset(idxs);
+    for(auto i=off; i<off + sizestr; i++){
         array->values[i].value = slot.ref.str[i];
     }
+
     addToPC(1);
 }
 
 void Instructions::_bastore(){
-    // u1 idx = frames.top().bytecode[frames.top().PC+1];
-    // frames.top().variables[idx] = frames.top().operands.top();
-    // frames.top().operands.pop();
-    // addToPC(1);
+    u4 value = frames.top().operands.popBool(); //Value (Byte ou Bool, tanto faz o pop)
+    int idx = frames.top().operands.popInt(); //Index
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    ((u4*)array->values)[idx] = value;
+    frames.top().operands.pop();
+    addToPC(1);
 }
 
 void Instructions::_castore(){
-    // u1 idx = frames.top().bytecode[frames.top().PC+1];
-    // frames.top().variables[idx] = frames.top().operands.top();
-    // frames.top().operands.pop();
-    // addToPC(1);
+    u4 value = frames.top().operands.popChar(); //Value
+    int idx = frames.top().operands.popInt(); //Index
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    ((u4*)array->values)[idx] = value;
+    frames.top().operands.pop();
+    addToPC(1);
 }
 
 void Instructions::_sastore(){
-    // u1 idx = frames.top().bytecode[frames.top().PC+1];
-    // frames.top().variables[idx] = frames.top().operands.top();
-    // frames.top().operands.pop();
-    // addToPC(1);
+    u4 value = frames.top().operands.popShort(); //Value
+    int idx = frames.top().operands.popInt(); //Index
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    ((u4*)array->values)[idx] = value;
+    frames.top().operands.pop();
+    addToPC(1);
 }
 
 void Instructions::_pop(){
@@ -847,38 +860,180 @@ void Instructions::_pop(){
 }
 
 void Instructions::_pop2(){
+    frames.top().operands.pop();
+    frames.top().operands.pop();
     addToPC(1);
 }
 
 void Instructions::_dup(){
+    Slot value = frames.top().operands.top();
+    frames.top().operands.pop();
+
+    frames.top().operands.push(value);
+    frames.top().operands.push(value);
+
     addToPC(1);
 }
 
 void Instructions::_dup_x1(){
+    Slot value1 = frames.top().operands.top();
+    frames.top().operands.pop();
+    Slot value2 = frames.top().operands.top();
+    frames.top().operands.pop();
+
+    frames.top().operands.push(value1);
+    frames.top().operands.push(value2);
+    frames.top().operands.push(value1);
+
     addToPC(1);
 }
 
 void Instructions::_dup_x2(){
+    Slot value1 = frames.top().operands.top();
+    frames.top().operands.pop();
+    Slot value2 = frames.top().operands.top();
+    frames.top().operands.pop();
+    if ((value2.type != SlotType::LONG && value2.type != SlotType::DOUBLE)) {
+        Slot value3 = frames.top().operands.top();
+        frames.top().operands.pop();
+
+        frames.top().operands.push(value1);
+        frames.top().operands.push(value3);
+        frames.top().operands.push(value2);
+        frames.top().operands.push(value1);
+    }
+    else {
+        frames.top().operands.push(value1);
+        frames.top().operands.push(value2);
+        frames.top().operands.push(value1);
+    }
     addToPC(1);
 }
 
 void Instructions::_dup2(){
+    Slot value1 = frames.top().operands.top();
+    frames.top().operands.pop();
+    if (value1.type != SlotType::LONG && value1.type != SlotType::DOUBLE) {
+        Slot value2 = frames.top().operands.top();
+        frames.top().operands.pop();
+
+        frames.top().operands.push(value2);
+        frames.top().operands.push(value1);
+        frames.top().operands.push(value2);        
+        frames.top().operands.push(value1);
+    }
+
+    else {
+        frames.top().operands.push(value1);
+        frames.top().operands.push(value1);
+    }
     addToPC(1);
 }
 
 void Instructions::_dup2_x1(){
+    Slot value1 = frames.top().operands.top();
+    frames.top().operands.pop();
+    Slot value2 = frames.top().operands.top();
+    frames.top().operands.pop();
+    if (value1.type != SlotType::LONG && value1.type != SlotType::DOUBLE) {
+        Slot value3 = frames.top().operands.top();
+        frames.top().operands.pop();
+
+        frames.top().operands.push(value2);
+        frames.top().operands.push(value1);
+        frames.top().operands.push(value3);
+        frames.top().operands.push(value2);
+        frames.top().operands.push(value1);
+    }
+    else {
+        frames.top().operands.push(value1);
+        frames.top().operands.push(value2);
+        frames.top().operands.push(value1);
+    }
     addToPC(1);
 }
 
 void Instructions::_dup2_x2(){
+    Slot value1 = frames.top().operands.top();
+    frames.top().operands.pop();
+    Slot value2 = frames.top().operands.top();
+    frames.top().operands.pop();
+    Slot value3 = frames.top().operands.top();
+    frames.top().operands.pop();
+    // Forma 3
+    if (value3.type == SlotType::LONG && value3.type == SlotType::DOUBLE) {
+        frames.top().operands.push(value2);
+        frames.top().operands.push(value1);
+        frames.top().operands.push(value3);
+        frames.top().operands.push(value2);
+        frames.top().operands.push(value1);
+    }
+    // Forma 2 ou Forma 4
+    else if (value1.type == SlotType::LONG && value1.type == SlotType::DOUBLE) {
+        // Forma 4
+        if (value2.type == SlotType::LONG && value2.type == SlotType::DOUBLE) {
+            frames.top().operands.push(value3); // Push para compensar pop de value 3 nesse caso em que não é usado
+
+            frames.top().operands.push(value1);
+            frames.top().operands.push(value2);
+            frames.top().operands.push(value1);
+        }
+        // Forma 2
+        else {
+            frames.top().operands.push(value1);
+            frames.top().operands.push(value3);
+            frames.top().operands.push(value2);
+            frames.top().operands.push(value1);
+        }
+    }
+    // Forma 1
+    else {
+        Slot value4 = frames.top().operands.top();
+        frames.top().operands.pop();
+
+        frames.top().operands.push(value2);
+        frames.top().operands.push(value1);
+        frames.top().operands.push(value4);
+        frames.top().operands.push(value3);
+        frames.top().operands.push(value2);
+        frames.top().operands.push(value1);
+    }
     addToPC(1);
 }
 
 void Instructions::_swap(){
+    //frames.top().operands.push(Slot(SlotType::INT, 10));
+    //frames.top().operands.push(Slot(SlotType::INT, 20));
+
+    //Função
+    Slot slot1 = frames.top().operands.top();
+    frames.top().operands.pop();
+    //std::cout << "slot1: " << slot1.value << std::endl;
+
+    Slot slot2 = frames.top().operands.top();
+    frames.top().operands.pop();
+    //std::cout << "slot2: " << slot2.value << std::endl;
+
+    frames.top().operands.push(slot1);
+    frames.top().operands.push(slot2);
+   
+    //slot1 = frames.top().operands.top();
+    //frames.top().operands.pop();
+    //slot2 = frames.top().operands.top();
+    //frames.top().operands.pop();
+    //Teste
+    //std::cout << "----------SWAP--------"<< std::endl;
+    //std::cout << "slot1: " << slot1.value << std::endl;
+    //std::cout << "slot2: " << slot2.value << std::endl;
+    
     addToPC(1);
 }
 
 void Instructions::_iadd(){
+    u4 value2 = frames.top().operands.popInt();
+    u4 value1 = frames.top().operands.popInt();
+    u4 result = value1 + value2;
+    frames.top().operands.pushInt(result);
     addToPC(1);
 }
 
@@ -890,138 +1045,285 @@ void Instructions::_ladd(){
 }
 
 void Instructions::_fadd(){
+    float value1 = frames.top().operands.popFloat();
+    float value2 = frames.top().operands.popFloat();
+    float result = value1 + value2;
+    frames.top().operands.pushFloat(result);
     addToPC(1);
 }
 
 void Instructions::_dadd(){
+    double value2 = frames.top().operands.popDouble();
+    double value1 = frames.top().operands.popDouble();
+    double result = value1 + value2;
+    frames.top().operands.pushDouble(result);
     addToPC(1);
 }
 
 void Instructions::_isub(){
+    u4 value2 = frames.top().operands.popInt();
+    u4 value1 = frames.top().operands.popInt();
+    u4 result = value1 + (-value2);
+    frames.top().operands.pushInt(result);
     addToPC(1);
 }
 
 void Instructions::_lsub(){
+    long value1 = frames.top().operands.popLong();
+    long value2 = frames.top().operands.popLong();
+    long result = value2 - value1;
+    frames.top().operands.pushLong(result);
     addToPC(1);
 }
 
 void Instructions::_fsub(){
+    float value1 = frames.top().operands.popFloat();
+    float value2 = frames.top().operands.popFloat();
+    float result = value2 - value1;
+    frames.top().operands.pushFloat(result);
     addToPC(1);
 }
 
 void Instructions::_dsub(){
+    double value2 = frames.top().operands.popDouble();
+    double value1 = frames.top().operands.popDouble();
+    double result = value1 - value2;
+    frames.top().operands.pushDouble(result);
     addToPC(1);
 }
 
 void Instructions::_imul(){
+    u4 value2 = frames.top().operands.popInt();
+    u4 value1 = frames.top().operands.popInt();
+    u4 result = value1 * value2;
+    frames.top().operands.pushInt(result);
     addToPC(1);
 }
 
 void Instructions::_lmul(){
+    long value1 = frames.top().operands.popLong();
+    long value2 = frames.top().operands.popLong();
+    long result = value1 * value2;
+    frames.top().operands.pushLong(result);
     addToPC(1);
 }
 
 void Instructions::_fmul(){
+    float value1 = frames.top().operands.popFloat();
+    float value2 = frames.top().operands.popFloat();
+    float result = value1 * value2;
+    frames.top().operands.pushFloat(result);
     addToPC(1);
 }
 
 void Instructions::_dmul(){
+    double value2 = frames.top().operands.popDouble();
+    double value1 = frames.top().operands.popDouble();
+    double result = value1 * value2;
+    frames.top().operands.pushDouble(result);
     addToPC(1);
 }
 
 void Instructions::_idiv(){
+    u4 value2 = frames.top().operands.popInt();
+    u4 value1 = frames.top().operands.popInt();
+    u4 result = u4(value1 / value2);
+    frames.top().operands.pushInt(result);
     addToPC(1);
 }
 
 void Instructions::_ldiv(){
+    long value2 = frames.top().operands.popLong();
+    long value1 = frames.top().operands.popLong();
+    long result = value1 / value2;
+    frames.top().operands.pushLong(result);
     addToPC(1);
 }
 
 void Instructions::_fdiv(){
+    float value1 = frames.top().operands.popFloat();
+    float value2 = frames.top().operands.popFloat();
+    float result = value2 / value1;
+    frames.top().operands.pushFloat(result);
     addToPC(1);
 }
 
 void Instructions::_ddiv(){
+    double value2 = frames.top().operands.popDouble();
+    double value1 = frames.top().operands.popDouble();
+    double result = value1 / value2;
+    frames.top().operands.pushDouble(result);
     addToPC(1);
 }
 
 void Instructions::_irem(){
+    u4 value2 = frames.top().operands.popInt();
+    u4 value1 = frames.top().operands.popInt();
+    u4 result = int(value1 - (value2 * int(value1 / value2)));
+    frames.top().operands.pushInt(result);
     addToPC(1);
 }
 
 void Instructions::_lrem(){
+    long value2 = frames.top().operands.popLong();
+    long value1 = frames.top().operands.popLong();
+    long result = value1 - (value2 * (value1 / value2));
+    frames.top().operands.pushLong(result);
     addToPC(1);
 }
 
 void Instructions::_frem(){
+    float value2 = frames.top().operands.popFloat();
+    float value1 = frames.top().operands.popFloat();
+    float result = value1 - (value2 * int(value1 / value2));
+    frames.top().operands.pushFloat(result);
     addToPC(1);
 }
 
 void Instructions::_drem(){
+    double value2 = frames.top().operands.popDouble();
+    double value1 = frames.top().operands.popDouble();
+    double result = value1 - (value2 * int(value1 / value2));
+    frames.top().operands.pushDouble(result);
     addToPC(1);
 }
 
 void Instructions::_ineg(){
+    u4 value = int(-frames.top().operands.popInt());
+    frames.top().operands.pushInt(value);
     addToPC(1);
 }
 
 void Instructions::_lneg(){
+    long value = -frames.top().operands.popLong();
+    frames.top().operands.pushLong(value);
     addToPC(1);
 }
 
 void Instructions::_fneg(){
+    float value = -frames.top().operands.popFloat();
+    frames.top().operands.pushFloat(value);
     addToPC(1);
 }
 
 void Instructions::_dneg(){
+    double value = -frames.top().operands.popDouble();
+    frames.top().operands.pushDouble(value);
     addToPC(1);
 }
 
 void Instructions::_ishl(){
+    int value2 = 0x1f & frames.top().operands.popInt();
+    int value1 = frames.top().operands.popInt();
+    int result = value1 << value2;
+    frames.top().operands.push(Slot(SlotType::INT, result));
     addToPC(1);
 }
 
 void Instructions::_lshl(){
+    int value2 = 0x3f & frames.top().operands.popInt();
+    long value1 = frames.top().operands.popLong();
+    long result = value1 << value2;
+    frames.top().operands.pushLong(result);
     addToPC(1);
 }
 
 void Instructions::_ishr(){
+    int value2 = 0x1f & frames.top().operands.popInt();
+    int value1 = frames.top().operands.popInt();
+    int result = value1 >> value2;
+    frames.top().operands.push(Slot(SlotType::INT, result));
     addToPC(1);
 }
 
 void Instructions::_lshr(){
+    int value2 = 0x3f & frames.top().operands.popInt();
+    long value1 = frames.top().operands.popLong();
+    long result = value1 >> value2;
+    frames.top().operands.pushLong(result);
     addToPC(1);
 }
 
 void Instructions::_iushr(){
+    int value2 = 0x1f & frames.top().operands.popInt();
+    int value1 = frames.top().operands.popInt();
+    int result = value1 >> value2;
+    if (value1 < 0) {
+        result = (value1 >> value2) + (2 << ~(value2));
+    }
+    frames.top().operands.push(Slot(SlotType::INT, result));
     addToPC(1);
 }
 
 void Instructions::_lushr(){
+    int value2 = 0x3f & frames.top().operands.popInt();
+    long value1 = frames.top().operands.popLong();
+    long result = value1 >> value2;
+    if (value1 < 0) {
+        result = (value1 >> value2) + (2L << ~(value2));
+    }
+    frames.top().operands.pushLong(result);
     addToPC(1);
 }
 
 void Instructions::_iand(){
+    Frame f = frames.top();
+    int value2 = f.operands.popInt();
+    int value1 = f.operands.popInt();
+
+    int result = value1 & value2;
+    f.operands.push(Slot(SlotType::INT, result));
+
     addToPC(1);
 }
 
 void Instructions::_land(){
+    Frame f = frames.top();
+    long value2 = f.operands.popLong();
+    long value1 = f.operands.popLong();
+
+    long result = value1 & value2;
+    f.operands.push(Slot(SlotType::LONG, result));
     addToPC(1);
 }
 
 void Instructions::_ior(){
+    Frame f = frames.top();
+    int value2 = f.operands.popInt();
+    int value1 = f.operands.popInt();
+
+    int result = value1 | value2;
+    f.operands.push(Slot(SlotType::INT, result));
     addToPC(1);
 }
 
 void Instructions::_lor(){
+    Frame f = frames.top();
+    long value2 = f.operands.popLong();
+    long value1 = f.operands.popLong();
+
+    long result = value1 | value2;
+    f.operands.push(Slot(SlotType::LONG, result));
     addToPC(1);
 }
 
 void Instructions::_ixor(){
+    Frame f = frames.top();
+    int value2 = f.operands.popInt();
+    int value1 = f.operands.popInt();
+
+    int result = value1 ^ value2;
+    f.operands.push(Slot(SlotType::INT, result));
     addToPC(1);
 }
 
 void Instructions::_lxor(){
+    Frame f = frames.top();
+    long value2 = f.operands.popLong();
+    long value1 = f.operands.popLong();
+
+    long result = value1 ^ value2;
+    f.operands.push(Slot(SlotType::LONG, result));
     addToPC(1);
 }
 
@@ -1035,38 +1337,65 @@ void Instructions::_iinc(){
 }
 
 void Instructions::_i2l(){
+    int value = frames.top().operands.popInt();
+    long result = long(value);
+    frames.top().operands.pushLong(result);
     addToPC(1);
 }
 
 void Instructions::_i2f(){
+    int value = frames.top().operands.popInt();
+    float result = float(value);
+    frames.top().operands.push(Slot(SlotType::FLOAT, reinterpret_cast<u4&>(result)));
     addToPC(1);
 }
 
 void Instructions::_i2d(){
+    int value = frames.top().operands.popInt();
+    double result = double(value);
+    frames.top().operands.pushDouble(result);
     addToPC(1);
 }
 
 void Instructions::_l2i(){
+    long value = frames.top().operands.popLong();
+    int result = int(value);
+    frames.top().operands.push(Slot(SlotType::INT, reinterpret_cast<u4&>(result)));
     addToPC(1);
 }
 
 void Instructions::_l2f(){
+    long value = frames.top().operands.popLong();
+    float result = float(value);
+    frames.top().operands.push(Slot(SlotType::FLOAT, reinterpret_cast<u4&>(result)));
     addToPC(1);
 }
 
 void Instructions::_l2d(){
+    long value = frames.top().operands.popLong();
+    double result = double(value);
+    frames.top().operands.pushDouble(result);
     addToPC(1);
 }
 
 void Instructions::_f2i(){
+    float value = frames.top().operands.popFloat();
+    int result = int(value);
+    frames.top().operands.push(Slot(SlotType::INT, reinterpret_cast<u4&>(result)));
     addToPC(1);
 }
 
 void Instructions::_f2l(){
+    float value = frames.top().operands.popFloat();
+    long result = long(value);
+    frames.top().operands.pushLong(result);
     addToPC(1);
 }
 
 void Instructions::_f2d(){
+    float value = frames.top().operands.popFloat();
+    double result = double(value);
+    frames.top().operands.pushDouble(result);
     addToPC(1);
 }
 
@@ -1092,18 +1421,33 @@ void Instructions::_d2f(){
 }
 
 void Instructions::_i2b(){
+    int value = frames.top().operands.popInt();
+    frames.top().operands.push(Slot(SlotType::BYTE, reinterpret_cast<u4&>(value)));
     addToPC(1);
 }
 
 void Instructions::_i2c(){
+    int value = frames.top().operands.popInt();
+    frames.top().operands.push(Slot(SlotType::CHAR, reinterpret_cast<u4&>(value)));
     addToPC(1);
 }
 
 void Instructions::_i2s(){
+    int value = frames.top().operands.popInt();
+    frames.top().operands.push(Slot(SlotType::SHORT, reinterpret_cast<u4&>(value)));
     addToPC(1);
 }
 
 void Instructions::_lcmp(){
+    long value2 = frames.top().operands.popLong();
+    long value1 = frames.top().operands.popLong();
+    int result = 0; // 0 significa igualdade
+    if (value1 > value2) {
+        result = 1;
+    } else if (value1 < value2) {
+        result = -1;
+    }
+    frames.top().operands.push(Slot(SlotType::INT, reinterpret_cast<u4&>(result)));
     addToPC(1);
 }
 
@@ -1323,10 +1667,64 @@ void Instructions::_ret(){
 }
 
 void Instructions::_tableswitch(){
-    addToPC(1);
+    std::cout << "tableswitch \n";
+    Frame f = frames.top();
+    int32_t index = f.operands.popInt();
+    uint32_t positionPC = f.PC;
+
+    uint8_t paddingbytes = (3 - (positionPC % 4));
+    positionPC += paddingbytes;
+    
+    int32_t defaultValue = (f.bytecode[positionPC+1] << 24) | (f.bytecode[positionPC+2] << 16) |
+    (f.bytecode[positionPC+3] << 8) | (f.bytecode[positionPC+4]);
+    positionPC += 4;
+
+    int32_t lowValue = (f.bytecode[positionPC+1] << 24) | (f.bytecode[positionPC+2] << 16) |
+    (f.bytecode[positionPC+3] << 8) | (f.bytecode[positionPC+4]);
+    positionPC += 4;
+
+    int32_t highValue = (f.bytecode[positionPC+1] << 24) | (f.bytecode[positionPC+2] << 16) |
+    (f.bytecode[positionPC+3] << 8) | (f.bytecode[positionPC+4]);
+    positionPC += 4;
+
+    if (index >= lowValue || index <= highValue) {
+        
+        int32_t jumpValue;
+        uint16_t auxPos = 0;
+        std::cout << "defaultvalue: " << defaultValue << std::endl;
+        for (int32_t i = 0; i <= (highValue - lowValue); i++) {
+            if ((i+lowValue )== index){
+                jumpValue = (f.bytecode[positionPC+1+auxPos] << 24) | (f.bytecode[positionPC+2+auxPos] << 16) |
+                (f.bytecode[positionPC+3+auxPos] << 8) | (f.bytecode[positionPC+4+auxPos]);
+                std::cout << "jumpValue: " << jumpValue << std::endl;
+                addToPC(jumpValue);
+                break;
+            }
+            auxPos += 4;
+        }
+    }
+    else {
+        addToPC(defaultValue); 
+        std::cout << "defaultvalue: " << defaultValue << std::endl;
+    }
+
 }
 
 void Instructions::_lookupswitch(){
+    Frame f = frames.top();
+    int32_t index = f.operands.popInt();
+    uint32_t positionPC = f.PC;
+    
+    uint8_t paddingbytes = (3 - (positionPC % 4));
+    positionPC += paddingbytes;
+
+    int32_t defaultValue = (f.bytecode[positionPC+1] << 24) | (f.bytecode[positionPC+2] << 16) |
+    (f.bytecode[positionPC+3] << 8) | (f.bytecode[positionPC+4]);
+    positionPC += 4;
+
+    
+
+
     addToPC(1);
 }
 
@@ -1395,7 +1793,6 @@ void Instructions::_invokevirtual(){
     if(name == "println") print(true);
     else if(name == "print") print(false);
     else initGenericMethod(frames, name, descriptor);
-    addToPC(3);
 }
 
 void Instructions::_invokeSpecial(){
@@ -1407,11 +1804,12 @@ void Instructions::_invokestatic(){
     u1 idx1 = f.bytecode[f.PC+1];
     u1 idx2 = f.bytecode[f.PC+2];
     u2 idx = getIndex(idx1, idx2);
+    
     ConstantPool cpt = f.classFile->constantPool;
-    std::string name = cpt.getNNameAndType(idx);
-    std::string descriptor = cpt.getDescriptor(idx);
+    std::string name = cpt.getNNameAndType(cpt[idx-1].FieldMethInter.nameTypeIndex-1);
+    std::string descriptor = cpt.getDescriptor(cpt[idx-1].FieldMethInter.nameTypeIndex-1);
+    
     initGenericMethod(frames, name, descriptor);
-    addToPC(3);
 }
 
 /*void Instructions::_invokeinterface(){
@@ -1655,7 +2053,9 @@ void Instructions::initGenericMethod(std::stack<Frame>& frames, std::string name
             break;
         }
     }
+    
 	Frame newframe(f.classFile, mthinfo);
+    newframe.PC = 0;
     int qtd = getNumberArgs(descriptor);
     for(u1 q=0; q<qtd; q++){
         newframe.variables[q] = f.operands.top();
@@ -1668,16 +2068,23 @@ int Instructions::getNumberArgs(std::string descriptor){
 	int qtd = 0;
 	std::size_t p = std::string::npos;
 
-	std::size_t refpos = descriptor.find_first_of("L");
+    
+    std::size_t end = descriptor.find_first_of(")");
+    std::string args = descriptor.substr(0, end+1);
+
+	std::size_t refpos = args.find_first_of("L");
 	if(refpos != p){
 		qtd++;
-		std::size_t ppos = descriptor.find_first_of(";");
-		descriptor.erase(refpos, ppos-refpos);
+		std::size_t ppos = args.find_first_of(";");
+		args.erase(refpos, ppos-refpos);
 	}
-	std::size_t c = descriptor.find_first_of("BCDFIJSZ");
-	for(;c != p;++qtd) c = descriptor.find_first_of("BCDFIJSZ", c+1);
+	std::size_t c = args.find_first_of("BCFISZ");
+	for(;c != p;++qtd) c = args.find_first_of("BCFISZ", c+1);
 
-	if(descriptor.find_first_of("[") != p ) qtd++;
+    std::size_t c2 = args.find_first_of("DJ");
+	for(;c2 != p;qtd+=2) c2 = args.find_first_of("DJ", c2+1);
+
+	if(args.find_first_of("[") != p ) qtd++;
 	return qtd;
 }
 
@@ -1692,14 +2099,13 @@ void Instructions::print(bool newline){
             std::cout << frames.top().operands.popBool();
             break;
         case SlotType::BYTE:
-            std::cout << frames.top().operands.top().value;
+            std::cout << std::to_string(frames.top().operands.popByte());
             frames.top().operands.pop();
             break;
         case SlotType::CHAR:
         {
-            char c = reinterpret_cast<char&>(frames.top().operands.top().value);
-            frames.top().operands.pop();
-            std::cout << (char)c;
+            char value = frames.top().operands.popChar();
+            std::cout << value;
             break;
         }
         case SlotType::INT:

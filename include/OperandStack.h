@@ -33,7 +33,36 @@ public:
      \brief Pega o valor do slot, passa para bool e retira da pilha.
    */
 	bool popBool();
+
+	/**
+	 * @brief Retira um short com sinal da pilha.
+	 * Faz o pop do slot do topo.
+	 * 
+	 * @return short O valor short criado.
+	 */
+	short popShort();
+
+	/**
+	 * @brief Retira um byte com sinal da pilha.
+	 * Faz o pop do topo..
+	 * 
+	 * @return int8_t O byte com sinal retornado.
+	 */
+	int8_t popByte();
+
+	/**
+	 * @brief Retira um char da pilha.
+	 * Faz o pop do topo.
+	 * 
+	 * @return char 
+	 */
+	char popChar();
 	
+	/*!
+     \brief Insere um Long na pilha ocupando duas posições.
+   */
+	void pushInt(int i);
+
 	/*!
      \brief Insere um Long na pilha ocupando duas posições.
    */
@@ -42,13 +71,25 @@ public:
 	/*!
      \brief Insere um double na pilha ocupando duas posições.
    */
-	void pushDouble(double d);
-	
+	void pushFloat(float f);
+
 	/*!
-     \brief Retira e retorna a referencia de uma string da pilha.
+     \brief Insere um double na pilha ocupando duas posições.
    */
+	void pushDouble(double d);
+
+	/**
+	 * @brief Retorna o topo da pilha como uma string.
+	 * Faz pop do topo.
+	 * 
+	 * @return char* Ponteiro para a string em questão.
+	 */
 	char* popString();
-	
+
+	/**
+	 * @brief insere um u8 genérico na pilha.
+	 * 
+	 */
 	void pushU8(SlotType, u8);
 
 };
