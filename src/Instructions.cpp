@@ -1792,7 +1792,7 @@ void Instructions::_invokevirtual(){
     if(name == "println") print(true);
     else if(name == "print") print(false);
     else initGenericMethod(frames, name, descriptor);
-    if(name == "println" | name == "print") addToPC(3);
+    if(name == "println" || name == "print") addToPC(3);
 }
 
 void Instructions::_invokeSpecial(){
