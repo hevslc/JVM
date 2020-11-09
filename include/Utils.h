@@ -3,6 +3,7 @@
 
 #include "Definitions.h"
 #include <string.h>
+#include <assert.h>
 
 	/*!
     \brief Junta os bytes mais significativos com os bytes menos significatos.
@@ -64,6 +65,8 @@
      */
     u2 getIndex(u1 byte1, u1 byte2);
 
+    int16_t getBranchOffset(u1 high, u1 low);
+
     /**
      * @brief Transforma um ponteiro de bytes em um u8.
      * Transforma a posição apontada.
@@ -79,4 +82,5 @@
      */
     char* u8ToCharPointer(u4, u4);
 
+    
 	#endif // UTILS_H_

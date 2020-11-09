@@ -31,6 +31,11 @@ bool Operands::popBool(){
 	return getBool(slot.value);
 }
 
+void Operands::pushInt(int i){
+	u4 v = reinterpret_cast<u4&>(i);
+	push(Slot(SlotType::INT, v));
+}
+
 void Operands::pushLong(long l){
 	u8 v = reinterpret_cast<u8&>(l);
 	u4 high = u4(v >> 32);
@@ -53,6 +58,7 @@ void Operands::pushU8(SlotType type, u8 value) {
 	push(Slot(type, low));
 	push(Slot(type, high));
 }
+
 
 char* Operands::popString() {
 	Slot slot = top();

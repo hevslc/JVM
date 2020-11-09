@@ -51,6 +51,47 @@ public:
      */
     void addToPC(int value);
 
+    /**
+     * @brief Identifica o número de argumentos
+     * @param string com o descritor do método
+     * @return int Número de argumentos
+     */
+    int getNumberArgs(std::string descriptor);
+
+    /**
+     * @brief Retorna ponteiro do método de nome passado no argumento
+     * @param string nome do método
+     * @param Methods vetor com referência dos métodos
+     * @return MethodInfo referência do método encontrado
+     */
+    MethodInfo* getMethodInfo(std::string name);
+
+    /**
+     * @brief Faz operações ao invocar novo método: cria novo frame
+     * @param frames ponteiro para a pilha de frames
+     * @param name nome do método invocado
+     * @param descriptor descritor do método invocado
+     */
+    void initGenericMethod(std::stack<Frame>& frames, std::string name, std::string descriptor);
+
+    /**
+     * @brief Realiza escrita de valor no terminal, chamando println do java.
+     */
+    void print(bool newline);
+   
+   /**
+     * Guarda um true se a última instrução foi um wide ou guarda um false caso contrário.
+     */
+    bool iswide;
+
+    /**
+     * @brief Carrega um offset de 2 bytes.
+     * Considera que o primeiro byte do offset está logo depois de PC.
+     * 
+     * @return int O offset carregado.
+     */
+    int loadOffsetS2();
+
     void _nop();
     void _aconst_null();
     void _iconst_m1();
