@@ -932,6 +932,8 @@ void Instructions::_dup2_x2(){
     else if (value1.type == SlotType::LONG && value1.type == SlotType::DOUBLE) {
         // Forma 4
         if (value2.type == SlotType::LONG && value2.type == SlotType::DOUBLE) {
+            frames.top().operands.push(value3); // Push para compensar pop de value 3 nesse caso em que não é usado
+
             frames.top().operands.push(value1);
             frames.top().operands.push(value2);
             frames.top().operands.push(value1);
@@ -1225,26 +1227,63 @@ void Instructions::_lushr(){
 }
 
 void Instructions::_iand(){
+    Frame f = frames.top();
+    int value2 = f.operands.popInt();
+    int value1 = f.operands.popInt();
+
+    int result = value1 & value2;
+    f.operands.push(Slot(SlotType::INT, result));
+
     addToPC(1);
 }
 
 void Instructions::_land(){
+    Frame f = frames.top();
+    long value2 = f.operands.popLong();
+    long value1 = f.operands.popLong();
+
+    long result = value1 & value2;
+    f.operands.push(Slot(SlotType::LONG, result));
     addToPC(1);
 }
 
 void Instructions::_ior(){
+    Frame f = frames.top();
+    int value2 = f.operands.popInt();
+    int value1 = f.operands.popInt();
+
+    int result = value1 | value2;
+    f.operands.push(Slot(SlotType::INT, result));
     addToPC(1);
 }
 
 void Instructions::_lor(){
+    Frame f = frames.top();
+    long value2 = f.operands.popLong();
+    long value1 = f.operands.popLong();
+
+    long result = value1 | value2;
+    f.operands.push(Slot(SlotType::LONG, result));
     addToPC(1);
 }
 
 void Instructions::_ixor(){
+    Frame f = frames.top();
+    int value2 = f.operands.popInt();
+    int value1 = f.operands.popInt();
+
+    int result = value1 ^ value2;
+    f.operands.push(Slot(SlotType::INT, result));
     addToPC(1);
 }
 
 void Instructions::_lxor(){
+    Frame f = frames.top();
+    long value2 = f.operands.popLong();
+    long value1 = f.operands.popLong();
+
+    long result = value1 ^ value2;
+    f.operands.push(Slot(SlotType::LONG, result));
     addToPC(1);
 }
 
