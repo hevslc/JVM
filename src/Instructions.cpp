@@ -1637,7 +1637,6 @@ void Instructions::_ret(){
 }
 
 void Instructions::_tableswitch(){
-    std::cout << "tableswitch \n";
     Frame f = frames.top();
     int32_t index = f.operands.popInt();
     uint32_t positionPC = f.PC;
@@ -1666,14 +1665,13 @@ void Instructions::_tableswitch(){
             if (i+lowValue == index){
                 jumpValue = (f.bytecode[positionPC+1+auxPos] << 24) | (f.bytecode[positionPC+2+auxPos] << 16) |
                 (f.bytecode[positionPC+3+auxPos] << 8) | (f.bytecode[positionPC+4+auxPos]);
-                std::cout << "jumpValue: " << jumpValue << std::endl;
                 addToPC(jumpValue);
                 break;
             }
             auxPos += 4;
         }
     }
-    else {addToPC(defaultValue); std::cout << "defaultvalue: " << defaultValue << std::endl;}
+    else {addToPC(defaultValue);}
 
 }
 
