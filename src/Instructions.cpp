@@ -1,5 +1,6 @@
 #include "Instructions.h"
 #include <assert.h>
+#include <stdbool.h>
 
 
 Instructions::Instructions(ClassFile* classFile):iswide(false){
@@ -236,11 +237,15 @@ void Instructions::_aconst_null(){
 }
 
 void Instructions::_iconst_m1(){
-    frames.top().operands.push(Slot(SlotType::INT, -1));
+    int m1 = -1;
+    u4 v = reinterpret_cast<u4&>(m1);
+    frames.top().operands.push(Slot(SlotType::INT, v));
+    //std::cout << getInt(frames.top().operands.top().value) << std::endl;
     addToPC(1);
 }
 
 void Instructions::_iconst_0(){
+    std::cout << "veio" << std::endl;
     frames.top().operands.push(Slot(SlotType::INT, 0));
     addToPC(1);
 }
@@ -1632,12 +1637,81 @@ void Instructions::_ret(){
 }
 
 void Instructions::_tableswitch(){
-    addToPC(1);
+    Frame f = frames.top();
+    int32_t index = f.operands.popInt();
+    uint32_t positionPC = f.PC;
+
+    uint8_t paddingbytes = (3 - (positionPC % 4));
+    positionPC += paddingbytes;
+    
+    int32_t defaultValue = (f.bytecode[positionPC+1] << 24) | (f.bytecode[positionPC+2] << 16) |
+    (f.bytecode[positionPC+3] << 8) | (f.bytecode[positionPC+4]);
+    positionPC += 4;
+
+    int32_t lowValue = (f.bytecode[positionPC+1] << 24) | (f.bytecode[positionPC+2] << 16) |
+    (f.bytecode[positionPC+3] << 8) | (f.bytecode[positionPC+4]);
+    positionPC += 4;
+
+    int32_t highValue = (f.bytecode[positionPC+1] << 24) | (f.bytecode[positionPC+2] << 16) |
+    (f.bytecode[positionPC+3] << 8) | (f.bytecode[positionPC+4]);
+    positionPC += 4;
+
+    if (index >= lowValue || index <= highValue) {
+        
+        int32_t jumpValue;
+        uint16_t auxPos = 0;
+
+        for (int32_t i = 0; i <= (highValue - lowValue); i++) {
+            if (i+lowValue == index){
+                jumpValue = (f.bytecode[positionPC+1+auxPos] << 24) | (f.bytecode[positionPC+2+auxPos] << 16) |
+                (f.bytecode[positionPC+3+auxPos] << 8) | (f.bytecode[positionPC+4+auxPos]);
+                
+                addToPC(jumpValue);
+                break;
+            }
+            auxPos += 4;
+        }
+    }
+    else {addToPC(defaultValue);}
+
 }
 
 void Instructions::_lookupswitch(){
-    addToPC(1);
-}
+    Frame f = frames.top();
+    int32_t key = f.operands.popInt();
+    bool flag = false;
+    uint32_t positionPC = f.PC;
+    
+    uint8_t paddingbytes = (3 - (positionPC % 4));
+    positionPC += paddingbytes;
+
+    int32_t defaultValue = (f.bytecode[positionPC+1] << 24) | (f.bytecode[positionPC+2] << 16) |
+    (f.bytecode[positionPC+3] << 8) | (f.bytecode[positionPC+4]);
+    positionPC += 4;
+
+    uint32_t npairs = (f.bytecode[positionPC+1] << 24) | (f.bytecode[positionPC+2] << 16) |
+    (f.bytecode[positionPC+3] << 8) | (f.bytecode[positionPC+4]);
+    positionPC += 4;
+
+    int32_t intbytePair;
+    int32_t offsetbytePair;
+    for (uint16_t i = 0; i < npairs; i++) {
+        intbytePair = (f.bytecode[positionPC+1] << 24) | (f.bytecode[positionPC+2] << 16) |
+        (f.bytecode[positionPC+3] << 8) | (f.bytecode[positionPC+4]);
+        positionPC += 4;
+
+        if (key == intbytePair) {
+            flag = true;
+            offsetbytePair = (f.bytecode[positionPC+1] << 24) | (f.bytecode[positionPC+2] << 16) |
+            (f.bytecode[positionPC+3] << 8) | (f.bytecode[positionPC+4]);
+            addToPC(offsetbytePair);
+            break;
+        }
+        positionPC += 4;
+    }
+
+    if (!flag) {addToPC(defaultValue);}
+ }
 
 void Instructions::_ireturn(){
     frames.pop();
@@ -1716,9 +1790,11 @@ void Instructions::_invokestatic(){
     u1 idx1 = f.bytecode[f.PC+1];
     u1 idx2 = f.bytecode[f.PC+2];
     u2 idx = getIndex(idx1, idx2);
+    
     ConstantPool cpt = f.classFile->constantPool;
-    std::string name = cpt.getNNameAndType(idx);
-    std::string descriptor = cpt.getDescriptor(idx);
+    std::string name = cpt.getNNameAndType(cpt[idx-1].FieldMethInter.nameTypeIndex-1);
+    std::string descriptor = cpt.getDescriptor(cpt[idx-1].FieldMethInter.nameTypeIndex-1);
+    
     initGenericMethod(frames, name, descriptor);
     addToPC(3);
 }
@@ -1930,16 +2006,23 @@ int Instructions::getNumberArgs(std::string descriptor){
 	int qtd = 0;
 	std::size_t p = std::string::npos;
 
-	std::size_t refpos = descriptor.find_first_of("L");
+    
+    std::size_t end = descriptor.find_first_of(")");
+    std::string args = descriptor.substr(0, end+1);
+
+	std::size_t refpos = args.find_first_of("L");
 	if(refpos != p){
 		qtd++;
-		std::size_t ppos = descriptor.find_first_of(";");
-		descriptor.erase(refpos, ppos-refpos);
+		std::size_t ppos = args.find_first_of(";");
+		args.erase(refpos, ppos-refpos);
 	}
-	std::size_t c = descriptor.find_first_of("BCDFIJSZ");
-	for(;c != p;++qtd) c = descriptor.find_first_of("BCDFIJSZ", c+1);
+	std::size_t c = args.find_first_of("BCFISZ");
+	for(;c != p;++qtd) c = args.find_first_of("BCDFIJSZ", c+1);
 
-	if(descriptor.find_first_of("[") != p ) qtd++;
+    std::size_t c2 = args.find_first_of("BCDFIJSZ");
+	for(;c2 != p;qtd+=2) c2 = args.find_first_of("DJ", c2+1);
+
+	if(args.find_first_of("[") != p ) qtd++;
 	return qtd;
 }
 
