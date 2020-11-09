@@ -1321,6 +1321,15 @@ void Instructions::_i2s(){
 }
 
 void Instructions::_lcmp(){
+    long value2 = frames.top().operands.popLong();
+    long value1 = frames.top().operands.popLong();
+    int result = 0; // 0 significa igualdade
+    if (value1 > value2) {
+        result = 1;
+    } else if (value1 < value2) {
+        result = -1;
+    }
+    frames.top().operands.push(Slot(SlotType::INT, reinterpret_cast<u4&>(result)));
     addToPC(1);
 }
 
