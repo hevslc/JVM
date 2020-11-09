@@ -1171,10 +1171,18 @@ void Instructions::_dneg(){
 }
 
 void Instructions::_ishl(){
+    int value2 = 0x1f & frames.top().operands.popInt();
+    int value1 = frames.top().operands.popInt();
+    int result = value1 << value2;
+    frames.top().operands.push(Slot(SlotType::INT, result));
     addToPC(1);
 }
 
 void Instructions::_lshl(){
+    int value2 = 0x3f & frames.top().operands.popInt();
+    long value1 = frames.top().operands.popLong();
+    long result = value1 << value2;
+    frames.top().operands.pushLong(result);
     addToPC(1);
 }
 
