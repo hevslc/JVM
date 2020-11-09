@@ -219,22 +219,4 @@ public:
 	}
 };
 
-class Array{
-public:
-	enum type{T_BOOLEAN=4, T_CHAR=5, T_FLOAT=6, T_DOUBLE=7, 
-			  T_BYTE=8, T_SHORT=9, T_INT=10, T_LONG=11, T_CLASS, T_ARRAYCHAR,
-			  T_ARRAYU4, T_INTERFACE};
-			  
-	type   				atype;
-	int	 				size=1;
-	int					dim=1;
-	std::vector<int>	dimensions;
-	void*				values;
-	Array(type atype, int size, int dim) : atype(atype), size(size), dim(dim) {}
-	Array(int size) : size(size) {}
-	Array(type atype, int dim) : atype(atype), dim(dim) {}
-	Array() {}
-	int offset(int* idxs);
-};
-
 #endif

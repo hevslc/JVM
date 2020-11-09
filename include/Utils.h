@@ -82,5 +82,6 @@
      */
     char* u8ToCharPointer(u4, u4);
 
+    int offset(int* idxs);
     
 	#endif // UTILS_H_

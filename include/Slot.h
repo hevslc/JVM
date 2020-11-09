@@ -17,7 +17,8 @@ enum class SlotType
     REFERENCE,
     RETURN_ADDRESS,
     DOUBLE,
-    STRING_REF
+    STRING_REF,
+    SHORT
 };
 
 /**

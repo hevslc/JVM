@@ -565,20 +565,24 @@ void Instructions::_daload(){
 }
 
 void Instructions::_aaload(){
-    int idx[1] = {frames.top().operands.popInt()};
-    Array *array = static_cast<Array*>(frames.top().operands.top().ref.object);
+    int idx = frames.top().operands.popInt();
+    Slot slot = frames.top().operands.top();
     frames.top().operands.pop();
-    frames.top().operands.push(Slot(SlotType::REFERENCE, 0));
-    if(array->atype == Array::type::T_ARRAYCHAR){
-        char * values = static_cast<char*>(array->values);
-        char * str = new char[array->size];
-        for(int i=0; i<array->dimensions[1]; i++) str[i] = values[i];
-        frames.top().operands.top().ref.str = str;
+
+    if(slot.type == SlotType::RETURN_ADDRESS){
+        u4 uidx = reinterpret_cast<u4&>(idx);
+        frames.top().operands.push(Slot(SlotType::REFERENCE, uidx)); //colocar indice da entrada ao inveé da entrada
     }
     else{
-        void* values = static_cast<void*>(array->values);
-        //frames.top().operands.top().ref.object = values[array->offset(idx)];
+        int idx2 = getInt(slot.value);
+        int idxs[2] = {idx, idx2};
+        Array *array = static_cast<Array*>(heap[0]);
+        int offset = array->offset(idxs);
+        u4 uoffset = reinterpret_cast<u4&>(offset);
+        frames.top().operands.push(Slot(SlotType::REFERENCE, uoffset));
     }
+
+    //é colocado indice da entrada ao invés da entrada
     addToPC(1);
 }
 
@@ -800,13 +804,16 @@ void Instructions::_dastore(){
 void Instructions::_aastore(){
     Slot slot = frames.top().operands.top();
     frames.top().operands.pop();
-    int idx = frames.top().operands.popInt();
-    Array *array = static_cast<Array*>(frames.top().operands.top().ref.object);
-    frames.top().operands.pop();
-    if(array->atype == Array::type::T_ARRAYCHAR){
-        //array->values[0];
-    }
+    int idxarray = frames.top().operands.popInt();
+    int idxstr = frames.top().operands.popInt();
     
+    Array *array = static_cast<Array*>(heap[0]);
+    int idxs[2] = {idxarray, idxstr};
+    int sizestr = (int)strlen(slot.ref.str);
+    //std::cout << "off: " << array->offset(idxs) << std::endl;
+    for(auto i=array->offset(idxs); i<sizestr; i++){
+        array->values[i].value = slot.ref.str[i];
+    }
     addToPC(1);
 }
 
@@ -1428,38 +1435,70 @@ void Instructions::_newarray(){
 
     Array *array = new Array(Array::type(atype), count, 1);
     array->dimensions.push_back(1);
+    array->values = new Slot[array->size];
     switch (array->atype){
     case Array::type::T_BOOLEAN :
-        // std::array<bool,reinterpret_cast<int&>(array->size)>
-        array->values = new bool[array->size];
+        for(int i=0; i<array->size; i++){
+            Slot slot = Slot(SlotType::BOOL, 0);
+            slot.ref.object = new bool[array->size];
+            array->values[i] = slot;
+        }
         break;
     case Array::type::T_BYTE :
-        array->values = new u1[array->size];
+        for(int i=0; i<array->size; i++){
+            Slot slot = Slot(SlotType::BYTE, 0);
+            slot.ref.object = new u1[array->size];
+            array->values[i] = slot;
+        }
         break;
     case Array::type::T_CHAR :
-        array->values = new char[array->size];
+        for(int i=0; i<array->size; i++){
+            Slot slot = Slot(SlotType::CHAR, 0);
+            slot.ref.object = new char[array->size];
+            array->values[i] = slot;
+        }
         break;
     case Array::type::T_DOUBLE :
-        array->values = new double[array->size];
+        for(int i=0; i<array->size; i++){
+            Slot slot = Slot(SlotType::DOUBLE, 0);
+            slot.ref.object = new double[array->size];
+            array->values[i] = slot;
+        }
         break;
     case Array::type::T_FLOAT :
-        array->values = new float[array->size];
+        for(int i=0; i<array->size; i++){
+            Slot slot = Slot(SlotType::FLOAT, 0);
+            slot.ref.object = new float[array->size];
+            array->values[i] = slot;
+        }
         break;
     case Array::type::T_INT :
-        array->values = new int[array->size];
+        for(int i=0; i<array->size; i++){
+            Slot slot = Slot(SlotType::INT, 0);
+            slot.ref.object = new int[array->size];
+            array->values[i] = slot;
+        }
         break;
     case Array::type::T_LONG :
-        array->values = new long[array->size];
+        for(int i=0; i<array->size; i++){
+            Slot slot = Slot(SlotType::LONG, 0);
+            slot.ref.object = new long[array->size];
+            array->values[i] = slot;
+        }
         break;
     case Array::type::T_SHORT :
-        array->values = new short[array->size];
+        for(int i=0; i<array->size; i++){
+            Slot slot = Slot(SlotType::SHORT, 0);
+            slot.ref.object = new short[array->size];
+            array->values[i] = slot;
+        }
         break;    
     default:
         std::cout << "Tipo do array inválido" << std::endl;
         break;
     }
     heap.push_back(array);
-    frames.top().operands.push(Slot(SlotType::REFERENCE, 0));
+    frames.top().operands.push(Slot(SlotType::RETURN_ADDRESS, 0));
     frames.top().operands.top().ref.object = array;
     addToPC(2);
 }
@@ -1484,9 +1523,14 @@ void Instructions::_anewarray(){
         std::cout << "Tipo do array inválido" << std::endl;
         break;
     }
-    array->values = new void* [array->size];
+    array->values = new Slot[array->size];
+    if((array->atype == Array::type::T_CLASS) &
+        (frames.top().classFile->constantPool.getUtf8Class(cp.Class.nameIndex-1) == "String")){
+            for(int i=0; i<array->size; i++) array->values[i] = Slot(SlotType::CHAR, 0);
+        }
+    else for(int i=0; i<array->size; i++) array->values[i] = Slot(SlotType::REFERENCE,0);
     heap.push_back(array);
-    frames.top().operands.push(Slot(SlotType::REFERENCE, 0));
+    frames.top().operands.push(Slot(SlotType::RETURN_ADDRESS, 0));
     frames.top().operands.top().ref.object = array;
     addToPC(3);  
 }
@@ -1548,18 +1592,19 @@ void Instructions::_multianewarray(){
         mtx->dimensions.push_back(f.operands.popInt());
         mtx->size *= mtx->dimensions.back();
     }
-    
-    std::string type = f.classFile->constantPool.getUtf8Class(idx-1);
-    if(type.find("String") != std::string::npos){
-        mtx->values = new char[mtx->size];
-        frames.top().operands.push(Slot(SlotType::STRING_REF, 0));
-    }        
-    else{ 
-        mtx->values = new void*[mtx->size];
-        frames.top().operands.push(Slot(SlotType::REFERENCE, 0));
-    }   
-    heap.push_back(mtx);
+
+    mtx->values = new Slot[mtx->size];
+    //if((mtxtype == Array::type::T_CLASS) &
+        //(frames.top().classFile->constantPool.getUtf8Class(cp.Class.nameIndex-1) == "String")){
+            //for(int i=0; i<mtx->size; i++) mtx->values[i] = Slot(SlotType::REFERENCE, 0);
+        //}
+    //else for(int i=0; i<mtx->size; i++) mtx->values[i] = Slot(SlotType::REFERENCE,0);
+    for(int i=0; i<mtx->size; i++) mtx->values[i] = Slot(SlotType::REFERENCE,0);
+
+    frames.top().operands.push(Slot(SlotType::RETURN_ADDRESS, 0));
     frames.top().operands.top().ref.object = mtx;
+    heap.push_back(mtx);
+    
     addToPC(4);      
     //std::cout << mtx << std::endl;  
     //std::cout << mtx->dim << std::endl;
@@ -1638,6 +1683,10 @@ int Instructions::getNumberArgs(std::string descriptor){
 
 void Instructions::print(bool newline){
     SlotType type = frames.top().operands.top().type;
+    Array *array = static_cast<Array*>(heap[0]);
+    for(int i=10; i<array->dimensions[1]; i++){
+        std::cout << (char)array->values[i].value;
+    }
     switch(type){
         case SlotType::BOOL:
             std::cout << frames.top().operands.popBool();
@@ -1668,6 +1717,15 @@ void Instructions::print(bool newline){
         case SlotType::STRING_REF:
             std::cout << frames.top().operands.popString();
             break;
+        case SlotType::REFERENCE:
+        {
+            int offset = frames.top().operands.popInt();
+            Array *array = static_cast<Array*>(heap[0]);
+            for(int i=offset; i<array->dimensions[1]; i++){
+                std::cout << (char)array->values[i].value;
+            }
+            break;
+        }
         default:
             std::cout << "Tipo invalido para impressão";
             break;
