@@ -817,10 +817,9 @@ void Instructions::_aastore(){
     int idxs[2] = {idxarray, idxstr};
     int sizestr = (int)strlen(slot.ref.str);
     int off = array->offset(idxs);
-    for(auto i=off; i<off + sizestr; i++){
-        array->values[i].value = slot.ref.str[i];
+    for(auto i=off, j=0; i<(off + sizestr); i++, j++){
+        array->values[i].value = slot.ref.str[j];
     }
-
     addToPC(1);
 }
 
@@ -1793,6 +1792,7 @@ void Instructions::_invokevirtual(){
     if(name == "println") print(true);
     else if(name == "print") print(false);
     else initGenericMethod(frames, name, descriptor);
+    if(name == "println" | name == "print") addToPC(3);
 }
 
 void Instructions::_invokeSpecial(){
@@ -2090,10 +2090,6 @@ int Instructions::getNumberArgs(std::string descriptor){
 
 void Instructions::print(bool newline){
     SlotType type = frames.top().operands.top().type;
-    Array *array = static_cast<Array*>(heap[0]);
-    for(int i=10; i<array->dimensions[1]; i++){
-        std::cout << (char)array->values[i].value;
-    }
     switch(type){
         case SlotType::BOOL:
             std::cout << frames.top().operands.popBool();
@@ -2127,7 +2123,7 @@ void Instructions::print(bool newline){
         {
             int offset = frames.top().operands.popInt();
             Array *array = static_cast<Array*>(heap[0]);
-            for(int i=offset; i<array->dimensions[1]; i++){
+            for(int i=offset; i<(offset+array->dimensions[1]); i++){
                 std::cout << (char)array->values[i].value;
             }
             break;
