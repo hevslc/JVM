@@ -1637,33 +1637,59 @@ void Instructions::_ret(){
 
 void Instructions::_tableswitch(){
     Frame f = frames.top();
-    int idx = f.operands.popInt();
-    int i = idx + 1;
-    i += (i % 4);
+    int32_t index = f.operands.popInt();
+    uint32_t positionPC = f.PC;
 
-    int default_ = getIntSwicth(f.bytecode[i], f.bytecode[i+1], f.bytecode[i+2], f.bytecode[i+3]);
-    i += 4;
-    int low_ = getIntSwicth(f.bytecode[i], f.bytecode[i+1], f.bytecode[i+2], f.bytecode[i+3]);
-    i += 4;
-    int high_ = getIntSwicth(f.bytecode[i], f.bytecode[i+1], f.bytecode[i+2], f.bytecode[i+3]);
-    i += 4;
+    uint8_t paddingbytes = (3 - (positionPC % 4));
+    positionPC += paddingbytes;
+    
+    int32_t defaultValue = (f.bytecode[positionPC+1] << 24) | (f.bytecode[positionPC+2] << 16) |
+    (f.bytecode[positionPC+3] << 8) | (f.bytecode[positionPC+4]);
+    positionPC += 4;
 
-    int s = high_ - low_ + 1;
-    std::vector<int> joffsets;
-    for(int k; k<s; k++, i+=4)
-        joffsets.push_back(getIntSwicth(f.bytecode[i], f.bytecode[i+1], f.bytecode[i+2], f.bytecode[i+3]));
+    int32_t lowValue = (f.bytecode[positionPC+1] << 24) | (f.bytecode[positionPC+2] << 16) |
+    (f.bytecode[positionPC+3] << 8) | (f.bytecode[positionPC+4]);
+    positionPC += 4;
 
-    int jmp = i = idx-1;
+    int32_t highValue = (f.bytecode[positionPC+1] << 24) | (f.bytecode[positionPC+2] << 16) |
+    (f.bytecode[positionPC+3] << 8) | (f.bytecode[positionPC+4]);
+    positionPC += 4;
 
-    if(jmp < low_ || jmp > high_){
-        int dPC = (int)frames.top().PC + default_;
-        frames.top().PC = reinterpret_cast<u4&>(dPC);
+    if (index >= lowValue || index <= highValue) {
+        
+        int32_t jumpValue;
+        uint16_t auxPos = 0;
+
+        for (int32_t i = 0; i <= (highValue - lowValue); i++) {
+            if (i+lowValue == index){
+                jumpValue = (f.bytecode[positionPC+1+auxPos] << 24) | (f.bytecode[positionPC+2+auxPos] << 16) |
+                (f.bytecode[positionPC+3+auxPos] << 8) | (f.bytecode[positionPC+4+auxPos]);
+                
+                addToPC(jumpValue);
+                break;
+            }
+            auxPos += 4;
+        }
     }
-    int nPC = (int)frames.top().PC + joffsets[jmp-low_];
-    frames.top().PC = reinterpret_cast<u4&>(nPC);
+    else {addToPC(defaultValue);}
+
 }
 
 void Instructions::_lookupswitch(){
+    Frame f = frames.top();
+    int32_t index = f.operands.popInt();
+    uint32_t positionPC = f.PC;
+    
+    uint8_t paddingbytes = (3 - (positionPC % 4));
+    positionPC += paddingbytes;
+
+    int32_t defaultValue = (f.bytecode[positionPC+1] << 24) | (f.bytecode[positionPC+2] << 16) |
+    (f.bytecode[positionPC+3] << 8) | (f.bytecode[positionPC+4]);
+    positionPC += 4;
+
+    
+
+
     addToPC(1);
 }
 
