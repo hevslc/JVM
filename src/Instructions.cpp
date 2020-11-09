@@ -754,7 +754,7 @@ void Instructions::_iastore(){
 }
 
 void Instructions::_lastore(){
-    long value = frames.top().operands.popLong();
+    long value = frames.top().operands.popLong(); //Value
     int idx = frames.top().operands.popInt(); //Index
     Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
     ((u8*)array->values)[idx] = value;
@@ -772,7 +772,7 @@ void Instructions::_fastore(){
 }
 
 void Instructions::_dastore(){
-    double value = frames.top().operands.popDouble();
+    double value = frames.top().operands.popDouble(); //Value
     int idx = frames.top().operands.popInt(); //Index
     Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
     ((u8*)array->values)[idx] = value;
