@@ -1237,63 +1237,57 @@ void Instructions::_lushr(){
 }
 
 void Instructions::_iand(){
-    Frame f = frames.top();
-    int value2 = f.operands.popInt();
-    int value1 = f.operands.popInt();
+    int value2 = frames.top().operands.popInt();
+    int value1 = frames.top().operands.popInt();
 
     int result = value1 & value2;
-    f.operands.push(Slot(SlotType::INT, result));
+    frames.top().operands.pushInt(result);
 
     addToPC(1);
 }
 
 void Instructions::_land(){
-    Frame f = frames.top();
-    long value2 = f.operands.popLong();
-    long value1 = f.operands.popLong();
-
+    long value2 = frames.top().operands.popLong();
+    long value1 = frames.top().operands.popLong();
+    
     long result = value1 & value2;
-    f.operands.push(Slot(SlotType::LONG, result));
+    frames.top().operands.pushLong(result);
     addToPC(1);
 }
 
 void Instructions::_ior(){
-    Frame f = frames.top();
-    int value2 = f.operands.popInt();
-    int value1 = f.operands.popInt();
+    int value2 = frames.top().operands.popInt();
+    int value1 = frames.top().operands.popInt();
 
     int result = value1 | value2;
-    f.operands.push(Slot(SlotType::INT, result));
+    frames.top().operands.pushInt(result);
     addToPC(1);
 }
 
 void Instructions::_lor(){
-    Frame f = frames.top();
-    long value2 = f.operands.popLong();
-    long value1 = f.operands.popLong();
+    long value2 = frames.top().operands.popLong();
+    long value1 = frames.top().operands.popLong();
 
     long result = value1 | value2;
-    f.operands.push(Slot(SlotType::LONG, result));
+    frames.top().operands.pushLong(result);
     addToPC(1);
 }
 
 void Instructions::_ixor(){
-    Frame f = frames.top();
-    int value2 = f.operands.popInt();
-    int value1 = f.operands.popInt();
+    int value2 = frames.top().operands.popInt();
+    int value1 = frames.top().operands.popInt();
 
     int result = value1 ^ value2;
-    f.operands.push(Slot(SlotType::INT, result));
+    frames.top().operands.pushInt(result);
     addToPC(1);
 }
 
 void Instructions::_lxor(){
-    Frame f = frames.top();
-    long value2 = f.operands.popLong();
-    long value1 = f.operands.popLong();
+    long value2 = frames.top().operands.popLong();
+    long value1 = frames.top().operands.popLong();
 
     long result = value1 ^ value2;
-    f.operands.push(Slot(SlotType::LONG, result));
+    frames.top().operands.pushLong(result);
     addToPC(1);
 }
 
