@@ -745,70 +745,75 @@ void Instructions::_astore_3(){
 }
 
 void Instructions::_iastore(){
-    // Slot slot =  frames.top().operands.top();
-    // frames.top().operands.pop();
-    // int idx = frames.top().operands.popInt();
-    // frames.top().operands.pop();
-    // frames.top().variables[idx] = slot;
-    // frames.top().operands.pop();
-    // addToPC(1);
+    int value =  frames.top().operands.popInt(); //Value
+    int idx = frames.top().operands.popInt(); //Index
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    ((u4*)array->values)[idx] = value;
+    frames.top().operands.pop();
+    addToPC(1);
 }
 
 void Instructions::_lastore(){
-    // Slot slot =  frames.top().operands.top();
-    // frames.top().operands.pop();
-    // int idx = frames.top().operands.popInt();
-    // frames.top().operands.pop();
-    // frames.top().variables[idx] = slot;
-    // frames.top().operands.pop();
-    // addToPC(1);
+    long value = frames.top().operands.popLong(); //Value
+    int idx = frames.top().operands.popInt(); //Index
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    ((u8*)array->values)[idx] = value;
+    frames.top().operands.pop();
+    addToPC(1);
 }
 
 void Instructions::_fastore(){
-    // Slot slot =  frames.top().operands.top();
-    // frames.top().operands.pop();
-    // int idx = frames.top().operands.popInt();
-    // frames.top().operands.pop();
-    // frames.top().variables[idx] = slot;
-    // frames.top().operands.pop();
-    // addToPC(1);
+    float value =  frames.top().operands.popFloat(); //Value
+    int idx = frames.top().operands.popInt(); //Index
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    ((u4*)array->values)[idx] = value;
+    frames.top().operands.pop();
+    addToPC(1);
 }
 
 void Instructions::_dastore(){
-    // u1 idx = frames.top().bytecode[frames.top().PC+1];
-    // frames.top().variables[idx] = frames.top().operands.top();
-    // frames.top().operands.pop();
-    // frames.top().variables[idx+1] = frames.top().operands.top();
-    // frames.top().operands.pop();
-    // addToPC(1);
+    double value = frames.top().operands.popDouble(); //Value
+    int idx = frames.top().operands.popInt(); //Index
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    ((u8*)array->values)[idx] = value;
+    frames.top().operands.pop();
+    addToPC(1);
 }
 
 void Instructions::_aastore(){
-    // u1 idx = frames.top().bytecode[frames.top().PC+1];
-    // frames.top().variables[idx] = frames.top().operands.top();
-    // frames.top().operands.pop();
-    // addToPC(1);
+    u4 value = frames.top().operands.popInt(); //Value (Pop 4 bytes)
+    int idx = frames.top().operands.popInt(); //Index
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    ((u4*)array->values)[idx] = value;
+    frames.top().operands.pop();
+    addToPC(1);
 }
 
 void Instructions::_bastore(){
-    // u1 idx = frames.top().bytecode[frames.top().PC+1];
-    // frames.top().variables[idx] = frames.top().operands.top();
-    // frames.top().operands.pop();
-    // addToPC(1);
+    u4 value = frames.top().operands.popBool(); //Value (Byte ou Bool, tanto faz o pop)
+    int idx = frames.top().operands.popInt(); //Index
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    ((u4*)array->values)[idx] = value;
+    frames.top().operands.pop();
+    addToPC(1);
 }
 
 void Instructions::_castore(){
-    // u1 idx = frames.top().bytecode[frames.top().PC+1];
-    // frames.top().variables[idx] = frames.top().operands.top();
-    // frames.top().operands.pop();
-    // addToPC(1);
+    u4 value = frames.top().operands.popChar(); //Value
+    int idx = frames.top().operands.popInt(); //Index
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    ((u4*)array->values)[idx] = value;
+    frames.top().operands.pop();
+    addToPC(1);
 }
 
 void Instructions::_sastore(){
-    // u1 idx = frames.top().bytecode[frames.top().PC+1];
-    // frames.top().variables[idx] = frames.top().operands.top();
-    // frames.top().operands.pop();
-    // addToPC(1);
+    u4 value = frames.top().operands.popShort(); //Value
+    int idx = frames.top().operands.popInt(); //Index
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    ((u4*)array->values)[idx] = value;
+    frames.top().operands.pop();
+    addToPC(1);
 }
 
 void Instructions::_pop(){
@@ -1737,40 +1742,42 @@ void Instructions::_newarray(){
     u4 atype = f.bytecode[f.PC+1] | 0x0000 ;
     u4 count = f.operands.popInt();
 
-    Array array = Array(Array::type(atype), count, 1);
-    array.dimensions.push_back(1);
-    switch (array.atype){
+    Array* array = new Array(Array::type(atype), count, 1);
+    array->dimensions.push_back(1);
+    switch (array->atype){
     case Array::type::T_BOOLEAN :
-        // std::array<bool,reinterpret_cast<int&>(array.size)>
-        array.values = new bool[array.size];
+        // std::array<bool,reinterpret_cast<int&>(array->size)>
+        array->values = new bool[array->size];
         break;
     case Array::type::T_BYTE :
-        array.values = new u1[array.size];
+        array->values = new u1[array->size];
         break;
     case Array::type::T_CHAR :
-        array.values = new char[array.size];
+        array->values = new char[array->size];
         break;
     case Array::type::T_DOUBLE :
-        array.values = new double[array.size];
+        array->values = new double[array->size];
         break;
     case Array::type::T_FLOAT :
-        array.values = new float[array.size];
+        array->values = new float[array->size];
         break;
     case Array::type::T_INT :
-        array.values = new int[array.size];
+        array->values = new int[array->size];
         break;
     case Array::type::T_LONG :
-        array.values = new long[array.size];
+        array->values = new long[array->size];
         break;
     case Array::type::T_SHORT :
-        array.values = new short[array.size];
+        array->values = new short[array->size];
         break;    
     default:
         std::cout << "Tipo do array inválido" << std::endl;
         break;
     }
-    heap.push_back(&array);
-    frames.top().operands.push(Slot(SlotType::REFERENCE, heap.size()-1));
+    heap.push_back(array);
+    Slot slot = Slot(SlotType::REFERENCE, heap.size()-1);
+    slot.ref.object = array;
+    frames.top().operands.push(slot);
     addToPC(2);
 }
 
