@@ -745,13 +745,15 @@ void Instructions::_astore_3(){
 }
 
 void Instructions::_iastore(){
-    // Slot slot =  frames.top().operands.top();
-    // frames.top().operands.pop();
-    // int idx = frames.top().operands.popInt();
-    // frames.top().operands.pop();
-    // frames.top().variables[idx] = slot;
-    // frames.top().operands.pop();
-    // addToPC(1);
+    Array *arrayRef;
+    Slot slot =  frames.top().operands.top(); //Value
+    frames.top().operands.pop();
+    int idx = frames.top().operands.popInt(); //Index
+    frames.top().operands.pop();
+    arrayRef = static_cast<Array*>(frames.top().operands.top().ref.object); //arrayRef
+    ((int *)arrayRef->values)[idx] = reinterpret_cast<int&>(slot.value);
+    frames.top().operands.pop();
+    addToPC(1);
 }
 
 void Instructions::_lastore(){
@@ -784,8 +786,13 @@ void Instructions::_dastore(){
 }
 
 void Instructions::_aastore(){
-    // u1 idx = frames.top().bytecode[frames.top().PC+1];
-    // frames.top().variables[idx] = frames.top().operands.top();
+    // Array *arrayRef;
+    // Slot slot =  frames.top().operands.top(); //Value
+    // frames.top().operands.pop();
+    // int idx = frames.top().operands.popInt(); //Index
+    // frames.top().operands.pop();
+    // arrayRef = static_cast<Array*>(frames.top().operands.top().ref.object); //arrayRef
+    // arrayRef->values[idx] = reinterpret_cast<void&>(slot.value);
     // frames.top().operands.pop();
     // addToPC(1);
 }
