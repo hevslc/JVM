@@ -328,9 +328,8 @@ void Instructions::_dconst_1(){
 
 void Instructions::_bipush(){
     Frame f = frames.top();
-    int byte = getInt(f.bytecode[f.PC+1]);
-    u4 v = reinterpret_cast<u4&>(byte);
-    frames.top().operands.push(Slot(SlotType::INT,v));
+    int signedbyte = static_cast<int8_t>(f.bytecode[f.PC+1]);
+    frames.top().operands.pushInt(signedbyte);
     addToPC(2);
 }
 
@@ -1028,10 +1027,9 @@ void Instructions::_swap(){
 }
 
 void Instructions::_iadd(){
-    u4 value2 = frames.top().operands.popInt();
-    u4 value1 = frames.top().operands.popInt();
-    u4 result = value1 + value2;
-    frames.top().operands.pushInt(result);
+    int value2 = frames.top().operands.popInt();
+    int value1 = frames.top().operands.popInt();
+    frames.top().operands.pushInt(value1 + value2);
     addToPC(1);
 }
 
@@ -1230,7 +1228,7 @@ void Instructions::_ishr(){
     int value2 = 0x1f & frames.top().operands.popInt();
     int value1 = frames.top().operands.popInt();
     int result = value1 >> value2;
-    frames.top().operands.push(Slot(SlotType::INT, result));
+    frames.top().operands.pushInt(result);
     addToPC(1);
 }
 
@@ -1268,10 +1266,7 @@ void Instructions::_iand(){
     Frame f = frames.top();
     int value2 = f.operands.popInt();
     int value1 = f.operands.popInt();
-
-    int result = value1 & value2;
-    f.operands.push(Slot(SlotType::INT, result));
-
+    frames.top().operands.pushInt(value1 & value2);
     addToPC(1);
 }
 
