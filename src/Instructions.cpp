@@ -1684,7 +1684,7 @@ void Instructions::_tableswitch(){
     (f.bytecode[positionPC+3] << 8) | (f.bytecode[positionPC+4]);
     positionPC += 4;
 
-    if (index >= lowValue || index <= highValue) {
+    if (index >= lowValue && index <= highValue) {
         
         int32_t jumpValue;
         uint16_t auxPos = 0;
