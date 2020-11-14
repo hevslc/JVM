@@ -824,8 +824,8 @@ void Instructions::_lastore(){
     Slot slotlow = frames.top().operands.top();
     frames.top().operands.pop();
     int idx = frames.top().operands.popInt(); //Index
-    Array* array = (Array*)heap[0]; //arrayRef
-    idx += idx;
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    if(idx!=0) idx += idx;
     array->values[idx] = slothigh;
     array->values[idx+1] = slotlow;
     frames.top().operands.pop();
@@ -833,19 +833,25 @@ void Instructions::_lastore(){
 }
 
 void Instructions::_fastore(){
-    float value =  frames.top().operands.popFloat(); //Value
+    Slot slot =  frames.top().operands.top(); //Value
+    frames.top().operands.pop();
     int idx = frames.top().operands.popInt(); //Index
     Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
-    ((u4*)array->values)[idx] = value;
+    array->values[idx] = slot;
     frames.top().operands.pop();
     addToPC(1);
 }
 
 void Instructions::_dastore(){
-    double value = frames.top().operands.popDouble(); //Value
+    Slot slothigh = frames.top().operands.top();
+    frames.top().operands.pop();
+    Slot slotlow = frames.top().operands.top();
+    frames.top().operands.pop();
     int idx = frames.top().operands.popInt(); //Index
     Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
-    ((u8*)array->values)[idx] = value;
+    if(idx!=0) idx += idx;
+    array->values[idx] = slothigh;
+    array->values[idx+1] = slotlow;
     frames.top().operands.pop();
     addToPC(1);
 }
@@ -867,19 +873,29 @@ void Instructions::_aastore(){
 }
 
 void Instructions::_bastore(){
-    u4 value = frames.top().operands.popBool(); //Value (Byte ou Bool, tanto faz o pop)
+    Slot slot =  frames.top().operands.top(); //Value
+    frames.top().operands.pop();
     int idx = frames.top().operands.popInt(); //Index
     Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
-    ((u4*)array->values)[idx] = value;
+    
+    slot.value = (u1)slot.value;
+    slot.type = SlotType::BYTE;
+    
+    array->values[idx] = slot;
     frames.top().operands.pop();
     addToPC(1);
 }
 
 void Instructions::_castore(){
-    u4 value = frames.top().operands.popChar(); //Value
+    Slot slot =  frames.top().operands.top(); //Value
+    frames.top().operands.pop();
     int idx = frames.top().operands.popInt(); //Index
     Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
-    ((u4*)array->values)[idx] = value;
+
+    slot.value = (char)slot.value;
+    slot.type = SlotType::CHAR;
+
+    array->values[idx] = slot;
     frames.top().operands.pop();
     addToPC(1);
 }
@@ -889,6 +905,10 @@ void Instructions::_sastore(){
     frames.top().operands.pop();
     int idx = frames.top().operands.popInt(); //Index
     Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    
+    slot.value = (short)slot.value;
+    slot.type = SlotType::SHORT;
+    
     array->values[idx] = slot;
     frames.top().operands.pop();
     addToPC(1);
