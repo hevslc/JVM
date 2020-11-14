@@ -560,6 +560,14 @@ void Instructions::_iaload(){
 }
 
 void Instructions::_laload(){
+    int idx = frames.top().operands.popInt(); //Index
+    if(idx!=0) idx += idx;
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    frames.top().operands.pop();
+    Slot slothigh = array->values[idx];
+    Slot slotlow = array->values[idx+1];
+    frames.top().operands.push(slotlow);
+    frames.top().operands.push(slothigh);
     addToPC(1);
 }
 
@@ -642,7 +650,7 @@ void Instructions::_astore(){
     u1 idx = frames.top().bytecode[frames.top().PC+1];
     frames.top().variables[idx] = frames.top().operands.top();
     frames.top().operands.pop();
-    addToPC(1);
+    addToPC(2);
 }
 
 void Instructions::_istore_0(){
@@ -784,10 +792,15 @@ void Instructions::_iastore(){
 }
 
 void Instructions::_lastore(){
-    long value = frames.top().operands.popLong(); //Value
+    Slot slothigh = frames.top().operands.top();
+    frames.top().operands.pop();
+    Slot slotlow = frames.top().operands.top();
+    frames.top().operands.pop();
     int idx = frames.top().operands.popInt(); //Index
-    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
-    ((u8*)array->values)[idx] = value;
+    Array* array = (Array*)heap[0]; //arrayRef
+    idx += idx;
+    array->values[idx] = slothigh;
+    array->values[idx+1] = slotlow;
     frames.top().operands.pop();
     addToPC(1);
 }
@@ -868,12 +881,7 @@ void Instructions::_pop2(){
 }
 
 void Instructions::_dup(){
-    Slot value = frames.top().operands.top();
-    frames.top().operands.pop();
-
-    frames.top().operands.push(value);
-    frames.top().operands.push(value);
-
+    frames.top().operands.push(frames.top().operands.top());
     addToPC(1);
 }
 
@@ -1839,8 +1847,10 @@ void Instructions::_new(){
 void Instructions::_newarray(){
     Frame f = frames.top();
     u4 atype = f.bytecode[f.PC+1] | 0x0000 ;
-    u4 count = f.operands.popInt();
+    int count = f.operands.popInt();
 
+    if(atype == Array::type::T_DOUBLE || atype == Array::type::T_LONG)
+        count = 2*count;
     Array *array = new Array(Array::type(atype), count, 1);
     array->dimensions.push_back(1);
     array->values = new Slot[array->size];
@@ -1863,6 +1873,7 @@ void Instructions::_newarray(){
     case Array::type::T_DOUBLE :
         for(int i=0; i<array->size; i++){
             array->values[i] = Slot(SlotType::DOUBLE, 0);
+            array->values[i] = Slot(SlotType::DOUBLE, 0);
         }
         break;
     case Array::type::T_FLOAT :
@@ -1878,6 +1889,7 @@ void Instructions::_newarray(){
     case Array::type::T_LONG :
         for(int i=0; i<array->size; i++){
             array->values[i] = Slot(SlotType::LONG, 0);
+            array->values[i] = Slot(SlotType::LONG, 0);
         }
         break;
     case Array::type::T_SHORT :
@@ -1890,7 +1902,7 @@ void Instructions::_newarray(){
         break;
     }
     heap.push_back(array);
-    frames.top().operands.push(Slot(SlotType::RETURN_ADDRESS, heap.size()));
+    frames.top().operands.push(Slot(SlotType::RETURN_ADDRESS, heap.size()-1));
     frames.top().operands.top().ref.object = array;
     addToPC(2);
 }
@@ -1922,7 +1934,7 @@ void Instructions::_anewarray(){
         }
     else for(int i=0; i<array->size; i++) array->values[i] = Slot(SlotType::REFERENCE,0);
     heap.push_back(array);
-    frames.top().operands.push(Slot(SlotType::RETURN_ADDRESS, heap.size()));
+    frames.top().operands.push(Slot(SlotType::RETURN_ADDRESS, heap.size()-1));
     frames.top().operands.top().ref.object = array;
     addToPC(3);  
 }
