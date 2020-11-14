@@ -616,16 +616,23 @@ void Instructions::_aaload(){
         newSlot.ref.object = slot.ref.object;
         frames.top().operands.push(newSlot);
     }
-
-    //é colocado indice da entrada ao invés da entrada
+    //é colocado indice da entrada ao invés da entrada (refência)
     addToPC(1);
 }
 
 void Instructions::_baload(){
+    int idx = frames.top().operands.popInt();
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    frames.top().operands.pop();
+    frames.top().operands.push(array->values[idx]);
     addToPC(1);
 }
 
 void Instructions::_caload(){
+    int idx = frames.top().operands.popInt();
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    frames.top().operands.pop();
+    frames.top().operands.push(array->values[idx]);
     addToPC(1);
 }
 
@@ -1721,7 +1728,6 @@ void Instructions::_tableswitch(){
                 jumpValue = (f.bytecode[positionPC+1+auxPos] << 24) | (f.bytecode[positionPC+2+auxPos] << 16) |
                 (f.bytecode[positionPC+3+auxPos] << 8) | (f.bytecode[positionPC+4+auxPos]);
                 addToPC(jumpValue);
-                std::cout << (int)frames.top().PC << std::endl;
                 break;
             }
             auxPos += 4;
@@ -1770,7 +1776,6 @@ void Instructions::_lookupswitch(){
 
 void Instructions::_ireturn(){
     int ret = frames.top().operands.popInt();
-    std::cout << ret << std::endl;
     frames.pop();
     frames.top().operands.pushInt(ret);
 }
