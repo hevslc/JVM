@@ -1760,19 +1760,31 @@ void Instructions::_ireturn(){
 }
 
 void Instructions::_lreturn(){
+    long ret = frames.top().operands.popLong();
+    std::cout << ret << std::endl;
     frames.pop();
+    frames.top().operands.pushLong(ret);
 }
 
 void Instructions::_freturn(){
+    float ret = frames.top().operands.popFloat();
+    std::cout << ret << std::endl;
     frames.pop();
+    frames.top().operands.pushFloat(ret);
 }
 
 void Instructions::_dreturn(){
+    double ret = frames.top().operands.popDouble();
+    std::cout << ret << std::endl;
     frames.pop();
+    frames.top().operands.pushDouble(ret);
 }
 
 void Instructions::_areturn(){
-    frames.pop();
+    u1 idx = frames.top().bytecode[frames.top().PC+1];
+    frames.top().variables[idx] = frames.top().operands.top();
+    frames.top().operands.pop();
+    frames.top().operands.push(frames.top().variables[idx]);
 }
 
 void Instructions::_return(){
