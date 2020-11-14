@@ -669,6 +669,7 @@ void Instructions::_istore_2(){
 void Instructions::_istore_3(){
     int value = frames.top().operands.popInt();
     u4 uv = reinterpret_cast<u4&>(value);
+    std::cout << "istore3: " << value << std::endl;
     frames.top().variables[3] = Slot(SlotType::INT, uv);
     addToPC(1);
 }
@@ -1424,7 +1425,8 @@ void Instructions::_i2c(){
 }
 
 void Instructions::_i2s(){
-    int value = frames.top().operands.popInt();
+    short int s = (short int)frames.top().operands.popInt();
+    int value = s;
     frames.top().operands.push(Slot(SlotType::SHORT, reinterpret_cast<u4&>(value)));
     addToPC(1);
 }
@@ -2122,6 +2124,7 @@ void Instructions::print(bool newline){
             break;
         }
         case SlotType::SHORT:
+            std::cout << "tag: " << (int)type << std::endl;
             std::cout << frames.top().operands.popShort();
             break;
         default:

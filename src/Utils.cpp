@@ -30,8 +30,8 @@ bool getBool(u4 bytes){
 }
 
 short getShort(u4 bytes) {
-	uint16_t v = uint16_t(bytes);
-	return reinterpret_cast<u2&>(v);
+	//uint16_t v = uint16_t(bytes);
+	return getInt(bytes);
 }
 
 int8_t getByte(u4 bytes) {
