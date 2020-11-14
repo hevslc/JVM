@@ -1720,7 +1720,6 @@ void Instructions::_tableswitch(){
             if (i+lowValue == index){
                 jumpValue = (f.bytecode[positionPC+1+auxPos] << 24) | (f.bytecode[positionPC+2+auxPos] << 16) |
                 (f.bytecode[positionPC+3+auxPos] << 8) | (f.bytecode[positionPC+4+auxPos]);
-                
                 addToPC(jumpValue);
                 std::cout << (int)frames.top().PC << std::endl;
                 break;
@@ -1728,7 +1727,7 @@ void Instructions::_tableswitch(){
             auxPos += 4;
         }
     }
-    else {addToPC(defaultValue); std::cout << (int)frames.top().PC << std::endl;}
+    else {addToPC(defaultValue);}
 
 }
 
