@@ -578,15 +578,19 @@ void Instructions::_aaload(){
 
     if(slot.type == SlotType::RETURN_ADDRESS){
         u4 uidx = reinterpret_cast<u4&>(idx);
-        frames.top().operands.push(Slot(SlotType::REFERENCE, uidx)); //colocar indice da entrada ao inveé da entrada
+        Slot newSlot = Slot(SlotType::REFERENCE, uidx);
+        newSlot.ref.object = slot.ref.object;
+        frames.top().operands.push(newSlot);
     }
     else{
         int idx2 = getInt(slot.value);
         int idxs[2] = {idx, idx2};
-        Array *array = static_cast<Array*>(heap[0]);
+        Array *array = static_cast<Array*>(slot.ref.object);
         int offset = array->offset(idxs);
         u4 uoffset = reinterpret_cast<u4&>(offset);
-        frames.top().operands.push(Slot(SlotType::REFERENCE, uoffset));
+        Slot newSlot = Slot(SlotType::REFERENCE, uoffset);
+        newSlot.ref.object = slot.ref.object;
+        frames.top().operands.push(newSlot);
     }
 
     //é colocado indice da entrada ao invés da entrada
@@ -773,7 +777,7 @@ void Instructions::_iastore(){
     int value =  frames.top().operands.popInt(); //Value
     int idx = frames.top().operands.popInt(); //Index
     Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
-    ((u4*)array->values)[idx] = value;
+    array->values[idx].value = value;
     frames.top().operands.pop();
     addToPC(1);
 }
@@ -1274,9 +1278,7 @@ void Instructions::_land(){
     Frame f = frames.top();
     long value2 = f.operands.popLong();
     long value1 = f.operands.popLong();
-
-    long result = value1 & value2;
-    f.operands.push(Slot(SlotType::LONG, result));
+    frames.top().operands.pushLong(value1&value2);
     addToPC(1);
 }
 
@@ -1284,9 +1286,7 @@ void Instructions::_ior(){
     Frame f = frames.top();
     int value2 = f.operands.popInt();
     int value1 = f.operands.popInt();
-
-    int result = value1 | value2;
-    f.operands.push(Slot(SlotType::INT, result));
+    frames.top().operands.pushInt(value1 | value2);
     addToPC(1);
 }
 
@@ -1294,9 +1294,7 @@ void Instructions::_lor(){
     Frame f = frames.top();
     long value2 = f.operands.popLong();
     long value1 = f.operands.popLong();
-
-    long result = value1 | value2;
-    f.operands.push(Slot(SlotType::LONG, result));
+    frames.top().operands.pushLong(value1 | value2);
     addToPC(1);
 }
 
@@ -1306,7 +1304,7 @@ void Instructions::_ixor(){
     int value1 = f.operands.popInt();
 
     int result = value1 ^ value2;
-    f.operands.push(Slot(SlotType::INT, result));
+    frames.top().operands.push(Slot(SlotType::INT, result));
     addToPC(1);
 }
 
@@ -1316,7 +1314,7 @@ void Instructions::_lxor(){
     long value1 = f.operands.popLong();
 
     long result = value1 ^ value2;
-    f.operands.push(Slot(SlotType::LONG, result));
+    frames.top().operands.push(Slot(SlotType::LONG, result));
     addToPC(1);
 }
 
@@ -1339,7 +1337,7 @@ void Instructions::_i2l(){
 void Instructions::_i2f(){
     int value = frames.top().operands.popInt();
     float result = float(value);
-    frames.top().operands.push(Slot(SlotType::FLOAT, reinterpret_cast<u4&>(result)));
+    frames.top().operands.pushFloat(result);
     addToPC(1);
 }
 
@@ -1353,14 +1351,14 @@ void Instructions::_i2d(){
 void Instructions::_l2i(){
     long value = frames.top().operands.popLong();
     int result = int(value);
-    frames.top().operands.push(Slot(SlotType::INT, reinterpret_cast<u4&>(result)));
+    frames.top().operands.pushInt(result);
     addToPC(1);
 }
 
 void Instructions::_l2f(){
     long value = frames.top().operands.popLong();
     float result = float(value);
-    frames.top().operands.push(Slot(SlotType::FLOAT, reinterpret_cast<u4&>(result)));
+    frames.top().operands.pushFloat(result);
     addToPC(1);
 }
 
@@ -1374,7 +1372,7 @@ void Instructions::_l2d(){
 void Instructions::_f2i(){
     float value = frames.top().operands.popFloat();
     int result = int(value);
-    frames.top().operands.push(Slot(SlotType::INT, reinterpret_cast<u4&>(result)));
+    frames.top().operands.pushInt(result);
     addToPC(1);
 }
 
@@ -1395,7 +1393,7 @@ void Instructions::_f2d(){
 void Instructions::_d2i(){
     double value = frames.top().operands.popDouble();
     int result = int(value);
-    frames.top().operands.push(Slot(SlotType::INT, reinterpret_cast<u4&>(result)));
+    frames.top().operands.pushInt(result);
     addToPC(1);
 }
 
@@ -1409,7 +1407,7 @@ void Instructions::_d2l(){
 void Instructions::_d2f(){
     double value = frames.top().operands.popDouble();
     float result = float(value);
-    frames.top().operands.push(Slot(SlotType::FLOAT, reinterpret_cast<u4&>(result)));
+    frames.top().operands.pushFloat(result);
     addToPC(1);
 }
 
@@ -1440,7 +1438,7 @@ void Instructions::_lcmp(){
     } else if (value1 < value2) {
         result = -1;
     }
-    frames.top().operands.push(Slot(SlotType::INT, reinterpret_cast<u4&>(result)));
+    frames.top().operands.pushInt(result);
     addToPC(1);
 }
 
@@ -1453,7 +1451,7 @@ void Instructions::_fcmpl(){
     } else if (value1 < value2) {
         result = -1;
     }
-    frames.top().operands.push(Slot(SlotType::INT, reinterpret_cast<u4&>(result)));
+    frames.top().operands.pushInt(result);
     addToPC(1);
 }
 
@@ -1466,7 +1464,7 @@ void Instructions::_fcmpg(){
     } else if (value1 < value2) {
         result = -1;
     }
-    frames.top().operands.push(Slot(SlotType::INT, reinterpret_cast<u4&>(result)));
+    frames.top().operands.pushInt(result);
     addToPC(1);
 }
 
@@ -1479,7 +1477,7 @@ void Instructions::_dcmpl(){
     } else if (value1 < value2) {
         result = -1;
     }
-    frames.top().operands.push(Slot(SlotType::INT, reinterpret_cast<u4&>(result)));
+    frames.top().operands.pushInt(result);
     addToPC(1);
 }
 
@@ -1492,7 +1490,7 @@ void Instructions::_dcmpg(){
     } else if (value1 < value2) {
         result = -1;
     }
-    frames.top().operands.push(Slot(SlotType::INT, reinterpret_cast<u4&>(result)));
+    frames.top().operands.pushInt(result);
     addToPC(1);
 }
 
@@ -1796,7 +1794,6 @@ void Instructions::_invokevirtual(){
     u1 idx1 = f.bytecode[f.PC+1];
     u1 idx2 = f.bytecode[f.PC+2];
     u2 idx = getIndex(idx1, idx2);
-    
     ConstantPool cpt = f.classFile->constantPool;
     Cpinfo cpmthd = cpt[idx-1];
     std::string name = cpt.getNNameAndType(cpmthd.FieldMethInter.nameTypeIndex-1);
@@ -1850,58 +1847,42 @@ void Instructions::_newarray(){
     switch (array->atype){
     case Array::type::T_BOOLEAN :
         for(int i=0; i<array->size; i++){
-            Slot slot = Slot(SlotType::BOOL, 0);
-            slot.ref.object = new bool[array->size];
-            array->values[i] = slot;
+            array->values[i] = Slot(SlotType::BOOL, 0);
         }
         break;
     case Array::type::T_BYTE :
         for(int i=0; i<array->size; i++){
-            Slot slot = Slot(SlotType::BYTE, 0);
-            slot.ref.object = new u1[array->size];
-            array->values[i] = slot;
+            array->values[i] = Slot(SlotType::BYTE, 0);
         }
         break;
     case Array::type::T_CHAR :
         for(int i=0; i<array->size; i++){
-            Slot slot = Slot(SlotType::CHAR, 0);
-            slot.ref.object = new char[array->size];
-            array->values[i] = slot;
+            array->values[i] = Slot(SlotType::CHAR, 0);
         }
         break;
     case Array::type::T_DOUBLE :
         for(int i=0; i<array->size; i++){
-            Slot slot = Slot(SlotType::DOUBLE, 0);
-            slot.ref.object = new double[array->size];
-            array->values[i] = slot;
+            array->values[i] = Slot(SlotType::DOUBLE, 0);
         }
         break;
     case Array::type::T_FLOAT :
         for(int i=0; i<array->size; i++){
-            Slot slot = Slot(SlotType::FLOAT, 0);
-            slot.ref.object = new float[array->size];
-            array->values[i] = slot;
+            array->values[i] = Slot(SlotType::FLOAT, 0);
         }
         break;
     case Array::type::T_INT :
         for(int i=0; i<array->size; i++){
-            Slot slot = Slot(SlotType::INT, 0);
-            slot.ref.object = new int[array->size];
-            array->values[i] = slot;
+            array->values[i] = Slot(SlotType::INT, 0);
         }
         break;
     case Array::type::T_LONG :
         for(int i=0; i<array->size; i++){
-            Slot slot = Slot(SlotType::LONG, 0);
-            slot.ref.object = new long[array->size];
-            array->values[i] = slot;
+            array->values[i] = Slot(SlotType::LONG, 0);
         }
         break;
     case Array::type::T_SHORT :
         for(int i=0; i<array->size; i++){
-            Slot slot = Slot(SlotType::SHORT, 0);
-            slot.ref.object = new short[array->size];
-            array->values[i] = slot;
+            array->values[i] = Slot(SlotType::SHORT, 0);
         }
         break;    
     default:
@@ -1909,7 +1890,7 @@ void Instructions::_newarray(){
         break;
     }
     heap.push_back(array);
-    frames.top().operands.push(Slot(SlotType::RETURN_ADDRESS, 0));
+    frames.top().operands.push(Slot(SlotType::RETURN_ADDRESS, heap.size()));
     frames.top().operands.top().ref.object = array;
     addToPC(2);
 }
@@ -1941,7 +1922,7 @@ void Instructions::_anewarray(){
         }
     else for(int i=0; i<array->size; i++) array->values[i] = Slot(SlotType::REFERENCE,0);
     heap.push_back(array);
-    frames.top().operands.push(Slot(SlotType::RETURN_ADDRESS, 0));
+    frames.top().operands.push(Slot(SlotType::RETURN_ADDRESS, heap.size()));
     frames.top().operands.top().ref.object = array;
     addToPC(3);  
 }
@@ -2011,8 +1992,7 @@ void Instructions::_multianewarray(){
         //}
     //else for(int i=0; i<mtx->size; i++) mtx->values[i] = Slot(SlotType::REFERENCE,0);
     for(int i=0; i<mtx->size; i++) mtx->values[i] = Slot(SlotType::REFERENCE,0);
-
-    frames.top().operands.push(Slot(SlotType::RETURN_ADDRESS, 0));
+    frames.top().operands.push(Slot(SlotType::RETURN_ADDRESS, heap.size()));
     frames.top().operands.top().ref.object = mtx;
     heap.push_back(mtx);
     
@@ -2141,6 +2121,9 @@ void Instructions::print(bool newline){
             }
             break;
         }
+        case SlotType::SHORT:
+            std::cout << frames.top().operands.popShort();
+            break;
         default:
             std::cout << "Tipo invalido para impressão";
             break;
