@@ -1217,7 +1217,7 @@ void Instructions::_ishl(){
     int value2 = 0x1f & frames.top().operands.popInt();
     int value1 = frames.top().operands.popInt();
     int result = value1 << value2;
-    frames.top().operands.push(Slot(SlotType::INT, result));
+    frames.top().operands.pushInt(result);
     addToPC(1);
 }
 
@@ -1252,7 +1252,7 @@ void Instructions::_iushr(){
     if (value1 < 0) {
         result = (value1 >> value2) + (2 << ~(value2));
     }
-    frames.top().operands.push(Slot(SlotType::INT, result));
+    frames.top().operands.pushInt(result);
     addToPC(1);
 }
 
@@ -1303,9 +1303,8 @@ void Instructions::_ixor(){
     Frame f = frames.top();
     int value2 = f.operands.popInt();
     int value1 = f.operands.popInt();
-
     int result = value1 ^ value2;
-    frames.top().operands.push(Slot(SlotType::INT, result));
+    frames.top().operands.pushInt(result);
     addToPC(1);
 }
 
@@ -1313,9 +1312,8 @@ void Instructions::_lxor(){
     Frame f = frames.top();
     long value2 = f.operands.popLong();
     long value1 = f.operands.popLong();
-
     long result = value1 ^ value2;
-    frames.top().operands.push(Slot(SlotType::LONG, result));
+    frames.top().operands.pushLong(result);
     addToPC(1);
 }
 
@@ -1419,7 +1417,7 @@ void Instructions::_i2b(){
 }
 
 void Instructions::_i2c(){
-    int value = frames.top().operands.popInt();
+    char value = (char)frames.top().operands.popInt();
     frames.top().operands.push(Slot(SlotType::CHAR, reinterpret_cast<u4&>(value)));
     addToPC(1);
 }
@@ -2124,7 +2122,6 @@ void Instructions::print(bool newline){
             break;
         }
         case SlotType::SHORT:
-            std::cout << "tag: " << (int)type << std::endl;
             std::cout << frames.top().operands.popShort();
             break;
         default:
