@@ -614,6 +614,11 @@ void Instructions::_caload(){
 }
 
 void Instructions::_saload(){
+    int idx = frames.top().operands.popInt(); //Index
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    frames.top().operands.pop();
+    Slot slot = array->values[idx];
+    frames.top().operands.push(slot);
     addToPC(1);
 }
 
@@ -677,7 +682,6 @@ void Instructions::_istore_2(){
 void Instructions::_istore_3(){
     int value = frames.top().operands.popInt();
     u4 uv = reinterpret_cast<u4&>(value);
-    std::cout << "istore3: " << value << std::endl;
     frames.top().variables[3] = Slot(SlotType::INT, uv);
     addToPC(1);
 }
@@ -858,10 +862,11 @@ void Instructions::_castore(){
 }
 
 void Instructions::_sastore(){
-    u4 value = frames.top().operands.popShort(); //Value
+    Slot slot= frames.top().operands.top(); //Value
+    frames.top().operands.pop();
     int idx = frames.top().operands.popInt(); //Index
     Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
-    ((u4*)array->values)[idx] = value;
+    array->values[idx] = slot;
     frames.top().operands.pop();
     addToPC(1);
 }
