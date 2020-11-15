@@ -1781,10 +1781,9 @@ void Instructions::_dreturn(){
 }
 
 void Instructions::_areturn(){
-    u1 idx = frames.top().bytecode[frames.top().PC+1];
-    frames.top().variables[idx] = frames.top().operands.top();
-    frames.top().operands.pop();
-    frames.top().operands.push(frames.top().variables[idx]);
+    Slot slot = frames.top().operands.top();
+    frames.pop();
+    frames.top().operands.push(slot);
 }
 
 void Instructions::_return(){
