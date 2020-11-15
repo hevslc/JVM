@@ -556,6 +556,12 @@ void Instructions::_aload_3(){
 }
 
 void Instructions::_iaload(){
+    int idx = frames.top().operands.popInt(); //Index
+    if(idx!=0) idx += idx;
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    frames.top().operands.pop();
+    Slot slot = array->values[idx];
+    frames.top().operands.push(slot);
     addToPC(1);
 }
 
@@ -564,18 +570,32 @@ void Instructions::_laload(){
     if(idx!=0) idx += idx;
     Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
     frames.top().operands.pop();
-    Slot slothigh = array->values[idx];
-    Slot slotlow = array->values[idx+1];
+    Slot slothigh = array->values[idx]; //Value
+    Slot slotlow = array->values[idx+1]; //Value
     frames.top().operands.push(slotlow);
     frames.top().operands.push(slothigh);
     addToPC(1);
 }
 
 void Instructions::_faload(){
+    int idx = frames.top().operands.popInt(); //Index
+    if(idx!=0) idx += idx;
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    frames.top().operands.pop();
+    Slot slot = array->values[idx]; //Value
+    frames.top().operands.push(slot);
     addToPC(1);
 }
 
 void Instructions::_daload(){
+    int idx = frames.top().operands.popInt(); //Index
+    if(idx!=0) idx += idx;
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    frames.top().operands.pop();
+    Slot slothigh = array->values[idx]; //Value
+    Slot slotlow = array->values[idx+1]; //Value
+    frames.top().operands.push(slotlow);
+    frames.top().operands.push(slothigh);
     addToPC(1);
 }
 
@@ -606,19 +626,74 @@ void Instructions::_aaload(){
 }
 
 void Instructions::_baload(){
+    int idx = frames.top().operands.popInt();
+    Slot slot = frames.top().operands.top();
+    frames.top().operands.pop();
+
+    if(slot.type == SlotType::RETURN_ADDRESS){
+        u4 uidx = reinterpret_cast<u4&>(idx);
+        Slot newSlot = Slot(SlotType::REFERENCE, uidx);
+        newSlot.ref.object = slot.ref.object;
+        frames.top().operands.push(newSlot);
+    }
+    else{
+        int idx2 = getInt(slot.value);
+        int idxs[2] = {idx, idx2};
+        Array *array = static_cast<Array*>(slot.ref.object);
+        int offset = array->offset(idxs);
+        u4 uoffset = reinterpret_cast<u4&>(offset);
+        Slot newSlot = Slot(SlotType::REFERENCE, uoffset);
+        newSlot.ref.object = slot.ref.object;
+        frames.top().operands.push(newSlot);
+    }
     addToPC(1);
 }
 
 void Instructions::_caload(){
+    int idx = frames.top().operands.popInt();
+    Slot slot = frames.top().operands.top();
+    frames.top().operands.pop();
+
+    if(slot.type == SlotType::RETURN_ADDRESS){
+        u4 uidx = reinterpret_cast<u4&>(idx);
+        Slot newSlot = Slot(SlotType::REFERENCE, uidx);
+        newSlot.ref.object = slot.ref.object;
+        frames.top().operands.push(newSlot);
+    }
+    else{
+        int idx2 = getInt(slot.value);
+        int idxs[2] = {idx, idx2};
+        Array *array = static_cast<Array*>(slot.ref.object);
+        int offset = array->offset(idxs);
+        u4 uoffset = reinterpret_cast<u4&>(offset);
+        Slot newSlot = Slot(SlotType::REFERENCE, uoffset);
+        newSlot.ref.object = slot.ref.object;
+        frames.top().operands.push(newSlot);
+    }
     addToPC(1);
 }
 
 void Instructions::_saload(){
-    int idx = frames.top().operands.popInt(); //Index
-    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    int idx = frames.top().operands.popInt();
+    Slot slot = frames.top().operands.top();
     frames.top().operands.pop();
-    Slot slot = array->values[idx];
-    frames.top().operands.push(slot);
+
+    if(slot.type == SlotType::RETURN_ADDRESS){
+        u4 uidx = reinterpret_cast<u4&>(idx);
+        Slot newSlot = Slot(SlotType::REFERENCE, uidx);
+        newSlot.ref.object = slot.ref.object;
+        frames.top().operands.push(newSlot);
+    }
+    else{
+        int idx2 = getInt(slot.value);
+        int idxs[2] = {idx, idx2};
+        Array *array = static_cast<Array*>(slot.ref.object);
+        int offset = array->offset(idxs);
+        u4 uoffset = reinterpret_cast<u4&>(offset);
+        Slot newSlot = Slot(SlotType::REFERENCE, uoffset);
+        newSlot.ref.object = slot.ref.object;
+        frames.top().operands.push(newSlot);
+    }
     addToPC(1);
 }
 
