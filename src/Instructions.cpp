@@ -2035,8 +2035,8 @@ void Instructions::_ifnull(){
 
     if(slot.ref.object == nullptr){
         Frame f = frames.top();
-        u1 branchbyte1 = f.bytecode[f.PC+1];
-        u1 branchbyte2 = f.bytecode[f.PC+2];
+        u4 branchbyte1 = f.bytecode[f.PC+1];
+        u4 branchbyte2 = f.bytecode[f.PC+2];
         int16_t branchoffset = (branchbyte1<<8) | branchbyte2;
         addToPC(branchoffset);
     }else{
@@ -2052,8 +2052,8 @@ void Instructions::_ifnonnull(){
 
     if(slot.ref.object != nullptr){
         Frame f = frames.top();
-        u1 branchbyte1 = f.bytecode[f.PC+1];
-        u1 branchbyte2 = f.bytecode[f.PC+2];
+        u4 branchbyte1 = f.bytecode[f.PC+1];
+        u4 branchbyte2 = f.bytecode[f.PC+2];
         int16_t branchoffset = (branchbyte1<<8) | branchbyte2;
         addToPC(branchoffset);
     }else{
