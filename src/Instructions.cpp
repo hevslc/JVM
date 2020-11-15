@@ -1795,15 +1795,30 @@ void Instructions::_getstatic(){
 }
 
 void Instructions::_putstatic(){
-    addToPC(1);
+    Frame f = frames.top();
+    u1 idx1 = f.bytecode[f.PC+1];
+    u1 idx2 = f.bytecode[f.PC+2];
+    u2 idx = getIndex(idx1, idx2);
+    u2 idxclass = f.classFile->constantPool[idx].FieldMethInter.classIndex;
+    std::string classname = f.classFile->constantPool.getUtf8Class(idxclass);
+
+    addToPC(3);
 }
 
 void Instructions::_getField(){
-    addToPC(1);
+    u1 idx1 = f.bytecode[f.PC+1];
+    u1 idx2 = f.bytecode[f.PC+2];
+    u2 idx = getIndex(idx1, idx2);
+    
+    u1 idx = frames.top().bytecode[frames.top().PC+1];
+    frames.top().variables[idx] = frames.top().operands.top();
+    frames.top().operands.pop();
+
+    addToPC(3);
 }
 
 void Instructions::_putfield(){
-    addToPC(1);
+    addToPC(3);
 }
 
 void Instructions::_invokevirtual(){
