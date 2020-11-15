@@ -556,6 +556,10 @@ void Instructions::_aload_3(){
 }
 
 void Instructions::_iaload(){
+    int idx = frames.top().operands.popInt();
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    frames.top().operands.pop();
+    frames.top().operands.push(array->values[idx]);
     addToPC(1);
 }
 
@@ -572,10 +576,22 @@ void Instructions::_laload(){
 }
 
 void Instructions::_faload(){
+    int idx = frames.top().operands.popInt();
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    frames.top().operands.pop();
+    frames.top().operands.push(array->values[idx]);
     addToPC(1);
 }
 
 void Instructions::_daload(){
+    int idx = frames.top().operands.popInt(); //Index
+    if(idx!=0) idx += idx;
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    frames.top().operands.pop();
+    Slot slothigh = array->values[idx];
+    Slot slotlow = array->values[idx+1];
+    frames.top().operands.push(slotlow);
+    frames.top().operands.push(slothigh);
     addToPC(1);
 }
 
@@ -600,16 +616,23 @@ void Instructions::_aaload(){
         newSlot.ref.object = slot.ref.object;
         frames.top().operands.push(newSlot);
     }
-
-    //é colocado indice da entrada ao invés da entrada
+    //é colocado indice da entrada ao invés da entrada (refência)
     addToPC(1);
 }
 
 void Instructions::_baload(){
+    int idx = frames.top().operands.popInt();
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    frames.top().operands.pop();
+    frames.top().operands.push(array->values[idx]);
     addToPC(1);
 }
 
 void Instructions::_caload(){
+    int idx = frames.top().operands.popInt();
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    frames.top().operands.pop();
+    frames.top().operands.push(array->values[idx]);
     addToPC(1);
 }
 
@@ -801,8 +824,8 @@ void Instructions::_lastore(){
     Slot slotlow = frames.top().operands.top();
     frames.top().operands.pop();
     int idx = frames.top().operands.popInt(); //Index
-    Array* array = (Array*)heap[0]; //arrayRef
-    idx += idx;
+    Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    if(idx!=0) idx += idx;
     array->values[idx] = slothigh;
     array->values[idx+1] = slotlow;
     frames.top().operands.pop();
@@ -810,19 +833,25 @@ void Instructions::_lastore(){
 }
 
 void Instructions::_fastore(){
-    float value =  frames.top().operands.popFloat(); //Value
+    Slot slot =  frames.top().operands.top(); //Value
+    frames.top().operands.pop();
     int idx = frames.top().operands.popInt(); //Index
     Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
-    ((u4*)array->values)[idx] = value;
+    array->values[idx] = slot;
     frames.top().operands.pop();
     addToPC(1);
 }
 
 void Instructions::_dastore(){
-    double value = frames.top().operands.popDouble(); //Value
+    Slot slothigh = frames.top().operands.top();
+    frames.top().operands.pop();
+    Slot slotlow = frames.top().operands.top();
+    frames.top().operands.pop();
     int idx = frames.top().operands.popInt(); //Index
     Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
-    ((u8*)array->values)[idx] = value;
+    if(idx!=0) idx += idx;
+    array->values[idx] = slothigh;
+    array->values[idx+1] = slotlow;
     frames.top().operands.pop();
     addToPC(1);
 }
@@ -844,19 +873,29 @@ void Instructions::_aastore(){
 }
 
 void Instructions::_bastore(){
-    u4 value = frames.top().operands.popBool(); //Value (Byte ou Bool, tanto faz o pop)
+    Slot slot =  frames.top().operands.top(); //Value
+    frames.top().operands.pop();
     int idx = frames.top().operands.popInt(); //Index
     Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
-    ((u4*)array->values)[idx] = value;
+    
+    slot.value = (u1)slot.value;
+    slot.type = SlotType::BYTE;
+    
+    array->values[idx] = slot;
     frames.top().operands.pop();
     addToPC(1);
 }
 
 void Instructions::_castore(){
-    u4 value = frames.top().operands.popChar(); //Value
+    Slot slot =  frames.top().operands.top(); //Value
+    frames.top().operands.pop();
     int idx = frames.top().operands.popInt(); //Index
     Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
-    ((u4*)array->values)[idx] = value;
+
+    slot.value = (char)slot.value;
+    slot.type = SlotType::CHAR;
+
+    array->values[idx] = slot;
     frames.top().operands.pop();
     addToPC(1);
 }
@@ -866,6 +905,10 @@ void Instructions::_sastore(){
     frames.top().operands.pop();
     int idx = frames.top().operands.popInt(); //Index
     Array* array = (Array*)heap[frames.top().operands.top().value]; //arrayRef
+    
+    slot.value = (short)slot.value;
+    slot.type = SlotType::SHORT;
+    
     array->values[idx] = slot;
     frames.top().operands.pop();
     addToPC(1);
@@ -1582,11 +1625,11 @@ void Instructions::_if_icmpeq(){
     Frame f = frames.top();
     u1 branchbyte1 = f.bytecode[f.PC+1];
     u1 branchbyte2 = f.bytecode[f.PC+2];
-    u4 ubr = getIndex(branchbyte1, branchbyte2);
-    int br = reinterpret_cast<int16_t&>(ubr) + f.PC;
+    int16_t br = getBranchOffset(branchbyte1, branchbyte2);
     int v2 = f.operands.popInt();
     int v1 = f.operands.popInt();
-    if(v1 == v2) frames.top().PC = reinterpret_cast<u4&>(br);
+    int jmp = f.PC + br;
+    if(v1 == v2) frames.top().PC = reinterpret_cast<u4&>(jmp);
     else         addToPC(3);
 }
 
@@ -1594,11 +1637,11 @@ void Instructions::_if_icmpne(){
     Frame f = frames.top();
     u1 branchbyte1 = f.bytecode[f.PC+1];
     u1 branchbyte2 = f.bytecode[f.PC+2];
-    u4 ubr = getIndex(branchbyte1, branchbyte2);
-    int br = reinterpret_cast<int16_t&>(ubr) + f.PC;
+    int16_t br = getBranchOffset(branchbyte1, branchbyte2);
     int v2 = f.operands.popInt();
     int v1 = f.operands.popInt();
-    if(v1 != v2) frames.top().PC = reinterpret_cast<u4&>(br);
+    int jmp = f.PC + br;
+    if(v1 != v2) frames.top().PC = reinterpret_cast<u4&>(jmp);
     else         addToPC(3);
 }
 
@@ -1606,11 +1649,11 @@ void Instructions::_if_icmplt(){
     Frame f = frames.top();
     u1 branchbyte1 = f.bytecode[f.PC+1];
     u1 branchbyte2 = f.bytecode[f.PC+2];
-    u4 ubr = getIndex(branchbyte1, branchbyte2);
-    int br = reinterpret_cast<int16_t&>(ubr) + f.PC;
+    int16_t br = getBranchOffset(branchbyte1, branchbyte2);
     int v2 = f.operands.popInt();
     int v1 = f.operands.popInt();
-    if(v1 < v2) frames.top().PC = reinterpret_cast<u4&>(br);
+    int jmp = f.PC + br;
+    if(v1 < v2) frames.top().PC = reinterpret_cast<u4&>(jmp);
     else         addToPC(3);
 }
 
@@ -1618,11 +1661,11 @@ void Instructions::_if_icmpge(){
     Frame f = frames.top();
     u1 branchbyte1 = f.bytecode[f.PC+1];
     u1 branchbyte2 = f.bytecode[f.PC+2];
-    u4 ubr = getIndex(branchbyte1, branchbyte2);
-    int br = reinterpret_cast<int16_t&>(ubr) + f.PC;
+    int16_t br = getBranchOffset(branchbyte1, branchbyte2);
     int v2 = f.operands.popInt();
     int v1 = f.operands.popInt();
-    if(v1 >= v2) frames.top().PC = reinterpret_cast<u4&>(br);
+    int jmp = f.PC + br;
+    if(v1 >= v2) frames.top().PC = reinterpret_cast<u4&>(jmp);
     else         addToPC(3);
 }
 
@@ -1630,11 +1673,11 @@ void Instructions::_if_icmpgt(){
     Frame f = frames.top();
     u1 branchbyte1 = f.bytecode[f.PC+1];
     u1 branchbyte2 = f.bytecode[f.PC+2];
-    u4 ubr = getIndex(branchbyte1, branchbyte2);
-    int br = reinterpret_cast<int16_t&>(ubr) + f.PC;
+    int16_t br = getBranchOffset(branchbyte1, branchbyte2);
     int v2 = f.operands.popInt();
     int v1 = f.operands.popInt();
-    if(v1 > v2) frames.top().PC = reinterpret_cast<u4&>(br);
+    int jmp = f.PC + br;
+    if(v1 > v2) frames.top().PC = reinterpret_cast<u4&>(jmp);
     else        addToPC(3);
 }
 
@@ -1642,11 +1685,11 @@ void Instructions::_if_icmple(){
     Frame f = frames.top();
     u1 branchbyte1 = f.bytecode[f.PC+1];
     u1 branchbyte2 = f.bytecode[f.PC+2];
-    u4 ubr = getIndex(branchbyte1, branchbyte2);
-    int br = reinterpret_cast<int16_t&>(ubr) + f.PC;
+    int16_t br = getBranchOffset(branchbyte1, branchbyte2);
     int v2 = f.operands.popInt();
     int v1 = f.operands.popInt();
-    if(v1 <= v2) frames.top().PC = reinterpret_cast<u4&>(br);
+    int jmp = f.PC + br;
+    if(v1 <= v2) frames.top().PC = reinterpret_cast<u4&>(jmp);
     else         addToPC(3);
 }
 
@@ -1662,9 +1705,9 @@ void Instructions::_goto(){
     Frame f = frames.top();
     u1 branchbyte1 = f.bytecode[f.PC+1];
     u1 branchbyte2 = f.bytecode[f.PC+2];
-    u4 ubr = getIndex(branchbyte1, branchbyte2);
-    int br = reinterpret_cast<int16_t&>(ubr) + f.PC;
-    frames.top().PC = reinterpret_cast<u4&>(br);
+    int16_t br = getBranchOffset(branchbyte1, branchbyte2);
+    int jmp = f.PC + br;
+    frames.top().PC = reinterpret_cast<u4&>(jmp);
 }
 
 void Instructions::_jsr(){
@@ -1705,7 +1748,6 @@ void Instructions::_tableswitch(){
                 jumpValue = (f.bytecode[positionPC+1+auxPos] << 24) | (f.bytecode[positionPC+2+auxPos] << 16) |
                 (f.bytecode[positionPC+3+auxPos] << 8) | (f.bytecode[positionPC+4+auxPos]);
                 addToPC(jumpValue);
-                std::cout << (int)frames.top().PC << std::endl;
                 break;
             }
             auxPos += 4;
@@ -1754,7 +1796,6 @@ void Instructions::_lookupswitch(){
 
 void Instructions::_ireturn(){
     int ret = frames.top().operands.popInt();
-    std::cout << ret << std::endl;
     frames.pop();
     frames.top().operands.pushInt(ret);
 }
