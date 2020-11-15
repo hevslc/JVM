@@ -2133,10 +2133,10 @@ void Instructions::_goto_w(){
 
 void Instructions::_jsr_w(){
     Frame f = frames.top();
-    u1 branchbyte1 = f.bytecode[f.PC+1];
-    u1 branchbyte2 = f.bytecode[f.PC+2];
-    u1 branchbyte3 = f.bytecode[f.PC+3];
-    u1 branchbyte4 = f.bytecode[f.PC+4];
+    u4 branchbyte1 = f.bytecode[f.PC+1];
+    u4 branchbyte2 = f.bytecode[f.PC+2];
+    u4 branchbyte3 = f.bytecode[f.PC+3];
+    u4 branchbyte4 = f.bytecode[f.PC+4];
     int32_t branchoffset = (branchbyte1<<24) | (branchbyte2<<16) |  (branchbyte3<<8)  |  branchbyte4;
 
     frames.top().operands.pushInt(frames.top().PC+5);
