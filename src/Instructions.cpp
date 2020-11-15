@@ -2029,11 +2029,36 @@ void Instructions::_multianewarray(){
 }
 
 void Instructions::_ifnull(){
-    addToPC(1);
+    //Frame f = frames.top();
+    Slot slot = frames.top().operands.top();
+    frames.top().operands.pop();
+
+    if(slot.ref.object == nullptr){
+        Frame f = frames.top();
+        u1 branchbyte1 = f.bytecode[f.PC+1];
+        u1 branchbyte2 = f.bytecode[f.PC+2];
+        int16_t branchoffset = (branchbyte1<<8) | branchbyte2;
+        addToPC(branchoffset);
+    }else{
+        addToPC(3);
+    }
+    
 }
 
 void Instructions::_ifnonnull(){
-    addToPC(1);
+     //Frame f = frames.top();
+    Slot slot = frames.top().operands.top();
+    frames.top().operands.pop();
+
+    if(slot.ref.object != nullptr){
+        Frame f = frames.top();
+        u1 branchbyte1 = f.bytecode[f.PC+1];
+        u1 branchbyte2 = f.bytecode[f.PC+2];
+        int16_t branchoffset = (branchbyte1<<8) | branchbyte2;
+        addToPC(branchoffset);
+    }else{
+        addToPC(3);
+    }
 }
 
 void Instructions::_goto_w(){
