@@ -1754,28 +1754,28 @@ void Instructions::_lookupswitch(){
 
 void Instructions::_ireturn(){
     int ret = frames.top().operands.popInt();
-    std::cout << ret << std::endl;
+    //std::cout << ret << std::endl;
     frames.pop();
     frames.top().operands.pushInt(ret);
 }
 
 void Instructions::_lreturn(){
     long ret = frames.top().operands.popLong();
-    std::cout << ret << std::endl;
+    //std::cout << ret << std::endl;
     frames.pop();
     frames.top().operands.pushLong(ret);
 }
 
 void Instructions::_freturn(){
     float ret = frames.top().operands.popFloat();
-    std::cout << ret << std::endl;
+    //std::cout << ret << std::endl;
     frames.pop();
     frames.top().operands.pushFloat(ret);
 }
 
 void Instructions::_dreturn(){
     double ret = frames.top().operands.popDouble();
-    std::cout << ret << std::endl;
+    //std::cout << ret << std::endl;
     frames.pop();
     frames.top().operands.pushDouble(ret);
 }
