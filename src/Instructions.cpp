@@ -1735,7 +1735,14 @@ void Instructions::_goto(){
 }
 
 void Instructions::_jsr(){
-    addToPC(1);
+    Frame f = frames.top();
+    u1 branchbyte1 = f.bytecode[f.PC+1];
+    u1 branchbyte2 = f.bytecode[f.PC+2];
+    u2 ubr = getIndex(branchbyte1, branchbyte2);
+    int br = reinterpret_cast<int16_t&>(ubr) + f.PC;
+   
+    frames.top().operands.pushInt(frames.top().PC+3);
+    frames.top().PC = reinterpret_cast<u4&>(br);
 }
 
 void Instructions::_ret(){
@@ -2149,7 +2156,15 @@ void Instructions::_goto_w(){
 }
 
 void Instructions::_jsr_w(){
-    addToPC(1);
+    Frame f = frames.top();
+    u4 branchbyte1 = f.bytecode[f.PC+1];
+    u4 branchbyte2 = f.bytecode[f.PC+2];
+    u4 branchbyte3 = f.bytecode[f.PC+3];
+    u4 branchbyte4 = f.bytecode[f.PC+4];
+    int32_t branchoffset = (branchbyte1<<24) | (branchbyte2<<16) |  (branchbyte3<<8)  |  branchbyte4;
+
+    frames.top().operands.pushInt(frames.top().PC+5);
+    addToPC(branchoffset);
 }
 
 
