@@ -1700,8 +1700,8 @@ void Instructions::_if_acmpeq(){
     int16_t br = getBranchOffset(branchbyte1, branchbyte2);
     
     Slot slot2 = f.operands.top();
-    Slot slot1 = f.operands.top();
     frames.top().operands.pop();
+    Slot slot1 = f.operands.top();
     frames.top().operands.pop();
 
     int jmp = f.PC + br;
@@ -1716,8 +1716,8 @@ void Instructions::_if_acmpne(){
     int16_t br = getBranchOffset(branchbyte1, branchbyte2);
     
     Slot slot2 = f.operands.top();
-    Slot slot1 = f.operands.top();
     frames.top().operands.pop();
+    Slot slot1 = f.operands.top();
     frames.top().operands.pop();
 
     int jmp = f.PC + br;
