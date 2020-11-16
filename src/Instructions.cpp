@@ -2234,7 +2234,7 @@ int Instructions::getNumberArgs(std::string descriptor){
 	std::size_t c = args.find_first_of("BCFISZ");
 	for(;c != p;++qtd) c = args.find_first_of("BCDFIJSZ", c+1);
 
-    std::size_t c2 = args.find_first_of("BCDFIJSZ");
+    std::size_t c2 = args.find_first_of("DJ");
 	for(;c2 != p;qtd+=2) c2 = args.find_first_of("DJ", c2+1);
 
 	if(args.find_first_of("[") != p ) qtd++;
