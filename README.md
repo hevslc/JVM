@@ -1,10 +1,18 @@
 # JVM
 Uma implementação simples de uma Máquina Virtual Java.
 
+# Compilação
+Para compilar execute o comando ```make```
+
 # Execução
 * Clonar o repositório
 * Na raíz, executar o comando ```make``` para gerar o executável
-* Para executar, utilize o comando ```.\main.exe .\examples\<arquivo_.class>```
+* Para executar, utilize o comando ```main.exe caminho_para_o_arquivo```
+
+# O que não pôde ser implementado
+Algumas instruções não foram implementadas, entre elas, principalmente tem-se *invokespecial*, *new*, *instanceof* e *checkcast*. Isso implica que a JVM não carrega outras classes além da presente no *.class* da chamada da JVM.
+
+Instruções que tratam de campos (estáticos ou de instância), como *putfield*, *getfield*, *putstatic*, *getstatic*, não estão completas ou não foram implementadas.
 
 ## WorkFlow
 * Criar uma **nova issue** para uma situação ou escolher uma existente.
