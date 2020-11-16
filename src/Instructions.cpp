@@ -1694,11 +1694,35 @@ void Instructions::_if_icmple(){
 }
 
 void Instructions::_if_acmpeq(){
-    addToPC(1);
+    Frame f = frames.top();
+    u1 branchbyte1 = f.bytecode[f.PC+1];
+    u1 branchbyte2 = f.bytecode[f.PC+2];
+    int16_t br = getBranchOffset(branchbyte1, branchbyte2);
+    
+    Slot slot2 = f.operands.top();
+    Slot slot1 = f.operands.top();
+    frames.top().operands.pop();
+    frames.top().operands.pop();
+
+    int jmp = f.PC + br;
+    if(slot1.ref.object == slot2.ref.object) frames.top().PC = reinterpret_cast<u4&>(jmp);
+    else         addToPC(3);
 }
 
 void Instructions::_if_acmpne(){
-    addToPC(1);
+    Frame f = frames.top();
+    u1 branchbyte1 = f.bytecode[f.PC+1];
+    u1 branchbyte2 = f.bytecode[f.PC+2];
+    int16_t br = getBranchOffset(branchbyte1, branchbyte2);
+    
+    Slot slot2 = f.operands.top();
+    Slot slot1 = f.operands.top();
+    frames.top().operands.pop();
+    frames.top().operands.pop();
+
+    int jmp = f.PC + br;
+    if(slot1.ref.object != slot2.ref.object) frames.top().PC = reinterpret_cast<u4&>(jmp);
+    else         addToPC(3);
 }
 
 void Instructions::_goto(){
