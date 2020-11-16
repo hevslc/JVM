@@ -366,6 +366,22 @@ void Instructions::_ldc(){
 }
 
 void Instructions::_ldc_w(){
+    u2 idx = getIndex(frames.top().bytecode[frames.top().PC+1], frames.top().bytecode[frames.top().PC+2]);
+    Cpinfo entry = frames.top().classFile->constantPool[idx-1];
+    switch(entry.tag) {
+        case CONSTANT_Integer:
+            frames.top().operands.push(Slot(SlotType::INT, entry.Integer.bytes));
+        break;
+        case CONSTANT_Float:
+            frames.top().operands.push(Slot(SlotType::FLOAT, entry.Float.bytes));
+        break;
+        case CONSTANT_String:
+            Cpinfo entry2 = frames.top().classFile->constantPool[entry.String.stringIndex-1];
+            Slot slot(SlotType::STRING_REF, entry.String.stringIndex);
+            slot.ref.str = (char*)entry2.Utf8.bytes;
+            frames.top().operands.push(slot);
+        break;
+    }
     addToPC(3);
 }
 
